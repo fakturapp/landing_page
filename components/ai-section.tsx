@@ -323,30 +323,22 @@ function AIDemoAnimation() {
   return (
     <div style={{ perspective: "900px", userSelect: "none", WebkitUserSelect: "none", width: "100%", maxWidth: "720px" }}>
       <div style={{ transformOrigin: "top", willChange: "transform", transform: "translateY(0%) rotateX(30deg) scale(1.15)", position: "relative" }}>
-        {/* Glass overlay */}
-        <div style={{
-          border: "1px solid rgba(66,66,66,0.5)",
-          background: "linear-gradient(rgba(255,255,255,0.07) 40%, rgba(8,9,10,0.1) 100%)",
-          borderRadius: "16px", position: "absolute", top: 0, bottom: 0, left: 0, right: 0,
-          boxShadow: "inset 0 1.5px 5px rgba(255,255,255,0.04), inset 0 -0.75px 0.75px rgba(255,255,255,0.08)",
-          pointerEvents: "none", zIndex: 10,
-        }} />
         {/* Bottom fade */}
         <div style={{
           background: "linear-gradient(180deg, transparent 0%, #09090B 100%)", height: "80%",
           position: "absolute", bottom: "-2px", left: "-180px", right: "-180px", pointerEvents: "none", zIndex: 11,
         }} />
 
-        {/* ── Modal container ── */}
+        {/* ── Modal container (Faktur style) ── */}
         <div style={{
-          backgroundColor: "#18181b",
+          backgroundColor: "#09090b",
           border: "1px solid #27272a",
           borderRadius: "16px",
-          boxShadow: "0 25px 50px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03)",
+          boxShadow: "0 0 80px -20px rgba(99,102,241,0.15), 0 25px 50px -12px rgba(0,0,0,0.7)",
           overflow: "hidden",
         }}>
           {/* Input bar */}
-          <div style={{ padding: "16px 20px", borderBottom: "1px solid #27272a", backgroundColor: "#1c1c1f" }}>
+          <div style={{ padding: "16px 20px", borderBottom: "1px solid #1e1e22", backgroundColor: "#111113" }}>
             <AnimatePresence mode="wait">
               {(phase === "thinking" || phase === "picking") ? (
                 <motion.div key={`bar-${isGenerating ? "gen" : "think"}`} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="flex items-center gap-2.5">

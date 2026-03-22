@@ -48,7 +48,7 @@ export function Hero3DStage() {
             transform: "translate(-50%, -30%)",
             width: "1200px",
             height: "800px",
-            background: "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse at center, rgba(99, 102, 241, 0.12) 0%, transparent 70%)",
           }}
         />
 
@@ -63,7 +63,7 @@ export function Hero3DStage() {
                 transition={{ duration: 0.6 }}
                 className="text-4xl md:text-5xl lg:text-[56px] font-medium text-white leading-[1.1] text-balance"
               >
-                Sprint is a purpose-built tool for planning and building products
+                Créez vos factures et devis en toute confiance
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -71,9 +71,9 @@ export function Hero3DStage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="mt-6 text-lg text-zinc-400"
               >
-                Meet the system for modern software development.
+                Logiciel de facturation gratuit avec chiffrement zero-access.
                 <br />
-                Streamline issues, projects, and product roadmaps.
+                Faktur chiffre vos données avec votre mot de passe, même nous ne pouvons pas les lire.
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -81,11 +81,11 @@ export function Hero3DStage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mt-8 flex items-center gap-6"
               >
-                <button className="px-5 py-2.5 bg-white text-zinc-900 font-medium rounded-lg hover:bg-zinc-100 transition-colors text-sm">
-                  Start building
-                </button>
+                <a href="https://dash.fakturapp.cc" className="px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-500 transition-colors text-sm">
+                  Commencer gratuitement
+                </a>
                 <button className="text-zinc-300 font-medium hover:text-white transition-colors flex items-center gap-2 text-sm">
-                  <span className="text-zinc-500">New:</span> Sprint agent for Slack
+                  <span className="text-zinc-500">100% gratuit</span> Aucune carte bancaire requise
                   <span aria-hidden="true">→</span>
                 </button>
               </motion.div>

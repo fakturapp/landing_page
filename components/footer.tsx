@@ -1,10 +1,10 @@
 export function Footer() {
   const footerLinks = {
-    Features: ["Plan", "Build", "Insights", "Customer Requests", "Sprint Asks", "Security", "Mobile"],
-    Product: ["Pricing", "Method", "Integrations", "Changelog", "Documentation", "Download", "Switch"],
-    Company: ["About", "Customers", "Careers", "Now", "README", "Quality", "Brand"],
-    Resources: ["Developers", "Status", "Startups", "Report vulnerability", "DPA", "Privacy", "Terms"],
-    Connect: ["Contact us", "Community", "X (Twitter)", "GitHub", "YouTube"],
+    Produit: ["Factures", "Devis", "Avoirs", "Clients", "Produits", "Tableau de bord", "Export PDF"],
+    Fonctionnalités: ["Intelligence artificielle", "Chiffrement zero-access", "Factures récurrentes", "Gestion d'équipe", "Intégration email", "SIREN/SIRET"],
+    Entreprise: ["À propos", "Blog", "Contact", "Changelog"],
+    Légal: ["Confidentialité", "CGU", "Mentions légales", "DPA"],
+    Communauté: ["GitHub", "X (Twitter)", "Discord"],
   }
 
   return (
@@ -13,16 +13,13 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           {/* Logo */}
           <div className="col-span-2 md:col-span-1">
-            <svg width="20" height="20" viewBox="0 0 100 100" fill="none" className="text-white">
-              <path
-                d="M20 30 L50 10 L80 30 L80 70 L50 90 L20 70 Z"
-                fill="currentColor"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path d="M50 10 L50 50 L20 30" fill="#09090B" />
-              <path d="M50 50 L80 70 L50 90" fill="#09090B" />
-            </svg>
+            <div className="flex items-center gap-2 mb-4">
+              <img src="/logo.svg" alt="Faktur" className="w-6 h-6" />
+              <span className="text-white font-semibold text-sm">Faktur</span>
+            </div>
+            <p className="text-zinc-500 text-xs leading-relaxed">
+              Facturation professionnelle gratuite avec chiffrement zero-access.
+            </p>
           </div>
 
           {/* Links */}
@@ -40,6 +37,16 @@ export function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-16 pt-8 border-t border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-zinc-600 text-xs">
+            © 2026 Faktur. Tous droits réservés.
+          </p>
+          <p className="text-zinc-600 text-xs">
+            Fait avec soin pour les entrepreneurs.
+          </p>
         </div>
       </div>
     </footer>

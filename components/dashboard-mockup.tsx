@@ -1,5 +1,6 @@
 "use client"
 
+import type React from "react"
 import { motion } from "framer-motion"
 import {
   ArrowLeft,
@@ -14,17 +15,24 @@ import {
   Calendar,
   CreditCard,
   Plus,
-  Trash2,
+  LayoutDashboard,
+  FileText,
+  Receipt,
+  Users,
+  Package,
+  Building2,
+  Search,
+  TrendingUp,
+  Wallet,
+  RefreshCw,
+  HelpCircle,
 } from "lucide-react"
 
 export function DashboardMockup() {
   const containerVariants = {
     hidden: {},
     visible: {
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.5,
-      },
+      transition: { staggerChildren: 0.3, delayChildren: 0.5 },
     },
   }
 
@@ -42,423 +50,780 @@ export function DashboardMockup() {
 
   return (
     <motion.div
-      className="w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden"
+      className="w-full h-full flex overflow-hidden"
+      style={{ backgroundColor: "#0c0c0e" }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Top Header Bar */}
+      {/* ========== LEFT SIDEBAR ========== */}
       <motion.div
-        className="h-[48px] bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0"
+        className="w-[200px] h-full flex flex-col shrink-0"
+        style={{ backgroundColor: "#111113", borderRight: "1px solid #1e1e22" }}
         variants={panelVariants}
       >
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
-            <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
-          </div>
-          <div>
-            <span className="text-slate-900 font-semibold text-[12px]">Modifier la facture</span>
-            <span className="text-slate-400 text-[10px] ml-2">FAK-2024-001</span>
+        {/* Logo */}
+        <div style={{ padding: "12px", borderBottom: "1px solid #1e1e22" }}>
+          <div className="flex items-center" style={{ gap: "8px", padding: "4px 8px" }}>
+            <img src="/logo.svg" alt="Faktur" style={{ width: "18px", height: "18px" }} />
+            <span style={{ color: "#fff", fontWeight: 600, fontSize: "13px", lineHeight: "1" }}>Faktur</span>
+            <ChevronDown style={{ width: "13px", height: "13px", color: "#52525b", marginLeft: "auto" }} />
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden text-[10px]">
-            <button className="px-2.5 py-1.5 bg-indigo-600 text-white flex items-center gap-1">
-              <Pencil className="w-3 h-3" />
-              Éditer
-            </button>
-            <button className="px-2.5 py-1.5 text-slate-500 flex items-center gap-1">
-              <Eye className="w-3 h-3" />
-              Aperçu
-            </button>
-          </div>
-          <button className="px-2.5 py-1.5 border border-indigo-200 text-indigo-600 rounded-lg text-[10px] flex items-center gap-1">
-            <Download className="w-3 h-3" />
-            Télécharger
-          </button>
-        </div>
-      </motion.div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* A4 Sheet Area */}
-        <motion.div
-          className="flex-1 overflow-auto p-6 flex justify-center"
-          variants={panelVariants}
-          style={{ background: "#f1f5f9" }}
-        >
-          {/* A4 Paper */}
+        {/* Search */}
+        <div style={{ padding: "10px 12px" }}>
           <div
-            className="bg-white rounded-lg shrink-0"
+            className="flex items-center"
             style={{
-              width: "520px",
-              minHeight: "735px",
-              boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
-              aspectRatio: "210 / 297",
+              gap: "6px",
+              padding: "5px 8px",
+              backgroundColor: "#1a1a1e",
+              borderRadius: "6px",
+              fontSize: "11px",
+              color: "#52525b",
             }}
           >
-            {/* Invoice Content */}
-            <div className="p-7">
-              {/* Header: Company + Invoice Title */}
-              <div className="flex justify-between items-start mb-6">
-                {/* Company Info (Left) */}
-                <div className="flex-1">
-                  {/* Logo placeholder */}
-                  <div
-                    className="w-[70px] h-[35px] rounded border border-dashed border-slate-300 flex items-center justify-center mb-2"
-                  >
-                    <img src="/logo.svg" alt="" className="w-5 h-5" />
-                  </div>
-                  <p className="text-slate-900 font-semibold text-[11px] leading-tight">Mon Entreprise SAS</p>
-                  <p className="text-slate-500 text-[9px] leading-relaxed mt-0.5">
-                    42 Avenue des Champs-Élysées
-                    <br />
-                    75008 Paris, France
-                    <br />
-                    contact@monentreprise.fr
-                    <br />
-                    <span className="text-slate-400">SIREN: 123 456 789</span>
-                  </p>
-                </div>
-
-                {/* Invoice Title (Right) */}
-                <div className="text-right">
-                  <div
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-[12px] font-bold"
-                    style={{ backgroundColor: accentColor }}
-                  >
-                    FACTURE
-                  </div>
-                  <p className="text-slate-600 text-[10px] mt-1.5 font-medium">N° FAK-2024-001</p>
-                </div>
-              </div>
-
-              {/* Dates Bar */}
-              <div
-                className="flex items-center gap-6 px-3 py-2 rounded-md mb-5 text-[9px]"
-                style={{ backgroundColor: `${accentColor}08`, border: `1px solid ${accentColor}15` }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3 h-3 text-slate-400" />
-                  <span className="text-slate-500">Date:</span>
-                  <span className="text-slate-700 font-medium">15/03/2024</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3 h-3 text-slate-400" />
-                  <span className="text-slate-500">Échéance:</span>
-                  <span className="text-slate-700 font-medium">15/04/2024</span>
-                </div>
-              </div>
-
-              {/* Client Info */}
-              <div className="flex justify-end mb-5">
-                <div className="text-right">
-                  <p className="text-slate-900 font-semibold text-[11px]">Dupont & Fils SARL</p>
-                  <p className="text-slate-500 text-[9px] leading-relaxed mt-0.5">
-                    12 Rue de la Paix
-                    <br />
-                    75002 Paris, France
-                    <br />
-                    <span className="text-slate-400">SIRET: 987 654 321 00012</span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Subject */}
-              <div className="mb-4">
-                <p className="text-slate-500 text-[9px] mb-0.5">Objet</p>
-                <p className="text-slate-700 text-[10px] px-2 py-1.5 border-b border-dashed border-slate-300">
-                  Développement et design du site web vitrine
-                </p>
-              </div>
-
-              {/* Line Items Table */}
-              <div className="mb-5">
-                {/* Table Header */}
-                <div
-                  className="grid items-center px-2 py-1.5 rounded-t-md text-[8px] font-semibold text-white uppercase tracking-wider"
-                  style={{
-                    backgroundColor: accentColor,
-                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
-                    gap: "4px",
-                  }}
-                >
-                  <span>Désignation</span>
-                  <span className="text-center">Qté</span>
-                  <span className="text-center">Unité</span>
-                  <span className="text-right">P.U. HT</span>
-                  <span className="text-center">TVA</span>
-                  <span className="text-right">Montant HT</span>
-                </div>
-
-                {/* Row 1 */}
-                <div
-                  className="grid items-center px-2 py-2 text-[9px] border-b border-slate-100 bg-white group"
-                  style={{
-                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
-                    gap: "4px",
-                  }}
-                >
-                  <span className="text-slate-700">Développement site web</span>
-                  <span className="text-center text-slate-500">1</span>
-                  <span className="text-center text-slate-400">forfait</span>
-                  <span className="text-right text-slate-600">1 500,00 €</span>
-                  <span className="text-center text-slate-400">0%</span>
-                  <span className="text-right text-slate-800 font-medium">1 500,00 €</span>
-                </div>
-
-                {/* Row 2 */}
-                <div
-                  className="grid items-center px-2 py-2 text-[9px] border-b border-slate-100 group"
-                  style={{
-                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
-                    gap: "4px",
-                    backgroundColor: "#fafbfc",
-                  }}
-                >
-                  <span className="text-slate-700">Design UI/UX</span>
-                  <span className="text-center text-slate-500">1</span>
-                  <span className="text-center text-slate-400">forfait</span>
-                  <span className="text-right text-slate-600">750,00 €</span>
-                  <span className="text-center text-slate-400">0%</span>
-                  <span className="text-right text-slate-800 font-medium">750,00 €</span>
-                </div>
-
-                {/* Row 3 */}
-                <div
-                  className="grid items-center px-2 py-2 text-[9px] border-b border-slate-100 bg-white group"
-                  style={{
-                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
-                    gap: "4px",
-                  }}
-                >
-                  <span className="text-slate-700">Hébergement annuel</span>
-                  <span className="text-center text-slate-500">12</span>
-                  <span className="text-center text-slate-400">mois</span>
-                  <span className="text-right text-slate-600">16,67 €</span>
-                  <span className="text-center text-slate-400">20%</span>
-                  <span className="text-right text-slate-800 font-medium">200,00 €</span>
-                </div>
-
-                {/* Add line button */}
-                <div className="flex items-center gap-1 px-2 py-1.5 text-[9px] text-indigo-500 cursor-pointer">
-                  <Plus className="w-3 h-3" />
-                  <span>Ajouter une ligne</span>
-                </div>
-              </div>
-
-              {/* Totals */}
-              <div className="flex justify-end mb-6">
-                <div className="w-[200px]">
-                  <div className="flex justify-between text-[9px] py-1">
-                    <span className="text-slate-500">Sous-total HT</span>
-                    <span className="text-slate-700">2 450,00 €</span>
-                  </div>
-                  <div className="flex justify-between text-[9px] py-1">
-                    <span className="text-slate-500">TVA 20% (200,00 € HT)</span>
-                    <span className="text-slate-700">40,00 €</span>
-                  </div>
-                  <div className="flex justify-between text-[9px] py-1">
-                    <span className="text-slate-500">Total TVA</span>
-                    <span className="text-slate-700">40,00 €</span>
-                  </div>
-                  <div
-                    className="flex justify-between text-[11px] font-bold mt-1 px-2 py-1.5 rounded-md text-white"
-                    style={{ backgroundColor: accentColor }}
-                  >
-                    <span>Total TTC</span>
-                    <span>2 490,00 €</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Payment Info */}
-              <div className="border-t border-slate-200 pt-3 mb-4">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <CreditCard className="w-3 h-3 text-slate-400" />
-                  <span className="text-slate-500 text-[9px] font-medium">Mode de paiement</span>
-                </div>
-                <p className="text-slate-600 text-[9px]">Virement bancaire</p>
-                <p className="text-slate-400 text-[8px] mt-0.5">IBAN: FR76 •••• •••• •••• •••• •••• 123</p>
-              </div>
-
-              {/* Notes */}
-              <div className="border-t border-slate-200 pt-3">
-                <p className="text-slate-500 text-[8px] font-medium uppercase tracking-wider mb-1">Conditions</p>
-                <p className="text-slate-400 text-[8px] leading-relaxed italic">
-                  TVA non applicable, art. 293 B du CGI. En cas de retard de paiement, une pénalité de 3 fois le taux
-                  d'intérêt légal sera appliquée, ainsi qu'une indemnité forfaitaire de 40€ pour frais de recouvrement.
-                </p>
-              </div>
-            </div>
+            <Search style={{ width: "12px", height: "12px" }} />
+            <span>Rechercher...</span>
+            <span
+              style={{
+                marginLeft: "auto",
+                fontSize: "9px",
+                backgroundColor: "#27272a",
+                padding: "2px 5px",
+                borderRadius: "3px",
+              }}
+            >
+              ⌘K
+            </span>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Right Sidebar - Options Panel */}
+        {/* Main nav */}
+        <div style={{ padding: "0 12px" }}>
+          <SidebarItem icon={LayoutDashboard} label="Tableau de bord" />
+          <SidebarItem icon={FileText} label="Factures" active badge={5} />
+          <SidebarItem icon={Receipt} label="Devis" />
+        </div>
+
+        {/* Gestion section */}
+        <div style={{ marginTop: "16px", padding: "0 12px" }}>
+          <div
+            style={{
+              padding: "4px 8px",
+              fontSize: "9px",
+              color: "#52525b",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              lineHeight: "1",
+            }}
+          >
+            Gestion
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            <SidebarItem icon={Users} label="Clients" hasSubmenu />
+            <SidebarItem icon={Package} label="Produits" hasSubmenu />
+            <SidebarItem icon={Building2} label="Entreprise" hasSubmenu />
+          </div>
+        </div>
+
+        {/* Raccourcis */}
+        <div style={{ marginTop: "16px", padding: "0 12px" }}>
+          <div
+            style={{
+              padding: "4px 8px",
+              fontSize: "9px",
+              color: "#52525b",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              lineHeight: "1",
+            }}
+          >
+            Raccourcis
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            <SidebarItem icon={TrendingUp} label="Revenus" color="#34d399" />
+            <SidebarItem icon={Wallet} label="Dépenses" color="#fb923c" />
+            <SidebarItem icon={RefreshCw} label="Récurrentes" color="#60a5fa" />
+          </div>
+        </div>
+
+        <div style={{ flex: 1 }} />
+        <div style={{ padding: "12px", borderTop: "1px solid #1e1e22" }}>
+          <SidebarItem icon={Settings} label="Paramètres" />
+          <SidebarItem icon={HelpCircle} label="Aide" />
+        </div>
+      </motion.div>
+
+      {/* ========== RIGHT CONTENT ========== */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Header Bar */}
         <motion.div
-          className="w-[220px] bg-white border-l border-slate-200 flex flex-col shrink-0 overflow-auto"
+          className="flex items-center justify-between shrink-0"
+          style={{
+            height: "44px",
+            padding: "0 16px",
+            backgroundColor: "#111113",
+            borderBottom: "1px solid #1e1e22",
+          }}
           variants={panelVariants}
         >
-          {/* Tabs */}
-          <div className="flex border-b border-slate-200 shrink-0">
-            <button className="flex-1 px-3 py-2.5 text-[10px] font-medium text-indigo-600 border-b-2 border-indigo-600 flex items-center justify-center gap-1">
-              <Settings className="w-3 h-3" />
-              Options
-            </button>
-            <button className="flex-1 px-3 py-2.5 text-[10px] text-slate-400 flex items-center justify-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              Faktur AI
-            </button>
+          <div className="flex items-center" style={{ gap: "10px" }}>
+            <div
+              className="flex items-center justify-center"
+              style={{
+                width: "26px",
+                height: "26px",
+                borderRadius: "6px",
+                backgroundColor: "#1a1a1e",
+              }}
+            >
+              <ArrowLeft style={{ width: "13px", height: "13px", color: "#71717a" }} />
+            </div>
+            <span style={{ color: "#e4e4e7", fontWeight: 600, fontSize: "12px", lineHeight: "1" }}>
+              Modifier la facture
+            </span>
+            <span style={{ color: "#52525b", fontSize: "10px", lineHeight: "1" }}>FAK-2024-001</span>
           </div>
-
-          {/* Document Options */}
-          <div className="p-3 space-y-4 text-[10px]">
-            {/* Billing Type */}
-            <OptionSection title="Type de facturation" icon={<span className="text-[9px]">📋</span>}>
-              <div className="flex gap-1.5">
-                <button className="flex-1 px-2 py-1.5 bg-indigo-50 text-indigo-600 rounded-md border border-indigo-200 text-[9px] font-medium">
-                  Détaillée
-                </button>
-                <button className="flex-1 px-2 py-1.5 bg-slate-50 text-slate-500 rounded-md border border-slate-200 text-[9px]">
-                  Rapide
-                </button>
-              </div>
-            </OptionSection>
-
-            {/* Color */}
-            <OptionSection title="Couleur d'accent" icon={<Palette className="w-3 h-3 text-slate-400" />}>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {["#6366f1", "#8b5cf6", "#ec4899", "#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4", "#3b82f6", "#1e1b4b", "#64748b", "#171717"].map((c) => (
-                  <div
-                    key={c}
-                    className="w-4 h-4 rounded-full cursor-pointer"
-                    style={{
-                      backgroundColor: c,
-                      boxShadow: c === accentColor ? `0 0 0 2px white, 0 0 0 3px ${c}` : "none",
-                    }}
-                  />
-                ))}
-              </div>
-            </OptionSection>
-
-            {/* Client */}
-            <OptionSection title="Client" icon={<span className="text-[9px]">👤</span>}>
-              <div className="flex items-center gap-2 px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200">
-                <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] text-indigo-600 font-bold">D</div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-slate-700 text-[9px] font-medium truncate">Dupont & Fils SARL</p>
-                  <p className="text-slate-400 text-[8px]">Professionnel</p>
-                </div>
-                <ChevronRight className="w-3 h-3 text-slate-400" />
-              </div>
-            </OptionSection>
-
-            {/* Dates */}
-            <OptionSection title="Dates" icon={<Calendar className="w-3 h-3 text-slate-400" />}>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200">
-                  <span className="text-slate-500 text-[9px]">Émission</span>
-                  <span className="text-slate-700 text-[9px]">15/03/2024</span>
-                </div>
-                <div className="flex items-center justify-between px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200">
-                  <span className="text-slate-500 text-[9px]">Échéance</span>
-                  <span className="text-slate-700 text-[9px]">15/04/2024</span>
-                </div>
-              </div>
-            </OptionSection>
-
-            {/* Payment */}
-            <OptionSection title="Paiement" icon={<CreditCard className="w-3 h-3 text-slate-400" />}>
-              <div className="px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200 flex items-center justify-between">
-                <span className="text-slate-700 text-[9px]">Virement bancaire</span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
-              </div>
-            </OptionSection>
-
-            {/* Totals Summary */}
-            <div className="bg-slate-50 rounded-lg border border-slate-200 p-3 space-y-1.5">
-              <div className="flex justify-between text-[9px]">
-                <span className="text-slate-500">Sous-total</span>
-                <span className="text-slate-700">2 450,00 €</span>
-              </div>
-              <div className="flex justify-between text-[9px]">
-                <span className="text-slate-500">TVA</span>
-                <span className="text-slate-700">40,00 €</span>
-              </div>
-              <div className="flex justify-between text-[10px] font-bold pt-1.5 border-t border-slate-200">
-                <span className="text-slate-800">Total TTC</span>
-                <span className="text-indigo-600">2 490,00 €</span>
-              </div>
+          <div className="flex items-center" style={{ gap: "8px" }}>
+            <div
+              className="flex items-center overflow-hidden"
+              style={{ border: "1px solid #27272a", borderRadius: "7px" }}
+            >
+              <button
+                className="flex items-center"
+                style={{
+                  padding: "5px 8px",
+                  gap: "4px",
+                  backgroundColor: accentColor,
+                  color: "#fff",
+                  fontSize: "10px",
+                  lineHeight: "1",
+                  border: "none",
+                }}
+              >
+                <Pencil style={{ width: "11px", height: "11px" }} />
+                Éditer
+              </button>
+              <button
+                className="flex items-center"
+                style={{
+                  padding: "5px 8px",
+                  gap: "4px",
+                  color: "#71717a",
+                  fontSize: "10px",
+                  lineHeight: "1",
+                  backgroundColor: "transparent",
+                  border: "none",
+                }}
+              >
+                <Eye style={{ width: "11px", height: "11px" }} />
+                Aperçu
+              </button>
             </div>
-
-            {/* Additional Options */}
-            <div className="space-y-1.5">
-              <OptionCheckbox label="Objet" checked />
-              <OptionCheckbox label="Adresse de livraison" />
-              <OptionCheckbox label="Conditions d'acceptation" />
-              <OptionCheckbox label="Notes & conditions" checked />
-              <OptionCheckbox label="Signature" />
-            </div>
+            <button
+              className="flex items-center"
+              style={{
+                padding: "5px 8px",
+                gap: "4px",
+                border: "1px solid #312e81",
+                borderRadius: "7px",
+                color: "#818cf8",
+                fontSize: "10px",
+                lineHeight: "1",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Download style={{ width: "11px", height: "11px" }} />
+              Télécharger
+            </button>
           </div>
         </motion.div>
-      </div>
 
-      {/* Bottom Save Bar */}
-      <motion.div
-        className="h-[42px] bg-white/90 backdrop-blur-sm border-t border-slate-200 flex items-center justify-end px-5 gap-3 shrink-0"
-        variants={panelVariants}
-      >
-        <span className="text-slate-500 text-[10px]">Total:</span>
-        <span className="text-slate-900 font-bold text-[12px]">EUR 2 490,00</span>
-        <button
-          className="px-4 py-1.5 text-white rounded-lg text-[10px] font-medium flex items-center gap-1.5"
-          style={{ backgroundColor: accentColor }}
+        {/* Main area: A4 sheet + Options sidebar */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* A4 Sheet Area */}
+          <motion.div
+            className="flex-1 overflow-auto flex justify-center"
+            style={{ padding: "24px", backgroundColor: "#18181b" }}
+            variants={panelVariants}
+          >
+            {/* A4 Paper */}
+            <div
+              className="shrink-0"
+              style={{
+                width: "500px",
+                backgroundColor: "#ffffff",
+                borderRadius: "8px",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+                aspectRatio: "210 / 297",
+              }}
+            >
+              <div style={{ padding: "28px" }}>
+                {/* ---- Header: Company + FACTURE ---- */}
+                <div className="flex justify-between" style={{ marginBottom: "20px", alignItems: "flex-start" }}>
+                  <div>
+                    <div
+                      className="flex items-center justify-center"
+                      style={{
+                        width: "64px",
+                        height: "32px",
+                        borderRadius: "4px",
+                        border: "1px dashed #cbd5e1",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <img src="/logo.svg" alt="" style={{ width: "18px", height: "18px" }} />
+                    </div>
+                    <p style={{ color: "#0f172a", fontWeight: 600, fontSize: "11px", lineHeight: "1.2", margin: 0 }}>
+                      Mon Entreprise SAS
+                    </p>
+                    <p style={{ color: "#64748b", fontSize: "9px", lineHeight: "1.5", margin: "2px 0 0 0" }}>
+                      42 Avenue des Champs-Élysées<br />
+                      75008 Paris, France<br />
+                      contact@monentreprise.fr
+                    </p>
+                    <p style={{ color: "#94a3b8", fontSize: "8px", lineHeight: "1.4", margin: "2px 0 0 0" }}>
+                      SIREN: 123 456 789
+                    </p>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        padding: "5px 12px",
+                        borderRadius: "6px",
+                        backgroundColor: accentColor,
+                        color: "#fff",
+                        fontSize: "12px",
+                        fontWeight: 700,
+                        lineHeight: "1",
+                      }}
+                    >
+                      FACTURE
+                    </div>
+                    <p style={{ color: "#475569", fontSize: "10px", lineHeight: "1", margin: "6px 0 0 0", fontWeight: 500 }}>
+                      N° FAK-2024-001
+                    </p>
+                  </div>
+                </div>
+
+                {/* ---- Dates Bar ---- */}
+                <div
+                  className="flex items-center"
+                  style={{
+                    gap: "20px",
+                    padding: "6px 10px",
+                    borderRadius: "5px",
+                    backgroundColor: "#f0f0ff",
+                    border: "1px solid #e0e0f7",
+                    marginBottom: "16px",
+                  }}
+                >
+                  <div className="flex items-center" style={{ gap: "4px" }}>
+                    <Calendar style={{ width: "10px", height: "10px", color: "#94a3b8" }} />
+                    <span style={{ color: "#64748b", fontSize: "9px", lineHeight: "1" }}>Date:</span>
+                    <span style={{ color: "#334155", fontSize: "9px", lineHeight: "1", fontWeight: 500 }}>15/03/2024</span>
+                  </div>
+                  <div className="flex items-center" style={{ gap: "4px" }}>
+                    <Calendar style={{ width: "10px", height: "10px", color: "#94a3b8" }} />
+                    <span style={{ color: "#64748b", fontSize: "9px", lineHeight: "1" }}>Échéance:</span>
+                    <span style={{ color: "#334155", fontSize: "9px", lineHeight: "1", fontWeight: 500 }}>15/04/2024</span>
+                  </div>
+                </div>
+
+                {/* ---- Client Info ---- */}
+                <div style={{ textAlign: "right", marginBottom: "16px" }}>
+                  <p style={{ color: "#0f172a", fontWeight: 600, fontSize: "11px", lineHeight: "1.2", margin: 0 }}>
+                    Dupont & Fils SARL
+                  </p>
+                  <p style={{ color: "#64748b", fontSize: "9px", lineHeight: "1.5", margin: "2px 0 0 0" }}>
+                    12 Rue de la Paix<br />
+                    75002 Paris, France
+                  </p>
+                  <p style={{ color: "#94a3b8", fontSize: "8px", lineHeight: "1.4", margin: "2px 0 0 0" }}>
+                    SIRET: 987 654 321 00012
+                  </p>
+                </div>
+
+                {/* ---- Subject ---- */}
+                <div style={{ marginBottom: "14px" }}>
+                  <p style={{ color: "#64748b", fontSize: "8px", lineHeight: "1", margin: "0 0 3px 0" }}>Objet</p>
+                  <p
+                    style={{
+                      color: "#334155",
+                      fontSize: "10px",
+                      lineHeight: "1.3",
+                      margin: 0,
+                      padding: "4px 8px",
+                      borderBottom: "1px dashed #cbd5e1",
+                    }}
+                  >
+                    Développement et design du site web vitrine
+                  </p>
+                </div>
+
+                {/* ---- Line Items Table ---- */}
+                <div style={{ marginBottom: "16px" }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "9px" }}>
+                    <thead>
+                      <tr
+                        style={{
+                          backgroundColor: accentColor,
+                          color: "#fff",
+                          fontSize: "7px",
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.04em",
+                        }}
+                      >
+                        <th style={{ textAlign: "left", padding: "5px 8px", borderRadius: "4px 0 0 0" }}>Désignation</th>
+                        <th style={{ textAlign: "center", padding: "5px 4px", width: "36px" }}>Qté</th>
+                        <th style={{ textAlign: "center", padding: "5px 4px", width: "36px" }}>Unité</th>
+                        <th style={{ textAlign: "right", padding: "5px 4px", width: "64px" }}>P.U. HT</th>
+                        <th style={{ textAlign: "center", padding: "5px 4px", width: "36px" }}>TVA</th>
+                        <th style={{ textAlign: "right", padding: "5px 8px", width: "68px", borderRadius: "0 4px 0 0" }}>Montant</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style={{ borderBottom: "1px solid #f1f5f9" }}>
+                        <td style={{ padding: "6px 8px", color: "#334155" }}>Développement site web</td>
+                        <td style={{ padding: "6px 4px", color: "#64748b", textAlign: "center" }}>1</td>
+                        <td style={{ padding: "6px 4px", color: "#94a3b8", textAlign: "center" }}>forfait</td>
+                        <td style={{ padding: "6px 4px", color: "#475569", textAlign: "right" }}>1 500,00 €</td>
+                        <td style={{ padding: "6px 4px", color: "#94a3b8", textAlign: "center" }}>0%</td>
+                        <td style={{ padding: "6px 8px", color: "#0f172a", textAlign: "right", fontWeight: 500 }}>1 500,00 €</td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #f1f5f9", backgroundColor: "#fafbfd" }}>
+                        <td style={{ padding: "6px 8px", color: "#334155" }}>Design UI/UX</td>
+                        <td style={{ padding: "6px 4px", color: "#64748b", textAlign: "center" }}>1</td>
+                        <td style={{ padding: "6px 4px", color: "#94a3b8", textAlign: "center" }}>forfait</td>
+                        <td style={{ padding: "6px 4px", color: "#475569", textAlign: "right" }}>750,00 €</td>
+                        <td style={{ padding: "6px 4px", color: "#94a3b8", textAlign: "center" }}>0%</td>
+                        <td style={{ padding: "6px 8px", color: "#0f172a", textAlign: "right", fontWeight: 500 }}>750,00 €</td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #f1f5f9" }}>
+                        <td style={{ padding: "6px 8px", color: "#334155" }}>Hébergement annuel</td>
+                        <td style={{ padding: "6px 4px", color: "#64748b", textAlign: "center" }}>12</td>
+                        <td style={{ padding: "6px 4px", color: "#94a3b8", textAlign: "center" }}>mois</td>
+                        <td style={{ padding: "6px 4px", color: "#475569", textAlign: "right" }}>16,67 €</td>
+                        <td style={{ padding: "6px 4px", color: "#94a3b8", textAlign: "center" }}>20%</td>
+                        <td style={{ padding: "6px 8px", color: "#0f172a", textAlign: "right", fontWeight: 500 }}>200,00 €</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {/* Add line */}
+                  <div className="flex items-center" style={{ gap: "4px", padding: "5px 8px", color: accentColor, fontSize: "9px", cursor: "pointer" }}>
+                    <Plus style={{ width: "11px", height: "11px" }} />
+                    <span style={{ lineHeight: "1" }}>Ajouter une ligne</span>
+                  </div>
+                </div>
+
+                {/* ---- Totals ---- */}
+                <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
+                  <div style={{ width: "190px" }}>
+                    <div className="flex justify-between" style={{ padding: "3px 0", fontSize: "9px" }}>
+                      <span style={{ color: "#64748b", lineHeight: "1" }}>Sous-total HT</span>
+                      <span style={{ color: "#334155", lineHeight: "1" }}>2 450,00 €</span>
+                    </div>
+                    <div className="flex justify-between" style={{ padding: "3px 0", fontSize: "9px" }}>
+                      <span style={{ color: "#64748b", lineHeight: "1" }}>TVA 20% (200,00 €)</span>
+                      <span style={{ color: "#334155", lineHeight: "1" }}>40,00 €</span>
+                    </div>
+                    <div className="flex justify-between" style={{ padding: "3px 0", fontSize: "9px" }}>
+                      <span style={{ color: "#64748b", lineHeight: "1" }}>Total TVA</span>
+                      <span style={{ color: "#334155", lineHeight: "1" }}>40,00 €</span>
+                    </div>
+                    <div
+                      className="flex justify-between"
+                      style={{
+                        marginTop: "4px",
+                        padding: "5px 8px",
+                        borderRadius: "5px",
+                        backgroundColor: accentColor,
+                        color: "#fff",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      <span style={{ lineHeight: "1" }}>Total TTC</span>
+                      <span style={{ lineHeight: "1" }}>2 490,00 €</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ---- Payment ---- */}
+                <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "10px", marginBottom: "10px" }}>
+                  <div className="flex items-center" style={{ gap: "4px", marginBottom: "3px" }}>
+                    <CreditCard style={{ width: "10px", height: "10px", color: "#94a3b8" }} />
+                    <span style={{ color: "#64748b", fontSize: "8px", lineHeight: "1", fontWeight: 500 }}>Mode de paiement</span>
+                  </div>
+                  <p style={{ color: "#475569", fontSize: "9px", lineHeight: "1.3", margin: 0 }}>Virement bancaire</p>
+                  <p style={{ color: "#94a3b8", fontSize: "8px", lineHeight: "1.3", margin: "2px 0 0 0" }}>
+                    IBAN: FR76 •••• •••• •••• •••• •••• 123
+                  </p>
+                </div>
+
+                {/* ---- Notes ---- */}
+                <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "10px" }}>
+                  <p style={{ color: "#64748b", fontSize: "7px", lineHeight: "1", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 4px 0" }}>
+                    Conditions
+                  </p>
+                  <p style={{ color: "#94a3b8", fontSize: "7.5px", lineHeight: "1.5", margin: 0, fontStyle: "italic" }}>
+                    TVA non applicable, art. 293 B du CGI. En cas de retard de paiement, une pénalité de 3 fois le taux
+                    d'intérêt légal sera appliquée, ainsi qu'une indemnité forfaitaire de 40€ pour frais de recouvrement.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ========== RIGHT SIDEBAR - OPTIONS ========== */}
+          <motion.div
+            className="flex flex-col shrink-0 overflow-auto"
+            style={{
+              width: "210px",
+              backgroundColor: "#111113",
+              borderLeft: "1px solid #1e1e22",
+            }}
+            variants={panelVariants}
+          >
+            {/* Tabs */}
+            <div className="flex shrink-0" style={{ borderBottom: "1px solid #1e1e22" }}>
+              <button
+                className="flex-1 flex items-center justify-center"
+                style={{
+                  padding: "9px 0",
+                  gap: "4px",
+                  fontSize: "10px",
+                  lineHeight: "1",
+                  fontWeight: 500,
+                  color: "#818cf8",
+                  borderBottom: "2px solid #6366f1",
+                }}
+              >
+                <Settings style={{ width: "11px", height: "11px" }} />
+                Options
+              </button>
+              <button
+                className="flex-1 flex items-center justify-center"
+                style={{
+                  padding: "9px 0",
+                  gap: "4px",
+                  fontSize: "10px",
+                  lineHeight: "1",
+                  color: "#52525b",
+                  borderBottom: "2px solid transparent",
+                }}
+              >
+                <Sparkles style={{ width: "11px", height: "11px" }} />
+                Faktur AI
+              </button>
+            </div>
+
+            {/* Options content */}
+            <div style={{ padding: "12px" }}>
+              {/* Billing type */}
+              <OptionSection title="Type de facturation">
+                <div className="flex" style={{ gap: "6px" }}>
+                  <button
+                    style={{
+                      flex: 1,
+                      padding: "5px 0",
+                      fontSize: "9px",
+                      lineHeight: "1",
+                      fontWeight: 500,
+                      color: "#c7d2fe",
+                      backgroundColor: "#1e1b4b",
+                      border: "1px solid #312e81",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Détaillée
+                  </button>
+                  <button
+                    style={{
+                      flex: 1,
+                      padding: "5px 0",
+                      fontSize: "9px",
+                      lineHeight: "1",
+                      color: "#71717a",
+                      backgroundColor: "#1a1a1e",
+                      border: "1px solid #27272a",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Rapide
+                  </button>
+                </div>
+              </OptionSection>
+
+              {/* Color picker */}
+              <OptionSection title="Couleur d'accent">
+                <div className="flex flex-wrap" style={{ gap: "5px" }}>
+                  {["#6366f1", "#8b5cf6", "#ec4899", "#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4", "#3b82f6", "#1e1b4b", "#64748b", "#171717"].map((c) => (
+                    <div
+                      key={c}
+                      style={{
+                        width: "14px",
+                        height: "14px",
+                        borderRadius: "50%",
+                        backgroundColor: c,
+                        cursor: "pointer",
+                        boxShadow: c === accentColor ? `0 0 0 2px #111113, 0 0 0 3px ${c}` : "none",
+                      }}
+                    />
+                  ))}
+                </div>
+              </OptionSection>
+
+              {/* Client */}
+              <OptionSection title="Client">
+                <div
+                  className="flex items-center"
+                  style={{
+                    gap: "6px",
+                    padding: "5px 8px",
+                    backgroundColor: "#1a1a1e",
+                    borderRadius: "5px",
+                    border: "1px solid #27272a",
+                  }}
+                >
+                  <div
+                    className="flex items-center justify-center"
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      borderRadius: "50%",
+                      backgroundColor: "#1e1b4b",
+                      color: "#818cf8",
+                      fontSize: "8px",
+                      fontWeight: 700,
+                      lineHeight: "1",
+                    }}
+                  >
+                    D
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ color: "#d4d4d8", fontSize: "9px", lineHeight: "1.2", fontWeight: 500, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      Dupont & Fils SARL
+                    </p>
+                    <p style={{ color: "#52525b", fontSize: "8px", lineHeight: "1", margin: "1px 0 0 0" }}>
+                      Professionnel
+                    </p>
+                  </div>
+                  <ChevronRight style={{ width: "11px", height: "11px", color: "#3f3f46", flexShrink: 0 }} />
+                </div>
+              </OptionSection>
+
+              {/* Dates */}
+              <OptionSection title="Dates">
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <div
+                    className="flex items-center justify-between"
+                    style={{ padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: "5px", border: "1px solid #27272a" }}
+                  >
+                    <span style={{ color: "#71717a", fontSize: "9px", lineHeight: "1" }}>Émission</span>
+                    <span style={{ color: "#d4d4d8", fontSize: "9px", lineHeight: "1" }}>15/03/2024</span>
+                  </div>
+                  <div
+                    className="flex items-center justify-between"
+                    style={{ padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: "5px", border: "1px solid #27272a" }}
+                  >
+                    <span style={{ color: "#71717a", fontSize: "9px", lineHeight: "1" }}>Échéance</span>
+                    <span style={{ color: "#d4d4d8", fontSize: "9px", lineHeight: "1" }}>15/04/2024</span>
+                  </div>
+                </div>
+              </OptionSection>
+
+              {/* Payment */}
+              <OptionSection title="Paiement">
+                <div
+                  className="flex items-center justify-between"
+                  style={{ padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: "5px", border: "1px solid #27272a" }}
+                >
+                  <span style={{ color: "#d4d4d8", fontSize: "9px", lineHeight: "1" }}>Virement bancaire</span>
+                  <ChevronDown style={{ width: "11px", height: "11px", color: "#3f3f46" }} />
+                </div>
+              </OptionSection>
+
+              {/* Totals summary */}
+              <div
+                style={{
+                  backgroundColor: "#1a1a1e",
+                  borderRadius: "6px",
+                  border: "1px solid #27272a",
+                  padding: "10px",
+                  marginTop: "14px",
+                }}
+              >
+                <div className="flex justify-between" style={{ padding: "2px 0", fontSize: "9px" }}>
+                  <span style={{ color: "#71717a", lineHeight: "1" }}>Sous-total</span>
+                  <span style={{ color: "#d4d4d8", lineHeight: "1" }}>2 450,00 €</span>
+                </div>
+                <div className="flex justify-between" style={{ padding: "2px 0", fontSize: "9px" }}>
+                  <span style={{ color: "#71717a", lineHeight: "1" }}>TVA</span>
+                  <span style={{ color: "#d4d4d8", lineHeight: "1" }}>40,00 €</span>
+                </div>
+                <div
+                  className="flex justify-between"
+                  style={{ padding: "5px 0 0", marginTop: "4px", borderTop: "1px solid #27272a", fontSize: "10px", fontWeight: 700 }}
+                >
+                  <span style={{ color: "#e4e4e7", lineHeight: "1" }}>Total TTC</span>
+                  <span style={{ color: "#818cf8", lineHeight: "1" }}>2 490,00 €</span>
+                </div>
+              </div>
+
+              {/* Checkboxes */}
+              <div style={{ marginTop: "14px", display: "flex", flexDirection: "column", gap: "6px" }}>
+                <DarkCheckbox label="Objet" checked />
+                <DarkCheckbox label="Adresse de livraison" />
+                <DarkCheckbox label="Conditions d'acceptation" />
+                <DarkCheckbox label="Notes & conditions" checked />
+                <DarkCheckbox label="Signature" />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ========== BOTTOM SAVE BAR ========== */}
+        <motion.div
+          className="flex items-center justify-end shrink-0"
+          style={{
+            height: "40px",
+            padding: "0 16px",
+            gap: "10px",
+            backgroundColor: "#111113",
+            borderTop: "1px solid #1e1e22",
+          }}
+          variants={panelVariants}
         >
-          Sauvegarder
-          <ChevronRight className="w-3 h-3" />
-        </button>
-      </motion.div>
+          <span style={{ color: "#71717a", fontSize: "10px", lineHeight: "1" }}>Total:</span>
+          <span style={{ color: "#e4e4e7", fontWeight: 700, fontSize: "12px", lineHeight: "1" }}>EUR 2 490,00</span>
+          <button
+            className="flex items-center"
+            style={{
+              padding: "5px 14px",
+              gap: "5px",
+              backgroundColor: accentColor,
+              color: "#fff",
+              borderRadius: "6px",
+              fontSize: "10px",
+              lineHeight: "1",
+              fontWeight: 500,
+              border: "none",
+            }}
+          >
+            Sauvegarder
+            <ChevronRight style={{ width: "11px", height: "11px" }} />
+          </button>
+        </motion.div>
+      </div>
     </motion.div>
   )
 }
 
-function OptionSection({
-  title,
-  icon,
-  children,
+/* ========== SIDEBAR NAV ITEM ========== */
+function SidebarItem({
+  icon: Icon,
+  label,
+  active,
+  badge,
+  hasSubmenu,
+  color,
 }: {
-  title: string
-  icon: React.ReactNode
-  children: React.ReactNode
+  icon: React.ElementType
+  label: string
+  active?: boolean
+  badge?: number
+  hasSubmenu?: boolean
+  color?: string
 }) {
   return (
-    <div>
-      <div className="flex items-center gap-1.5 mb-1.5">
-        {icon}
-        <span className="text-slate-600 font-medium text-[9px] uppercase tracking-wider">{title}</span>
-      </div>
+    <div
+      className="flex items-center"
+      style={{
+        gap: "6px",
+        padding: "5px 8px",
+        borderRadius: "5px",
+        cursor: "pointer",
+        backgroundColor: active ? "#1e1b4b" : "transparent",
+        color: active ? "#c7d2fe" : "#a1a1aa",
+        marginBottom: "1px",
+      }}
+    >
+      <Icon style={{ width: "14px", height: "14px", color: color || "inherit", flexShrink: 0 }} />
+      <span style={{ flex: 1, fontSize: "11px", lineHeight: "1" }}>{label}</span>
+      {badge != null && (
+        <span
+          className="flex items-center justify-center"
+          style={{
+            minWidth: "16px",
+            height: "16px",
+            borderRadius: "8px",
+            backgroundColor: "#4f46e5",
+            color: "#fff",
+            fontSize: "9px",
+            lineHeight: "1",
+            fontWeight: 600,
+            padding: "0 4px",
+          }}
+        >
+          {badge}
+        </span>
+      )}
+      {hasSubmenu && <ChevronRight style={{ width: "11px", height: "11px", color: "#3f3f46", flexShrink: 0 }} />}
+    </div>
+  )
+}
+
+/* ========== OPTION SECTION ========== */
+function OptionSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginTop: "14px" }}>
+      <p
+        style={{
+          color: "#71717a",
+          fontSize: "8px",
+          lineHeight: "1",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          margin: "0 0 6px 0",
+        }}
+      >
+        {title}
+      </p>
       {children}
     </div>
   )
 }
 
-function OptionCheckbox({ label, checked }: { label: string; checked?: boolean }) {
+/* ========== DARK CHECKBOX ========== */
+function DarkCheckbox({ label, checked }: { label: string; checked?: boolean }) {
   return (
-    <div className="flex items-center gap-2 px-1">
+    <div className="flex items-center" style={{ gap: "6px" }}>
       <div
-        className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
-          checked
-            ? "bg-indigo-600 border-indigo-600"
-            : "bg-white border-slate-300"
-        }`}
+        className="flex items-center justify-center"
+        style={{
+          width: "13px",
+          height: "13px",
+          borderRadius: "3px",
+          backgroundColor: checked ? "#4f46e5" : "transparent",
+          border: checked ? "none" : "1px solid #3f3f46",
+          flexShrink: 0,
+        }}
       >
         {checked && (
-          <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#fff" strokeWidth="2">
             <path d="M2 6l3 3 5-5" />
           </svg>
         )}
       </div>
-      <span className="text-slate-600 text-[9px]">{label}</span>
+      <span style={{ color: "#a1a1aa", fontSize: "9px", lineHeight: "1" }}>{label}</span>
     </div>
   )
 }

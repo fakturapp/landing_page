@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { Lexend } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const lexend = Lexend({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 
 export const metadata: Metadata = {
   title: 'Faktur - Facturation professionnelle gratuite',
@@ -25,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={geist.variable}>
       <body className={`${lexend.className} antialiased`}>
         {children}
         <Analytics />

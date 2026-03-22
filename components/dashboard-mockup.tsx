@@ -28,9 +28,8 @@ import {
 } from "lucide-react"
 
 const FONT = {
+  fontFamily: 'var(--font-geist), system-ui, sans-serif',
   fontFeatureSettings: '"kern" 1, "liga" 1',
-  fontVariationSettings: "normal",
-  textRendering: "geometricPrecision" as const,
 }
 
 export function DashboardMockup() {

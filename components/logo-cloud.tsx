@@ -1,7 +1,18 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Triangle } from "lucide-react"
+import { Briefcase, Code, Palette, Camera, Wrench, ShoppingBag, Stethoscope, GraduationCap } from "lucide-react"
+
+const professions = [
+  { name: "Freelances", icon: Code },
+  { name: "Consultants", icon: Briefcase },
+  { name: "Designers", icon: Palette },
+  { name: "Photographes", icon: Camera },
+  { name: "Artisans", icon: Wrench },
+  { name: "Commerces", icon: ShoppingBag },
+  { name: "Professions libérales", icon: Stethoscope },
+  { name: "Formateurs", icon: GraduationCap },
+]
 
 export function LogoCloud() {
   return (
@@ -15,7 +26,7 @@ export function LogoCloud() {
             transition={{ duration: 0.6 }}
             className="text-lg text-zinc-300 mb-2"
           >
-            Powering the world's best product teams.
+            Conçu pour les entrepreneurs et les indépendants.
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -24,7 +35,7 @@ export function LogoCloud() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg text-zinc-500 mb-16"
           >
-            From next-gen startups to established enterprises.
+            Des auto-entrepreneurs aux PME en pleine croissance.
           </motion.p>
 
           <motion.div
@@ -36,18 +47,18 @@ export function LogoCloud() {
           >
             {/* Logo grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-16 gap-y-10 items-center justify-items-center transition-all duration-300 group-hover:blur-[2.5px] group-hover:opacity-50">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="text-white font-semibold text-xl flex items-center gap-2">
-                  <Triangle className="w-5 h-5 fill-white" />
-                  Vercel
+              {professions.map((prof) => (
+                <div key={prof.name} className="text-white font-semibold text-xl flex items-center gap-2">
+                  <prof.icon className="w-5 h-5 text-indigo-400" />
+                  {prof.name}
                 </div>
               ))}
             </div>
 
             {/* Hover overlay button */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <div className="px-5 py-2.5 bg-zinc-800/80 backdrop-blur-sm border border-zinc-700 rounded-full text-sm text-zinc-300 flex items-center gap-2">
-                Meet our customers
+              <div className="px-5 py-2.5 bg-indigo-600/80 backdrop-blur-sm border border-indigo-500 rounded-full text-sm text-white flex items-center gap-2">
+                Commencer gratuitement
                 <span aria-hidden="true">›</span>
               </div>
             </div>

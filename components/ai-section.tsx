@@ -523,7 +523,7 @@ function AIDemoAnimation() {
                               <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
                                 <Loader2 className="w-3.5 h-3.5 text-indigo-400" />
                               </motion.div>
-                              <span className="text-indigo-400 text-sm font-medium">Faktur AI</span>
+                              <span className="text-indigo-400 text-sm font-medium">{flow.generatingText}</span>
                             </>
                           ) : (
                             <>

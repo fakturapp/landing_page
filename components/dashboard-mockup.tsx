@@ -1,24 +1,20 @@
 "use client"
 
-import type React from "react"
 import { motion } from "framer-motion"
 import {
-  LayoutDashboard,
-  FileText,
-  Receipt,
-  Users,
-  Package,
-  Building2,
+  ArrowLeft,
+  Download,
+  Pencil,
+  Eye,
   ChevronDown,
   ChevronRight,
-  Search,
-  Plus,
-  MoreHorizontal,
+  Sparkles,
   Settings,
-  HelpCircle,
-  TrendingUp,
-  Wallet,
-  RefreshCw,
+  Palette,
+  Calendar,
+  CreditCard,
+  Plus,
+  Trash2,
 } from "lucide-react"
 
 export function DashboardMockup() {
@@ -33,397 +29,436 @@ export function DashboardMockup() {
   }
 
   const panelVariants = {
-    hidden: {
-      opacity: 0,
-      x: 100,
-      y: -80,
-    },
+    hidden: { opacity: 0, x: 100, y: -80 },
     visible: {
       opacity: 1,
       x: 0,
       y: 0,
-      transition: {
-        duration: 1.2,
-        ease: [0.22, 1, 0.36, 1],
-      },
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
     },
   }
 
+  const accentColor = "#6366f1"
+
   return (
     <motion.div
-      className="w-full h-full bg-zinc-950 flex overflow-hidden"
+      className="w-full h-full bg-[#f8fafc] flex flex-col overflow-hidden"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Sidebar */}
+      {/* Top Header Bar */}
       <motion.div
-        className="w-[220px] h-full bg-zinc-900/80 border-r border-zinc-800/50 flex flex-col shrink-0"
+        className="h-[48px] bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0"
         variants={panelVariants}
       >
-        {/* Logo */}
-        <div className="p-3 border-b border-zinc-800/50">
-          <div className="flex items-center gap-2 px-2 py-1.5">
-            <img src="/logo.svg" alt="Faktur" className="w-5 h-5" />
-            <span className="text-white font-semibold text-sm">Faktur</span>
-            <ChevronDown className="w-3.5 h-3.5 text-zinc-500 ml-auto" />
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
+            <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
+          </div>
+          <div>
+            <span className="text-slate-900 font-semibold text-[12px]">Modifier la facture</span>
+            <span className="text-slate-400 text-[10px] ml-2">FAK-2024-001</span>
           </div>
         </div>
-
-        {/* Search */}
-        <div className="p-3">
-          <div className="flex items-center gap-2 px-2.5 py-1.5 bg-zinc-800/50 rounded-md text-zinc-500 text-xs">
-            <Search className="w-3.5 h-3.5" />
-            <span>Rechercher...</span>
-            <span className="ml-auto text-[10px] bg-zinc-700/50 px-1.5 py-0.5 rounded">⌘K</span>
-          </div>
-        </div>
-
-        {/* Main nav */}
-        <div className="px-3 space-y-0.5">
-          <NavItem icon={LayoutDashboard} label="Tableau de bord" active />
-          <NavItem icon={FileText} label="Factures" badge={5} />
-          <NavItem icon={Receipt} label="Devis" />
-        </div>
-
-        {/* Gestion section */}
-        <div className="mt-5 px-3">
-          <div className="px-2 py-1 text-[10px] text-zinc-500 font-medium uppercase tracking-wider flex items-center gap-1">
-            Gestion
-          </div>
-          <div className="space-y-0.5 mt-1">
-            <NavItem icon={Users} label="Clients" hasSubmenu />
-            <NavItem icon={Package} label="Produits" hasSubmenu />
-            <NavItem icon={Building2} label="Entreprise" hasSubmenu />
-          </div>
-        </div>
-
-        {/* Raccourcis section */}
-        <div className="mt-5 px-3">
-          <div className="px-2 py-1 text-[10px] text-zinc-500 font-medium uppercase tracking-wider flex items-center gap-1">
-            Raccourcis
-          </div>
-          <div className="space-y-0.5 mt-1">
-            <NavItem icon={TrendingUp} label="Revenus" color="text-emerald-400" />
-            <NavItem icon={Wallet} label="Dépenses" color="text-orange-400" />
-            <NavItem icon={RefreshCw} label="Récurrentes" color="text-blue-400" />
-          </div>
-        </div>
-
-        {/* Bottom */}
-        <div className="flex-1" />
-        <div className="p-3 border-t border-zinc-800/50">
-          <NavItem icon={Settings} label="Paramètres" />
-          <NavItem icon={HelpCircle} label="Aide" />
-        </div>
-      </motion.div>
-
-      {/* Invoice List */}
-      <motion.div
-        className="w-[320px] h-full bg-zinc-900/40 border-r border-zinc-800/50 flex flex-col shrink-0"
-        variants={panelVariants}
-      >
-        <div className="px-4 py-3 border-b border-zinc-800/50 flex items-center justify-between">
-          <h3 className="text-white font-semibold text-sm">Factures</h3>
-          <div className="flex items-center gap-2">
-            <button className="text-zinc-500 hover:text-white transition-colors">
-              <Plus className="w-4 h-4" />
+        <div className="flex items-center gap-2">
+          <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden text-[10px]">
+            <button className="px-2.5 py-1.5 bg-indigo-600 text-white flex items-center gap-1">
+              <Pencil className="w-3 h-3" />
+              Éditer
+            </button>
+            <button className="px-2.5 py-1.5 text-slate-500 flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              Aperçu
             </button>
           </div>
-        </div>
-
-        <div className="flex-1 overflow-auto scrollbar-hide">
-          <InvoiceItem
-            id="FAK-2024-001"
-            client="Dupont & Fils SARL"
-            amount="2 450,00 €"
-            time="Aujourd'hui"
-            status="paid"
-            active
-          />
-          <InvoiceItem
-            id="FAK-2024-002"
-            client="Studio Créatif"
-            amount="1 800,00 €"
-            time="Hier"
-            status="sent"
-          />
-          <InvoiceItem
-            id="FAK-2024-003"
-            client="TechStart SAS"
-            amount="5 200,00 €"
-            time="Il y a 3j"
-            status="overdue"
-          />
-          <InvoiceItem
-            id="FAK-2024-004"
-            client="Cabinet Martin"
-            amount="980,00 €"
-            time="Il y a 5j"
-            status="draft"
-          />
-          <InvoiceItem
-            id="FAK-2024-005"
-            client="Boulangerie Moreau"
-            amount="320,00 €"
-            time="Il y a 1sem"
-            status="paid"
-          />
-          <InvoiceItem
-            id="DEV-2024-001"
-            client="Agence Web Plus"
-            amount="3 600,00 €"
-            time="Il y a 1sem"
-            status="sent"
-            isQuote
-          />
-          <InvoiceItem
-            id="FAK-2024-006"
-            client="Restaurant Le Jardin"
-            amount="1 150,00 €"
-            time="Il y a 2sem"
-            status="paid"
-          />
+          <button className="px-2.5 py-1.5 border border-indigo-200 text-indigo-600 rounded-lg text-[10px] flex items-center gap-1">
+            <Download className="w-3 h-3" />
+            Télécharger
+          </button>
         </div>
       </motion.div>
 
-      {/* Detail Panel */}
-      <motion.div className="flex-1 h-full bg-zinc-950 flex flex-col overflow-hidden" variants={panelVariants}>
-        {/* Header breadcrumb */}
-        <div className="px-5 py-3 border-b border-zinc-800/50 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-zinc-500">Factures</span>
-            <span className="text-zinc-600">›</span>
-            <span className="text-indigo-400">Dupont & Fils SARL</span>
-            <span className="text-zinc-600">›</span>
-            <span className="text-zinc-300">FAK-2024-001</span>
-          </div>
-          <MoreHorizontal className="w-4 h-4 text-zinc-500" />
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 p-5 overflow-auto scrollbar-hide">
-          {/* Status badge */}
-          <div className="flex items-center gap-3 mb-5">
-            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              Payée
-            </span>
-            <span className="text-zinc-500 text-xs">Payée le 18 mars 2024</span>
-          </div>
-
-          <h2 className="text-white text-xl font-semibold mb-5">Facture FAK-2024-001</h2>
-
-          {/* Invoice details */}
-          <div className="bg-zinc-900/80 rounded-lg p-4 text-sm mb-5 border border-zinc-800/50">
-            <div className="space-y-3">
-              {/* Client info */}
-              <div className="flex items-center justify-between pb-3 border-b border-zinc-800/50">
-                <div>
-                  <p className="text-zinc-400 text-xs mb-1">Client</p>
-                  <p className="text-white font-medium">Dupont & Fils SARL</p>
-                  <p className="text-zinc-500 text-xs">12 Rue de la Paix, 75002 Paris</p>
+      {/* Main Content Area */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* A4 Sheet Area */}
+        <motion.div
+          className="flex-1 overflow-auto p-6 flex justify-center"
+          variants={panelVariants}
+          style={{ background: "#f1f5f9" }}
+        >
+          {/* A4 Paper */}
+          <div
+            className="bg-white rounded-lg shrink-0"
+            style={{
+              width: "520px",
+              minHeight: "735px",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
+              aspectRatio: "210 / 297",
+            }}
+          >
+            {/* Invoice Content */}
+            <div className="p-7">
+              {/* Header: Company + Invoice Title */}
+              <div className="flex justify-between items-start mb-6">
+                {/* Company Info (Left) */}
+                <div className="flex-1">
+                  {/* Logo placeholder */}
+                  <div
+                    className="w-[70px] h-[35px] rounded border border-dashed border-slate-300 flex items-center justify-center mb-2"
+                  >
+                    <img src="/logo.svg" alt="" className="w-5 h-5" />
+                  </div>
+                  <p className="text-slate-900 font-semibold text-[11px] leading-tight">Mon Entreprise SAS</p>
+                  <p className="text-slate-500 text-[9px] leading-relaxed mt-0.5">
+                    42 Avenue des Champs-Élysées
+                    <br />
+                    75008 Paris, France
+                    <br />
+                    contact@monentreprise.fr
+                    <br />
+                    <span className="text-slate-400">SIREN: 123 456 789</span>
+                  </p>
                 </div>
+
+                {/* Invoice Title (Right) */}
                 <div className="text-right">
-                  <p className="text-zinc-400 text-xs mb-1">Date d'émission</p>
-                  <p className="text-zinc-300">15/03/2024</p>
-                  <p className="text-zinc-500 text-xs mt-1">Échéance: 15/04/2024</p>
+                  <div
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-[12px] font-bold"
+                    style={{ backgroundColor: accentColor }}
+                  >
+                    FACTURE
+                  </div>
+                  <p className="text-slate-600 text-[10px] mt-1.5 font-medium">N° FAK-2024-001</p>
                 </div>
               </div>
 
-              {/* Line items */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs text-zinc-500 pb-1">
-                  <span className="flex-1">Description</span>
-                  <span className="w-16 text-right">Qté</span>
-                  <span className="w-24 text-right">Prix HT</span>
-                  <span className="w-24 text-right">Total HT</span>
+              {/* Dates Bar */}
+              <div
+                className="flex items-center gap-6 px-3 py-2 rounded-md mb-5 text-[9px]"
+                style={{ backgroundColor: `${accentColor}08`, border: `1px solid ${accentColor}15` }}
+              >
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3 h-3 text-slate-400" />
+                  <span className="text-slate-500">Date:</span>
+                  <span className="text-slate-700 font-medium">15/03/2024</span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex-1 text-zinc-300">Développement site web</span>
-                  <span className="w-16 text-right text-zinc-400">1</span>
-                  <span className="w-24 text-right text-zinc-400">1 500,00 €</span>
-                  <span className="w-24 text-right text-white">1 500,00 €</span>
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3 h-3 text-slate-400" />
+                  <span className="text-slate-500">Échéance:</span>
+                  <span className="text-slate-700 font-medium">15/04/2024</span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex-1 text-zinc-300">Design UI/UX</span>
-                  <span className="w-16 text-right text-zinc-400">1</span>
-                  <span className="w-24 text-right text-zinc-400">750,00 €</span>
-                  <span className="w-24 text-right text-white">750,00 €</span>
+              </div>
+
+              {/* Client Info */}
+              <div className="flex justify-end mb-5">
+                <div className="text-right">
+                  <p className="text-slate-900 font-semibold text-[11px]">Dupont & Fils SARL</p>
+                  <p className="text-slate-500 text-[9px] leading-relaxed mt-0.5">
+                    12 Rue de la Paix
+                    <br />
+                    75002 Paris, France
+                    <br />
+                    <span className="text-slate-400">SIRET: 987 654 321 00012</span>
+                  </p>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex-1 text-zinc-300">Hébergement annuel</span>
-                  <span className="w-16 text-right text-zinc-400">1</span>
-                  <span className="w-24 text-right text-zinc-400">200,00 €</span>
-                  <span className="w-24 text-right text-white">200,00 €</span>
+              </div>
+
+              {/* Subject */}
+              <div className="mb-4">
+                <p className="text-slate-500 text-[9px] mb-0.5">Objet</p>
+                <p className="text-slate-700 text-[10px] px-2 py-1.5 border-b border-dashed border-slate-300">
+                  Développement et design du site web vitrine
+                </p>
+              </div>
+
+              {/* Line Items Table */}
+              <div className="mb-5">
+                {/* Table Header */}
+                <div
+                  className="grid items-center px-2 py-1.5 rounded-t-md text-[8px] font-semibold text-white uppercase tracking-wider"
+                  style={{
+                    backgroundColor: accentColor,
+                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
+                    gap: "4px",
+                  }}
+                >
+                  <span>Désignation</span>
+                  <span className="text-center">Qté</span>
+                  <span className="text-center">Unité</span>
+                  <span className="text-right">P.U. HT</span>
+                  <span className="text-center">TVA</span>
+                  <span className="text-right">Montant HT</span>
+                </div>
+
+                {/* Row 1 */}
+                <div
+                  className="grid items-center px-2 py-2 text-[9px] border-b border-slate-100 bg-white group"
+                  style={{
+                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
+                    gap: "4px",
+                  }}
+                >
+                  <span className="text-slate-700">Développement site web</span>
+                  <span className="text-center text-slate-500">1</span>
+                  <span className="text-center text-slate-400">forfait</span>
+                  <span className="text-right text-slate-600">1 500,00 €</span>
+                  <span className="text-center text-slate-400">0%</span>
+                  <span className="text-right text-slate-800 font-medium">1 500,00 €</span>
+                </div>
+
+                {/* Row 2 */}
+                <div
+                  className="grid items-center px-2 py-2 text-[9px] border-b border-slate-100 group"
+                  style={{
+                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
+                    gap: "4px",
+                    backgroundColor: "#fafbfc",
+                  }}
+                >
+                  <span className="text-slate-700">Design UI/UX</span>
+                  <span className="text-center text-slate-500">1</span>
+                  <span className="text-center text-slate-400">forfait</span>
+                  <span className="text-right text-slate-600">750,00 €</span>
+                  <span className="text-center text-slate-400">0%</span>
+                  <span className="text-right text-slate-800 font-medium">750,00 €</span>
+                </div>
+
+                {/* Row 3 */}
+                <div
+                  className="grid items-center px-2 py-2 text-[9px] border-b border-slate-100 bg-white group"
+                  style={{
+                    gridTemplateColumns: "1fr 42px 42px 68px 42px 68px",
+                    gap: "4px",
+                  }}
+                >
+                  <span className="text-slate-700">Hébergement annuel</span>
+                  <span className="text-center text-slate-500">12</span>
+                  <span className="text-center text-slate-400">mois</span>
+                  <span className="text-right text-slate-600">16,67 €</span>
+                  <span className="text-center text-slate-400">20%</span>
+                  <span className="text-right text-slate-800 font-medium">200,00 €</span>
+                </div>
+
+                {/* Add line button */}
+                <div className="flex items-center gap-1 px-2 py-1.5 text-[9px] text-indigo-500 cursor-pointer">
+                  <Plus className="w-3 h-3" />
+                  <span>Ajouter une ligne</span>
                 </div>
               </div>
 
               {/* Totals */}
-              <div className="pt-3 border-t border-zinc-800/50 space-y-1">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-zinc-500">Total HT</span>
-                  <span className="text-zinc-300">2 450,00 €</span>
+              <div className="flex justify-end mb-6">
+                <div className="w-[200px]">
+                  <div className="flex justify-between text-[9px] py-1">
+                    <span className="text-slate-500">Sous-total HT</span>
+                    <span className="text-slate-700">2 450,00 €</span>
+                  </div>
+                  <div className="flex justify-between text-[9px] py-1">
+                    <span className="text-slate-500">TVA 20% (200,00 € HT)</span>
+                    <span className="text-slate-700">40,00 €</span>
+                  </div>
+                  <div className="flex justify-between text-[9px] py-1">
+                    <span className="text-slate-500">Total TVA</span>
+                    <span className="text-slate-700">40,00 €</span>
+                  </div>
+                  <div
+                    className="flex justify-between text-[11px] font-bold mt-1 px-2 py-1.5 rounded-md text-white"
+                    style={{ backgroundColor: accentColor }}
+                  >
+                    <span>Total TTC</span>
+                    <span>2 490,00 €</span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-zinc-500">TVA (0%)</span>
-                  <span className="text-zinc-400">0,00 €</span>
+              </div>
+
+              {/* Payment Info */}
+              <div className="border-t border-slate-200 pt-3 mb-4">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <CreditCard className="w-3 h-3 text-slate-400" />
+                  <span className="text-slate-500 text-[9px] font-medium">Mode de paiement</span>
                 </div>
-                <div className="flex items-center justify-between text-sm font-medium pt-1">
-                  <span className="text-white">Total TTC</span>
-                  <span className="text-indigo-400 text-lg">2 450,00 €</span>
-                </div>
+                <p className="text-slate-600 text-[9px]">Virement bancaire</p>
+                <p className="text-slate-400 text-[8px] mt-0.5">IBAN: FR76 •••• •••• •••• •••• •••• 123</p>
+              </div>
+
+              {/* Notes */}
+              <div className="border-t border-slate-200 pt-3">
+                <p className="text-slate-500 text-[8px] font-medium uppercase tracking-wider mb-1">Conditions</p>
+                <p className="text-slate-400 text-[8px] leading-relaxed italic">
+                  TVA non applicable, art. 293 B du CGI. En cas de retard de paiement, une pénalité de 3 fois le taux
+                  d'intérêt légal sera appliquée, ainsi qu'une indemnité forfaitaire de 40€ pour frais de recouvrement.
+                </p>
               </div>
             </div>
           </div>
+        </motion.div>
 
-          {/* Activity */}
-          <div className="pt-4 border-t border-zinc-800/50">
-            <div className="text-xs text-zinc-500 font-medium mb-3 uppercase tracking-wider">Activité</div>
-            <div className="space-y-3">
-              <ActivityItem
-                action="Paiement reçu"
-                detail="Virement bancaire - 2 450,00 €"
-                time="Il y a 4 jours"
-                color="text-emerald-400"
-              />
-              <ActivityItem
-                action="Facture envoyée"
-                detail="Email envoyé à contact@dupont-fils.fr"
-                time="Il y a 7 jours"
-                color="text-blue-400"
-              />
-              <ActivityItem
-                action="Facture créée"
-                detail="Générée depuis le devis DEV-2024-001"
-                time="Il y a 7 jours"
-                color="text-zinc-400"
-              />
+        {/* Right Sidebar - Options Panel */}
+        <motion.div
+          className="w-[220px] bg-white border-l border-slate-200 flex flex-col shrink-0 overflow-auto"
+          variants={panelVariants}
+        >
+          {/* Tabs */}
+          <div className="flex border-b border-slate-200 shrink-0">
+            <button className="flex-1 px-3 py-2.5 text-[10px] font-medium text-indigo-600 border-b-2 border-indigo-600 flex items-center justify-center gap-1">
+              <Settings className="w-3 h-3" />
+              Options
+            </button>
+            <button className="flex-1 px-3 py-2.5 text-[10px] text-slate-400 flex items-center justify-center gap-1">
+              <Sparkles className="w-3 h-3" />
+              Faktur AI
+            </button>
+          </div>
+
+          {/* Document Options */}
+          <div className="p-3 space-y-4 text-[10px]">
+            {/* Billing Type */}
+            <OptionSection title="Type de facturation" icon={<span className="text-[9px]">📋</span>}>
+              <div className="flex gap-1.5">
+                <button className="flex-1 px-2 py-1.5 bg-indigo-50 text-indigo-600 rounded-md border border-indigo-200 text-[9px] font-medium">
+                  Détaillée
+                </button>
+                <button className="flex-1 px-2 py-1.5 bg-slate-50 text-slate-500 rounded-md border border-slate-200 text-[9px]">
+                  Rapide
+                </button>
+              </div>
+            </OptionSection>
+
+            {/* Color */}
+            <OptionSection title="Couleur d'accent" icon={<Palette className="w-3 h-3 text-slate-400" />}>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {["#6366f1", "#8b5cf6", "#ec4899", "#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4", "#3b82f6", "#1e1b4b", "#64748b", "#171717"].map((c) => (
+                  <div
+                    key={c}
+                    className="w-4 h-4 rounded-full cursor-pointer"
+                    style={{
+                      backgroundColor: c,
+                      boxShadow: c === accentColor ? `0 0 0 2px white, 0 0 0 3px ${c}` : "none",
+                    }}
+                  />
+                ))}
+              </div>
+            </OptionSection>
+
+            {/* Client */}
+            <OptionSection title="Client" icon={<span className="text-[9px]">👤</span>}>
+              <div className="flex items-center gap-2 px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200">
+                <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] text-indigo-600 font-bold">D</div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-slate-700 text-[9px] font-medium truncate">Dupont & Fils SARL</p>
+                  <p className="text-slate-400 text-[8px]">Professionnel</p>
+                </div>
+                <ChevronRight className="w-3 h-3 text-slate-400" />
+              </div>
+            </OptionSection>
+
+            {/* Dates */}
+            <OptionSection title="Dates" icon={<Calendar className="w-3 h-3 text-slate-400" />}>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200">
+                  <span className="text-slate-500 text-[9px]">Émission</span>
+                  <span className="text-slate-700 text-[9px]">15/03/2024</span>
+                </div>
+                <div className="flex items-center justify-between px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200">
+                  <span className="text-slate-500 text-[9px]">Échéance</span>
+                  <span className="text-slate-700 text-[9px]">15/04/2024</span>
+                </div>
+              </div>
+            </OptionSection>
+
+            {/* Payment */}
+            <OptionSection title="Paiement" icon={<CreditCard className="w-3 h-3 text-slate-400" />}>
+              <div className="px-2 py-1.5 bg-slate-50 rounded-md border border-slate-200 flex items-center justify-between">
+                <span className="text-slate-700 text-[9px]">Virement bancaire</span>
+                <ChevronDown className="w-3 h-3 text-slate-400" />
+              </div>
+            </OptionSection>
+
+            {/* Totals Summary */}
+            <div className="bg-slate-50 rounded-lg border border-slate-200 p-3 space-y-1.5">
+              <div className="flex justify-between text-[9px]">
+                <span className="text-slate-500">Sous-total</span>
+                <span className="text-slate-700">2 450,00 €</span>
+              </div>
+              <div className="flex justify-between text-[9px]">
+                <span className="text-slate-500">TVA</span>
+                <span className="text-slate-700">40,00 €</span>
+              </div>
+              <div className="flex justify-between text-[10px] font-bold pt-1.5 border-t border-slate-200">
+                <span className="text-slate-800">Total TTC</span>
+                <span className="text-indigo-600">2 490,00 €</span>
+              </div>
+            </div>
+
+            {/* Additional Options */}
+            <div className="space-y-1.5">
+              <OptionCheckbox label="Objet" checked />
+              <OptionCheckbox label="Adresse de livraison" />
+              <OptionCheckbox label="Conditions d'acceptation" />
+              <OptionCheckbox label="Notes & conditions" checked />
+              <OptionCheckbox label="Signature" />
             </div>
           </div>
-        </div>
+        </motion.div>
+      </div>
+
+      {/* Bottom Save Bar */}
+      <motion.div
+        className="h-[42px] bg-white/90 backdrop-blur-sm border-t border-slate-200 flex items-center justify-end px-5 gap-3 shrink-0"
+        variants={panelVariants}
+      >
+        <span className="text-slate-500 text-[10px]">Total:</span>
+        <span className="text-slate-900 font-bold text-[12px]">EUR 2 490,00</span>
+        <button
+          className="px-4 py-1.5 text-white rounded-lg text-[10px] font-medium flex items-center gap-1.5"
+          style={{ backgroundColor: accentColor }}
+        >
+          Sauvegarder
+          <ChevronRight className="w-3 h-3" />
+        </button>
       </motion.div>
     </motion.div>
   )
 }
 
-function NavItem({
-  icon: Icon,
-  label,
-  badge,
-  active,
-  hasSubmenu,
-  color,
+function OptionSection({
+  title,
+  icon,
+  children,
 }: {
-  icon: React.ElementType
-  label: string
-  badge?: number
-  active?: boolean
-  hasSubmenu?: boolean
-  color?: string
+  title: string
+  icon: React.ReactNode
+  children: React.ReactNode
 }) {
   return (
-    <div
-      className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-colors ${
-        active ? "bg-zinc-800 text-white" : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-300"
-      }`}
-    >
-      <Icon className={`w-4 h-4 ${color || ""}`} />
-      <span className="flex-1 text-xs">{label}</span>
-      {badge && (
-        <span className="bg-indigo-500/80 text-white text-[10px] min-w-[18px] h-[18px] flex items-center justify-center rounded-full font-medium px-1">
-          {badge}
-        </span>
-      )}
-      {hasSubmenu && <ChevronRight className="w-3 h-3 text-zinc-600" />}
+    <div>
+      <div className="flex items-center gap-1.5 mb-1.5">
+        {icon}
+        <span className="text-slate-600 font-medium text-[9px] uppercase tracking-wider">{title}</span>
+      </div>
+      {children}
     </div>
   )
 }
 
-function InvoiceItem({
-  id,
-  client,
-  amount,
-  time,
-  status,
-  isQuote,
-  active,
-}: {
-  id: string
-  client: string
-  amount: string
-  time: string
-  status: string
-  isQuote?: boolean
-  active?: boolean
-}) {
-  const statusColors: Record<string, string> = {
-    paid: "bg-emerald-500",
-    sent: "bg-blue-500",
-    overdue: "bg-red-500",
-    draft: "bg-zinc-600",
-  }
-
-  const statusLabels: Record<string, string> = {
-    paid: "Payée",
-    sent: "Envoyée",
-    overdue: "En retard",
-    draft: "Brouillon",
-  }
-
+function OptionCheckbox({ label, checked }: { label: string; checked?: boolean }) {
   return (
-    <div
-      className={`px-4 py-3 border-b border-zinc-800/30 cursor-pointer transition-colors ${
-        active ? "bg-zinc-800/50" : "hover:bg-zinc-800/30"
-      }`}
-    >
-      <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center shrink-0 mt-0.5">
-          {isQuote ? (
-            <Receipt className="w-4 h-4 text-indigo-400" />
-          ) : (
-            <FileText className="w-4 h-4 text-indigo-400" />
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-zinc-500 text-[10px]">{id}</span>
-            {isQuote && <span className="text-violet-400 text-[10px]">Devis</span>}
-            <div className={`w-2 h-2 rounded-full ${statusColors[status] || "bg-zinc-500"}`} />
-          </div>
-          <p className="text-white text-xs truncate leading-tight">{client}</p>
-          <div className="flex items-center justify-between mt-0.5">
-            <span className="text-indigo-400 text-xs font-medium">{amount}</span>
-            <span className="text-zinc-600 text-[10px]">{statusLabels[status]}</span>
-          </div>
-        </div>
-        <span className="text-zinc-600 text-[10px] shrink-0">{time}</span>
+    <div className="flex items-center gap-2 px-1">
+      <div
+        className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
+          checked
+            ? "bg-indigo-600 border-indigo-600"
+            : "bg-white border-slate-300"
+        }`}
+      >
+        {checked && (
+          <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M2 6l3 3 5-5" />
+          </svg>
+        )}
       </div>
-    </div>
-  )
-}
-
-function ActivityItem({
-  action,
-  detail,
-  time,
-  color,
-}: {
-  action: string
-  detail: string
-  time: string
-  color: string
-}) {
-  return (
-    <div className="flex items-start gap-2">
-      <div className={`w-1.5 h-1.5 rounded-full mt-1.5 ${color.replace('text-', 'bg-')}`} />
-      <div className="flex-1">
-        <p className="text-zinc-400 text-xs">
-          <span className={color}>{action}</span>
-          <span className="text-zinc-500"> — {detail}</span>
-        </p>
-        <p className="text-zinc-600 text-[10px] mt-0.5">{time}</p>
-      </div>
+      <span className="text-slate-600 text-[9px]">{label}</span>
     </div>
   )
 }

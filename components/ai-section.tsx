@@ -1,20 +1,20 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ChevronRight, Check, Paperclip, Globe, Lightbulb } from "lucide-react"
+import { ChevronRight, Check, Sparkles, FileText, MessageSquare, BarChart3 } from "lucide-react"
 
-const agents = [
-  { name: "Cursor", isAgent: true, selected: true, icon: "◇" },
-  { name: "GitHub Copilot", isAgent: true, selected: false, icon: "◉" },
-  { name: "Sentry", isAgent: true, selected: false, icon: "◈" },
-  { name: "Leela", isAgent: false, selected: false, icon: "○" },
-  { name: "Codex", isAgent: true, selected: false, icon: "◎" },
-  { name: "Conor", isAgent: false, selected: false, icon: "○" },
+const aiFeatures = [
+  { name: "Génération de facture", isAI: true, selected: true, icon: "✦" },
+  { name: "Résumé du dashboard", isAI: true, selected: false, icon: "◆" },
+  { name: "Assistant facturation", isAI: true, selected: false, icon: "◇" },
+  { name: "Suggestions clients", isAI: true, selected: false, icon: "◎" },
+  { name: "Analyse des revenus", isAI: true, selected: false, icon: "◈" },
+  { name: "Rédaction de devis", isAI: true, selected: false, icon: "○" },
 ]
 
 export function AISection() {
   return (
-    <div className="relative z-20 py-40" style={{ backgroundColor: "#09090B" }}>
+    <div id="ai" className="relative z-20 py-40" style={{ backgroundColor: "#09090B" }}>
       <div
         className="absolute top-0 left-0 right-0 pointer-events-none"
         style={{
@@ -32,8 +32,8 @@ export function AISection() {
             transition={{ duration: 0.6 }}
             className="flex items-center gap-2 mb-6"
           >
-            <div className="w-2 h-2 rounded-full bg-blue-500" />
-            <span className="text-zinc-400 text-sm">Artificial intelligence</span>
+            <div className="w-2 h-2 rounded-full bg-indigo-500" />
+            <span className="text-zinc-400 text-sm">Intelligence artificielle</span>
             <ChevronRight className="w-4 h-4 text-zinc-500" />
           </motion.div>
 
@@ -51,7 +51,7 @@ export function AISection() {
               lineHeight: 1.1,
             }}
           >
-            AI-assisted product development
+            Facturation assistée par l'IA
           </motion.h2>
 
           {/* Description */}
@@ -62,8 +62,8 @@ export function AISection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-zinc-400 max-w-md mb-8"
           >
-            <span className="text-white font-medium">Sprint for Agents.</span> Choose from a variety of AI agents and
-            start delegating work, from code generation to other technical tasks.
+            <span className="text-white font-medium">Faktur AI.</span> Générez vos factures et devis en quelques
+            secondes grâce à l'intelligence artificielle. Résumés, suggestions et assistance intégrés.
           </motion.p>
 
           {/* Learn more button */}
@@ -74,11 +74,11 @@ export function AISection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="px-5 py-2.5 bg-zinc-800 text-zinc-300 rounded-lg border border-zinc-700 hover:bg-zinc-700 transition-colors text-sm flex items-center gap-2 mb-16"
           >
-            Learn more
+            En savoir plus
             <ChevronRight className="w-4 h-4" />
           </motion.button>
 
-          {/* Agent dropdown mockup */}
+          {/* AI dropdown mockup */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -137,16 +137,16 @@ export function AISection() {
 
                 {/* Input field */}
                 <div className="bg-zinc-800/50 border border-zinc-700 rounded-t-xl px-5 py-4">
-                  <span className="text-zinc-500 italic">Assign to...</span>
+                  <span className="text-zinc-500 italic">Que souhaitez-vous faire ?</span>
                 </div>
 
                 {/* Dropdown options */}
                 <div className="bg-zinc-900/80 border border-t-0 border-zinc-700 rounded-b-xl py-1">
-                  {agents.map((agent, index) => (
+                  {aiFeatures.map((feature, index) => (
                     <div
-                      key={agent.name}
+                      key={feature.name}
                       style={
-                        agent.selected
+                        feature.selected
                           ? {
                               transform: "scale(1.04) rotateX(17deg)",
                               background: "linear-gradient(#343434 0%, #2d2d2d 100%)",
@@ -174,15 +174,15 @@ export function AISection() {
                         }}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-zinc-400 text-lg">{agent.icon}</span>
-                          <span className={agent.selected ? "text-white font-medium" : "text-zinc-300"}>
-                            {agent.name}
+                          <span className="text-indigo-400 text-lg">{feature.icon}</span>
+                          <span className={feature.selected ? "text-white font-medium" : "text-zinc-300"}>
+                            {feature.name}
                           </span>
-                          {agent.isAgent && (
-                            <span className="text-xs bg-zinc-700 text-zinc-400 px-2 py-0.5 rounded">Agent</span>
+                          {feature.isAI && (
+                            <span className="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded">IA</span>
                           )}
                         </div>
-                        {agent.selected && <Check className="w-4 h-4 text-zinc-400" />}
+                        {feature.selected && <Check className="w-4 h-4 text-indigo-400" />}
                       </div>
                     </div>
                   ))}
@@ -202,132 +202,101 @@ export function AISection() {
             <div className="grid grid-cols-1 md:grid-cols-2">
               {/* Left column */}
               <div className="border-t border-r border-b border-zinc-800/60 pt-12 pr-12 pb-16">
-                <h3 className="text-zinc-200 font-medium text-xl mb-3">Self-driving product operations</h3>
+                <h3 className="text-zinc-200 font-medium text-xl mb-3">Génération intelligente de documents</h3>
                 <p className="text-zinc-500 text-base mb-8">
-                  Streamline your product development workflows with AI assistance for routine, manual tasks.
+                  L'IA analyse vos données clients et produits pour pré-remplir automatiquement vos factures et devis.
                 </p>
 
-                {/* Triage Intelligence Card */}
+                {/* AI Document Card */}
                 <div className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-5">
                   <div className="flex items-center gap-2 mb-5">
-                    <svg className="w-4 h-4 text-zinc-500" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M8 0L9.5 5.5L15 7L9.5 8.5L8 14L6.5 8.5L1 7L6.5 5.5L8 0Z" />
-                    </svg>
+                    <Sparkles className="w-4 h-4 text-indigo-400" />
                     <span className="text-zinc-500 text-sm">
-                      Triage <span className="text-zinc-300">Intelligence</span>
+                      Faktur <span className="text-indigo-400">AI</span>
                     </span>
                   </div>
 
-                  {/* Suggestions Row */}
+                  {/* Generated invoice preview */}
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-zinc-600 text-sm w-20">Suggestions</span>
+                    <span className="text-zinc-600 text-sm w-20">Client</span>
                     <div className="flex items-center gap-2">
                       <span
                         className="flex items-center gap-1.5 rounded-md px-2 py-1 text-sm"
-                        style={{ background: "#7170ff" }}
+                        style={{ background: "#6366f1" }}
                       >
                         <span className="w-4 h-4 bg-white/30 rounded-full" />
-                        <span className="text-white">nan</span>
-                      </span>
-                      <span className="flex items-center gap-1.5 bg-zinc-800/30 rounded-md px-2 py-1 text-sm text-zinc-600">
-                        <span className="w-3 h-3 border border-zinc-700 rounded" />
-                        Mobile App Refactor
-                      </span>
-                      <span className="flex items-center gap-1.5 text-sm text-zinc-700">
-                        <span className="w-2 h-2 bg-zinc-600 rounded-full" />
-                        Slack
+                        <span className="text-white">Dupont & Fils</span>
                       </span>
                     </div>
                   </div>
 
-                  {/* Duplicate Row */}
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-zinc-600 text-sm w-20">Duplicate of</span>
+                    <span className="text-zinc-600 text-sm w-20">Prestations</span>
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center gap-1.5 bg-zinc-800/30 rounded-md px-2 py-1 text-sm text-zinc-400">
+                        <FileText className="w-3 h-3" />
+                        3 lignes détectées
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Related Row */}
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="text-zinc-600 text-sm w-20">Related to</span>
+                    <span className="text-zinc-600 text-sm w-20">Montant</span>
+                    <span className="text-indigo-400 font-medium text-sm">2 450,00 € HT</span>
                   </div>
 
-                  {/* Expanded Suggestion Card */}
-                  <div className="bg-zinc-800/40 rounded-lg p-4 ml-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="w-5 h-5 bg-zinc-600 rounded-full" />
-                      <span className="text-zinc-300 text-sm font-medium">nan</span>
-                    </div>
-
-                    <p className="text-zinc-500 text-xs mb-2">Why this assignee was suggested</p>
-                    <p className="text-zinc-500 text-sm mb-4">
-                      This person was the assignee on previous issues related to performance problems in the mobile app
-                      launch flow
-                    </p>
-
-                    <p className="text-zinc-500 text-xs mb-2">Alternatives</p>
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="flex items-center gap-1.5 bg-zinc-700/50 rounded-md px-2 py-1 text-sm">
-                        <span className="w-4 h-4 bg-zinc-500 rounded-full" />
-                        <span className="text-zinc-400">yann</span>
-                      </span>
-                      <span className="flex items-center gap-1.5 bg-zinc-700/50 rounded-md px-2 py-1 text-sm">
-                        <span className="w-4 h-4 bg-zinc-500 rounded-full" />
-                        <span className="text-zinc-400">erin</span>
-                      </span>
-                    </div>
-
-                    <button className="w-full flex items-center justify-center gap-2 bg-zinc-700/50 hover:bg-zinc-600/50 text-zinc-300 text-sm py-2.5 rounded-md transition-colors">
-                      <Check className="w-4 h-4" />
-                      Accept suggestion
-                    </button>
-                  </div>
+                  {/* Accept button */}
+                  <button className="w-full flex items-center justify-center gap-2 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 text-sm py-2.5 rounded-md transition-colors border border-indigo-500/20">
+                    <Check className="w-4 h-4" />
+                    Générer la facture
+                  </button>
                 </div>
               </div>
 
               {/* Right column */}
               <div className="border-t border-b border-zinc-800/60 pt-12 pl-12 pb-16">
-                <h3 className="text-zinc-200 font-medium text-xl mb-3">Sprint MCP</h3>
+                <h3 className="text-zinc-200 font-medium text-xl mb-3">Résumé IA du dashboard</h3>
                 <p className="text-zinc-500 text-base mb-8">
-                  Connect Sprint to your favorite tools including Cursor, Claude, ChatGPT, and more.
+                  Obtenez un résumé intelligent de votre activité : revenus, factures en attente et tendances.
                 </p>
 
-                {/* MCP Code Snippet */}
-                <div className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-5 font-mono text-sm">
-                  <p className="text-zinc-700 mb-3">//mcp.sprint.app/sse</p>
-                  <div className="space-y-1 mb-6">
-                    <p>
-                      <span className="text-orange-400/70">"mcpServers"</span>
-                      <span className="text-zinc-500">: {"{"}</span>
-                    </p>
-                    <p className="pl-4">
-                      <span className="text-orange-400/70">"sprint"</span>
-                      <span className="text-zinc-500">: {"{"}</span>
-                    </p>
-                    <p className="pl-8">
-                      <span className="text-orange-400/70">"command"</span>
-                      <span className="text-zinc-500">: </span>
-                      <span className="text-green-400/70">"npx"</span>
-                    </p>
+                {/* AI Summary Card */}
+                <div className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <BarChart3 className="w-4 h-4 text-indigo-400" />
+                    <span className="text-zinc-400 text-sm font-medium">Résumé mensuel</span>
                   </div>
 
-                  {/* Ask Anything Input */}
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500 text-sm">Chiffre d'affaires</span>
+                      <span className="text-emerald-400 text-sm font-medium">12 450,00 €</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500 text-sm">Factures payées</span>
+                      <span className="text-zinc-300 text-sm">8 / 12</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500 text-sm">En attente</span>
+                      <span className="text-orange-400 text-sm font-medium">3 200,00 €</span>
+                    </div>
+                  </div>
+
+                  {/* AI Chat input */}
                   <div className="bg-zinc-800/40 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-4">
-                      <span className="w-0.5 h-5 bg-zinc-600" />
-                      <span className="text-zinc-600">Ask anything</span>
+                      <span className="w-0.5 h-5 bg-indigo-500" />
+                      <span className="text-zinc-600">Posez une question sur vos données...</span>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <button className="flex items-center gap-1.5 border border-zinc-700/60 text-zinc-500 text-sm px-3 py-1.5 rounded-full hover:bg-zinc-700/30 transition-colors">
-                        <Paperclip className="w-3.5 h-3.5" />
-                        Attach
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        Demander
                       </button>
                       <button className="flex items-center gap-1.5 border border-zinc-700/60 text-zinc-500 text-sm px-3 py-1.5 rounded-full hover:bg-zinc-700/30 transition-colors">
-                        <Globe className="w-3.5 h-3.5" />
-                        Search
-                      </button>
-                      <button className="flex items-center gap-1.5 border border-zinc-700/60 text-zinc-500 text-sm px-3 py-1.5 rounded-full hover:bg-zinc-700/30 transition-colors">
-                        <Lightbulb className="w-3.5 h-3.5" />
-                        Reason
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Analyser
                       </button>
                     </div>
                   </div>

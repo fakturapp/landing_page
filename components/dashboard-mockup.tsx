@@ -27,10 +27,7 @@ import {
   HelpCircle,
 } from "lucide-react"
 
-const FONT = {
-  fontFamily: 'var(--font-geist), system-ui, sans-serif',
-  fontFeatureSettings: '"kern" 1, "liga" 1',
-}
+const DASH_FONT = 'var(--font-geist), system-ui, sans-serif'
 
 export function DashboardMockup() {
   const containerVariants = {
@@ -55,7 +52,7 @@ export function DashboardMockup() {
   return (
     <motion.div
       className="w-full h-full flex overflow-hidden"
-      style={{ backgroundColor: "#0c0c0e", ...FONT }}
+      style={{ backgroundColor: "#0c0c0e", fontFamily: DASH_FONT, WebkitFontSmoothing: "antialiased" }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -433,7 +430,7 @@ export function DashboardMockup() {
 
 function T({ s, w, c, children, style }: { s: number; w?: number; c: string; children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <div style={{ fontSize: s, fontWeight: w || 400, color: c, lineHeight: 1.4, margin: 0, ...FONT, ...style }}>
+    <div style={{ fontSize: s, fontWeight: w || 400, color: c, lineHeight: 1.4, margin: 0, ...style }}>
       {children}
     </div>
   )
@@ -463,7 +460,6 @@ function Th({ children, align, w, first, last }: { children: React.ReactNode; al
         letterSpacing: "0.04em",
         lineHeight: 1.4,
         borderRadius: first ? "4px 0 0 0" : last ? "0 4px 0 0" : 0,
-        ...FONT,
       }}
     >
       {children}
@@ -474,12 +470,12 @@ function Th({ children, align, w, first, last }: { children: React.ReactNode; al
 function Row({ designation, qty, unit, pu, tva, total, alt }: { designation: string; qty: string; unit: string; pu: string; tva: string; total: string; alt?: boolean }) {
   return (
     <tr style={{ borderBottom: "1px solid #f1f5f9", backgroundColor: alt ? "#fafbfd" : "#fff" }}>
-      <td style={{ padding: "6px 6px", color: "#334155", fontSize: 9, lineHeight: 1.4, ...FONT }}>{designation}</td>
-      <td style={{ padding: "6px 4px", color: "#64748b", fontSize: 9, textAlign: "center", lineHeight: 1.4, ...FONT }}>{qty}</td>
-      <td style={{ padding: "6px 4px", color: "#94a3b8", fontSize: 9, textAlign: "center", lineHeight: 1.4, ...FONT }}>{unit}</td>
-      <td style={{ padding: "6px 4px", color: "#475569", fontSize: 9, textAlign: "right", lineHeight: 1.4, ...FONT }}>{pu}</td>
-      <td style={{ padding: "6px 4px", color: "#94a3b8", fontSize: 9, textAlign: "center", lineHeight: 1.4, ...FONT }}>{tva}</td>
-      <td style={{ padding: "6px 6px", color: "#0f172a", fontSize: 9, textAlign: "right", fontWeight: 500, lineHeight: 1.4, ...FONT }}>{total}</td>
+      <td style={{ padding: "6px 6px", color: "#334155", fontSize: 9, lineHeight: 1.4 }}>{designation}</td>
+      <td style={{ padding: "6px 4px", color: "#64748b", fontSize: 9, textAlign: "center", lineHeight: 1.4 }}>{qty}</td>
+      <td style={{ padding: "6px 4px", color: "#94a3b8", fontSize: 9, textAlign: "center", lineHeight: 1.4 }}>{unit}</td>
+      <td style={{ padding: "6px 4px", color: "#475569", fontSize: 9, textAlign: "right", lineHeight: 1.4 }}>{pu}</td>
+      <td style={{ padding: "6px 4px", color: "#94a3b8", fontSize: 9, textAlign: "center", lineHeight: 1.4 }}>{tva}</td>
+      <td style={{ padding: "6px 6px", color: "#0f172a", fontSize: 9, textAlign: "right", fontWeight: 500, lineHeight: 1.4 }}>{total}</td>
     </tr>
   )
 }
@@ -495,7 +491,7 @@ function TotalLine({ label, value }: { label: string; value: string }) {
 
 function SidebarLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ padding: "4px 8px", fontSize: 9, color: "#52525b", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2, ...FONT }}>
+    <div style={{ padding: "4px 8px", fontSize: 9, color: "#52525b", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>
       {children}
     </div>
   )
@@ -514,7 +510,7 @@ function SidebarItem({ icon: Icon, label, active, badge, hasSubmenu, color }: {
       }}
     >
       <Icon style={{ width: 14, height: 14, color: color || "inherit", flexShrink: 0 }} />
-      <span style={{ flex: 1, fontSize: 11, ...FONT }}>{label}</span>
+      <span style={{ flex: 1, fontSize: 11 }}>{label}</span>
       {badge != null && (
         <span className="flex items-center justify-center" style={{ minWidth: 16, height: 16, borderRadius: 8, backgroundColor: "#4f46e5", color: "#fff", fontSize: 9, fontWeight: 600, padding: "0 4px" }}>
           {badge}
@@ -528,7 +524,7 @@ function SidebarItem({ icon: Icon, label, active, badge, hasSubmenu, color }: {
 function OptSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ marginTop: 14 }}>
-      <div style={{ color: "#71717a", fontSize: 8, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6, ...FONT }}>
+      <div style={{ color: "#71717a", fontSize: 8, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
         {title}
       </div>
       {children}
@@ -560,7 +556,7 @@ function Chk({ label, checked }: { label: string; checked?: boolean }) {
           <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#fff" strokeWidth="2"><path d="M2 6l3 3 5-5" /></svg>
         )}
       </div>
-      <span style={{ color: "#a1a1aa", fontSize: 9, ...FONT }}>{label}</span>
+      <span style={{ color: "#a1a1aa", fontSize: 9 }}>{label}</span>
     </div>
   )
 }

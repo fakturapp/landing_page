@@ -118,7 +118,6 @@ export function Hero3DStage() {
               style={{
                 transform: `translateY(${yOffset}px)`,
                 transition: "transform 0.1s ease-out",
-                contain: "strict",
                 perspective: "4000px",
                 perspectiveOrigin: "100% 0",
                 width: "100%",
@@ -139,8 +138,7 @@ export function Hero3DStage() {
                 style={{
                   backgroundColor: "#09090B",
                   transformOrigin: "0 0",
-                  backfaceVisibility: "hidden",
-                  WebkitBackfaceVisibility: "hidden",
+                  willChange: "transform",
                   border: "1px solid #1e1e1e",
                   borderRadius: "10px",
                   width: "1600px",

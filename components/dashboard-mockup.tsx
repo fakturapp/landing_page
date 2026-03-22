@@ -3,25 +3,22 @@
 import type React from "react"
 import { motion } from "framer-motion"
 import {
-  Inbox,
-  CircleUser,
-  Layers,
-  FolderKanban,
-  LayoutGrid,
-  Users,
-  Smartphone,
-  Map,
+  LayoutDashboard,
   FileText,
+  Receipt,
+  Users,
+  Package,
+  Building2,
   ChevronDown,
   ChevronRight,
-  CirclePower,
   Search,
   Plus,
-  Link2,
   MoreHorizontal,
-  Sparkles,
   Settings,
   HelpCircle,
+  TrendingUp,
+  Wallet,
+  RefreshCw,
 } from "lucide-react"
 
 export function DashboardMockup() {
@@ -67,8 +64,8 @@ export function DashboardMockup() {
         {/* Logo */}
         <div className="p-3 border-b border-zinc-800/50">
           <div className="flex items-center gap-2 px-2 py-1.5">
-            <CirclePower className="w-5 h-5 text-white" />
-            <span className="text-white font-semibold text-sm">Sprint</span>
+            <img src="/logo.svg" alt="Faktur" className="w-5 h-5" />
+            <span className="text-white font-semibold text-sm">Faktur</span>
             <ChevronDown className="w-3.5 h-3.5 text-zinc-500 ml-auto" />
           </div>
         </div>
@@ -77,66 +74,57 @@ export function DashboardMockup() {
         <div className="p-3">
           <div className="flex items-center gap-2 px-2.5 py-1.5 bg-zinc-800/50 rounded-md text-zinc-500 text-xs">
             <Search className="w-3.5 h-3.5" />
-            <span>Search...</span>
+            <span>Rechercher...</span>
             <span className="ml-auto text-[10px] bg-zinc-700/50 px-1.5 py-0.5 rounded">⌘K</span>
           </div>
         </div>
 
         {/* Main nav */}
         <div className="px-3 space-y-0.5">
-          <NavItem icon={Inbox} label="Inbox" badge={3} active />
-          <NavItem icon={CircleUser} label="My Issues" />
+          <NavItem icon={LayoutDashboard} label="Tableau de bord" active />
+          <NavItem icon={FileText} label="Factures" badge={5} />
+          <NavItem icon={Receipt} label="Devis" />
         </div>
 
-        {/* Workspace section */}
+        {/* Gestion section */}
         <div className="mt-5 px-3">
           <div className="px-2 py-1 text-[10px] text-zinc-500 font-medium uppercase tracking-wider flex items-center gap-1">
-            Workspace
+            Gestion
           </div>
           <div className="space-y-0.5 mt-1">
-            <NavItem icon={Layers} label="Initiatives" hasSubmenu />
-            <NavItem icon={FolderKanban} label="Projects" hasSubmenu />
-            <NavItem icon={LayoutGrid} label="Views" hasSubmenu />
-            <NavItem icon={Users} label="Teams" hasSubmenu />
+            <NavItem icon={Users} label="Clients" hasSubmenu />
+            <NavItem icon={Package} label="Produits" hasSubmenu />
+            <NavItem icon={Building2} label="Entreprise" hasSubmenu />
           </div>
         </div>
 
-        {/* Favorites section */}
+        {/* Raccourcis section */}
         <div className="mt-5 px-3">
           <div className="px-2 py-1 text-[10px] text-zinc-500 font-medium uppercase tracking-wider flex items-center gap-1">
-            Favorites
+            Raccourcis
           </div>
           <div className="space-y-0.5 mt-1">
-            <NavItem icon={Smartphone} label="Mobile App" color="text-blue-400" />
-            <NavItem icon={Map} label="Q1 Roadmap" color="text-orange-400" />
-            <NavItem icon={FileText} label="API Docs" color="text-emerald-400" />
-          </div>
-        </div>
-
-        {/* Teams section */}
-        <div className="mt-5 px-3 flex-1">
-          <div className="px-2 py-1 text-[10px] text-zinc-500 font-medium uppercase tracking-wider flex items-center gap-1">
-            Your Teams
-          </div>
-          <div className="space-y-0.5 mt-1">
-            <NavItem icon={Sparkles} label="Product" hasSubmenu />
-            <NavItem icon={Settings} label="Engineering" hasSubmenu />
+            <NavItem icon={TrendingUp} label="Revenus" color="text-emerald-400" />
+            <NavItem icon={Wallet} label="Dépenses" color="text-orange-400" />
+            <NavItem icon={RefreshCw} label="Récurrentes" color="text-blue-400" />
           </div>
         </div>
 
         {/* Bottom */}
+        <div className="flex-1" />
         <div className="p-3 border-t border-zinc-800/50">
-          <NavItem icon={HelpCircle} label="Help & Support" />
+          <NavItem icon={Settings} label="Paramètres" />
+          <NavItem icon={HelpCircle} label="Aide" />
         </div>
       </motion.div>
 
-      {/* Inbox List */}
+      {/* Invoice List */}
       <motion.div
         className="w-[320px] h-full bg-zinc-900/40 border-r border-zinc-800/50 flex flex-col shrink-0"
         variants={panelVariants}
       >
         <div className="px-4 py-3 border-b border-zinc-800/50 flex items-center justify-between">
-          <h3 className="text-white font-semibold text-sm">Inbox</h3>
+          <h3 className="text-white font-semibold text-sm">Factures</h3>
           <div className="flex items-center gap-2">
             <button className="text-zinc-500 hover:text-white transition-colors">
               <Plus className="w-4 h-4" />
@@ -145,69 +133,56 @@ export function DashboardMockup() {
         </div>
 
         <div className="flex-1 overflow-auto scrollbar-hide">
-          <InboxItem
-            id="ENG-135"
-            title="Refactor sonic crawler"
-            subtitle="nan assigned you"
-            time="2h"
-            avatar="https://i.pravatar.cc/32?img=1"
-            status="in-progress"
+          <InvoiceItem
+            id="FAK-2024-001"
+            client="Dupont & Fils SARL"
+            amount="2 450,00 €"
+            time="Aujourd'hui"
+            status="paid"
             active
           />
-          <InboxItem
-            id="LLM"
-            title="LLM Chatbot"
-            subtitle="New project update by raissa"
-            time="1d"
-            avatar="https://i.pravatar.cc/32?img=2"
-            status="todo"
-            isProject
+          <InvoiceItem
+            id="FAK-2024-002"
+            client="Studio Créatif"
+            amount="1 800,00 €"
+            time="Hier"
+            status="sent"
           />
-          <InboxItem
-            id="ENG-159"
-            title="Error uploading images via API"
-            subtitle="SLA breached"
-            time="2d"
-            avatar="https://i.pravatar.cc/32?img=3"
-            status="bug"
+          <InvoiceItem
+            id="FAK-2024-003"
+            client="TechStart SAS"
+            amount="5 200,00 €"
+            time="Il y a 3j"
+            status="overdue"
           />
-          <InboxItem
-            id="DES-498"
-            title="Redesign users settings..."
-            subtitle="karri mentioned you"
-            time="4h"
-            avatar="https://i.pravatar.cc/32?img=4"
-            status="todo"
+          <InvoiceItem
+            id="FAK-2024-004"
+            client="Cabinet Martin"
+            amount="980,00 €"
+            time="Il y a 5j"
+            status="draft"
           />
-          <InboxItem
-            id="ENG-160"
-            title="Holtzmann engine is broken"
-            subtitle="You asked to be reminded"
-            time="1w"
-            avatar="https://i.pravatar.cc/32?img=5"
-            status="bug"
+          <InvoiceItem
+            id="FAK-2024-005"
+            client="Boulangerie Moreau"
+            amount="320,00 €"
+            time="Il y a 1sem"
+            status="paid"
           />
-          <InboxItem
-            title="Sign up flow experiments"
-            subtitle="Added as project member"
-            avatar="https://i.pravatar.cc/32?img=6"
-            status="done"
-            isProject
+          <InvoiceItem
+            id="DEV-2024-001"
+            client="Agence Web Plus"
+            amount="3 600,00 €"
+            time="Il y a 1sem"
+            status="sent"
+            isQuote
           />
-          <InboxItem
-            id="MKT-122"
-            title="Design assets for marketing"
-            subtitle="erin marked as Duplicate"
-            time="1w"
-            avatar="https://i.pravatar.cc/32?img=7"
-            status="done"
-          />
-          <InboxItem
-            title="Homepage v3"
-            subtitle="New project update by paco"
-            avatar="https://i.pravatar.cc/32?img=8"
-            status="todo"
-            isProject
+          <InvoiceItem
+            id="FAK-2024-006"
+            client="Restaurant Le Jardin"
+            amount="1 150,00 €"
+            time="Il y a 2sem"
+            status="paid"
           />
         </div>
       </motion.div>
@@ -217,99 +192,112 @@ export function DashboardMockup() {
         {/* Header breadcrumb */}
         <div className="px-5 py-3 border-b border-zinc-800/50 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-zinc-500">Engineering</span>
+            <span className="text-zinc-500">Factures</span>
             <span className="text-zinc-600">›</span>
-            <span className="text-emerald-400">Spice harvester</span>
+            <span className="text-indigo-400">Dupont & Fils SARL</span>
             <span className="text-zinc-600">›</span>
-            <span className="text-zinc-300">ENG-135</span>
+            <span className="text-zinc-300">FAK-2024-001</span>
           </div>
           <MoreHorizontal className="w-4 h-4 text-zinc-500" />
         </div>
 
         {/* Content */}
         <div className="flex-1 p-5 overflow-auto scrollbar-hide">
-          <h2 className="text-white text-xl font-semibold mb-5">Refactor sonic crawler</h2>
-
-          {/* Code block */}
-          <div className="bg-zinc-900/80 rounded-lg p-4 text-[11px] font-mono mb-5 border border-zinc-800/50">
-            <div className="space-y-2">
-              <div>
-                <span className="text-zinc-500">Comment.</span>
-                <span className="text-amber-300">documentContent</span>
-                <span className="text-zinc-400"> is defined wrongly. It should be a </span>
-                <span className="text-cyan-300">LazyManyToOne</span>
-                <span className="text-zinc-400"> relation.</span>
-              </div>
-              <div className="mt-3 text-zinc-600">
-                {/* The document content that this comment is associated with. */}
-              </div>
-              <div>
-                <span className="text-purple-400">@ManyToOne</span>
-                <span className="text-zinc-400">(</span>
-                <span className="text-cyan-300">DocumentContent</span>
-                <span className="text-zinc-400">,</span>
-                <span className="text-amber-300">comments</span>
-                <span className="text-zinc-400">,</span>
-                <span className="text-amber-300">cascade</span>
-                <span className="text-zinc-400">:</span>
-                <span className="text-orange-300">true</span>
-                <span className="text-zinc-400">,</span>
-                <span className="text-amber-300">nullable</span>
-                <span className="text-zinc-400">:</span>
-                <span className="text-orange-300">false</span>
-                <span className="text-zinc-400">)</span>
-              </div>
-              <div>
-                <span className="text-blue-400">public </span>
-                <span className="text-amber-300">documentContent</span>
-                <span className="text-zinc-400">?: </span>
-                <span className="text-cyan-300">DocumentContent</span>
-                <span className="text-zinc-400">;</span>
-              </div>
-              <div className="mt-3 text-zinc-400">
-                We would be accessing
-                <span className="text-emerald-400">CachedPromise&lt;DocumentContent&gt;</span>
-                then, and document content would be hydrated.
-              </div>
-            </div>
+          {/* Status badge */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              Payée
+            </span>
+            <span className="text-zinc-500 text-xs">Payée le 18 mars 2024</span>
           </div>
 
-          {/* Meta actions */}
-          <div className="space-y-2 text-sm mb-5">
-            <div className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 cursor-pointer transition-colors">
-              <Plus className="w-4 h-4" />
-              <span>Add sub-issues</span>
-            </div>
-            <div className="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 cursor-pointer transition-colors">
-              <Link2 className="w-4 h-4" />
-              <span>Links</span>
-            </div>
-          </div>
+          <h2 className="text-white text-xl font-semibold mb-5">Facture FAK-2024-001</h2>
 
-          {/* PR reference */}
-          <div className="text-xs text-zinc-500 mb-5">
-            <span className="text-zinc-600">#20319</span>
-            <span> igor/eng-135 add source to insights slice and segment</span>
+          {/* Invoice details */}
+          <div className="bg-zinc-900/80 rounded-lg p-4 text-sm mb-5 border border-zinc-800/50">
+            <div className="space-y-3">
+              {/* Client info */}
+              <div className="flex items-center justify-between pb-3 border-b border-zinc-800/50">
+                <div>
+                  <p className="text-zinc-400 text-xs mb-1">Client</p>
+                  <p className="text-white font-medium">Dupont & Fils SARL</p>
+                  <p className="text-zinc-500 text-xs">12 Rue de la Paix, 75002 Paris</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-zinc-400 text-xs mb-1">Date d'émission</p>
+                  <p className="text-zinc-300">15/03/2024</p>
+                  <p className="text-zinc-500 text-xs mt-1">Échéance: 15/04/2024</p>
+                </div>
+              </div>
+
+              {/* Line items */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs text-zinc-500 pb-1">
+                  <span className="flex-1">Description</span>
+                  <span className="w-16 text-right">Qté</span>
+                  <span className="w-24 text-right">Prix HT</span>
+                  <span className="w-24 text-right">Total HT</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="flex-1 text-zinc-300">Développement site web</span>
+                  <span className="w-16 text-right text-zinc-400">1</span>
+                  <span className="w-24 text-right text-zinc-400">1 500,00 €</span>
+                  <span className="w-24 text-right text-white">1 500,00 €</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="flex-1 text-zinc-300">Design UI/UX</span>
+                  <span className="w-16 text-right text-zinc-400">1</span>
+                  <span className="w-24 text-right text-zinc-400">750,00 €</span>
+                  <span className="w-24 text-right text-white">750,00 €</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="flex-1 text-zinc-300">Hébergement annuel</span>
+                  <span className="w-16 text-right text-zinc-400">1</span>
+                  <span className="w-24 text-right text-zinc-400">200,00 €</span>
+                  <span className="w-24 text-right text-white">200,00 €</span>
+                </div>
+              </div>
+
+              {/* Totals */}
+              <div className="pt-3 border-t border-zinc-800/50 space-y-1">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-500">Total HT</span>
+                  <span className="text-zinc-300">2 450,00 €</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-500">TVA (0%)</span>
+                  <span className="text-zinc-400">0,00 €</span>
+                </div>
+                <div className="flex items-center justify-between text-sm font-medium pt-1">
+                  <span className="text-white">Total TTC</span>
+                  <span className="text-indigo-400 text-lg">2 450,00 €</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Activity */}
           <div className="pt-4 border-t border-zinc-800/50">
-            <div className="text-xs text-zinc-500 font-medium mb-3 uppercase tracking-wider">Activity</div>
+            <div className="text-xs text-zinc-500 font-medium mb-3 uppercase tracking-wider">Activité</div>
             <div className="space-y-3">
               <ActivityItem
-                avatar="https://i.pravatar.cc/24?img=1"
-                name="nan"
-                action="moved from"
-                from="Backlog"
-                to="In Progress"
-                time="5 months ago"
+                action="Paiement reçu"
+                detail="Virement bancaire - 2 450,00 €"
+                time="Il y a 4 jours"
+                color="text-emerald-400"
               />
               <ActivityItem
-                avatar="https://i.pravatar.cc/24?img=2"
-                name="alex"
-                action="commented on"
-                from="this issue"
-                time="5 months ago"
+                action="Facture envoyée"
+                detail="Email envoyé à contact@dupont-fils.fr"
+                time="Il y a 7 jours"
+                color="text-blue-400"
+              />
+              <ActivityItem
+                action="Facture créée"
+                detail="Générée depuis le devis DEV-2024-001"
+                time="Il y a 7 jours"
+                color="text-zinc-400"
               />
             </div>
           </div>
@@ -352,30 +340,35 @@ function NavItem({
   )
 }
 
-function InboxItem({
+function InvoiceItem({
   id,
-  title,
-  subtitle,
+  client,
+  amount,
   time,
-  avatar,
   status,
-  isProject,
+  isQuote,
   active,
 }: {
-  id?: string
-  title: string
-  subtitle?: string
-  time?: string
-  avatar: string
+  id: string
+  client: string
+  amount: string
+  time: string
   status: string
-  isProject?: boolean
+  isQuote?: boolean
   active?: boolean
 }) {
   const statusColors: Record<string, string> = {
-    "in-progress": "bg-yellow-500",
-    todo: "bg-zinc-600",
-    bug: "bg-red-500",
-    done: "bg-emerald-500",
+    paid: "bg-emerald-500",
+    sent: "bg-blue-500",
+    overdue: "bg-red-500",
+    draft: "bg-zinc-600",
+  }
+
+  const statusLabels: Record<string, string> = {
+    paid: "Payée",
+    sent: "Envoyée",
+    overdue: "En retard",
+    draft: "Brouillon",
   }
 
   return (
@@ -385,51 +378,49 @@ function InboxItem({
       }`}
     >
       <div className="flex items-start gap-3">
-        <img src={avatar || "/placeholder.svg"} alt="" className="w-8 h-8 rounded-full shrink-0 mt-0.5" />
+        <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center shrink-0 mt-0.5">
+          {isQuote ? (
+            <Receipt className="w-4 h-4 text-indigo-400" />
+          ) : (
+            <FileText className="w-4 h-4 text-indigo-400" />
+          )}
+        </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
-            {id && <span className="text-zinc-500 text-[10px]">{id}</span>}
-            {isProject && <span className="text-violet-400 text-[10px]">Project</span>}
+            <span className="text-zinc-500 text-[10px]">{id}</span>
+            {isQuote && <span className="text-violet-400 text-[10px]">Devis</span>}
             <div className={`w-2 h-2 rounded-full ${statusColors[status] || "bg-zinc-500"}`} />
           </div>
-          <p className="text-white text-xs truncate leading-tight">{title}</p>
-          {subtitle && <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{subtitle}</p>}
+          <p className="text-white text-xs truncate leading-tight">{client}</p>
+          <div className="flex items-center justify-between mt-0.5">
+            <span className="text-indigo-400 text-xs font-medium">{amount}</span>
+            <span className="text-zinc-600 text-[10px]">{statusLabels[status]}</span>
+          </div>
         </div>
-        {time && <span className="text-zinc-600 text-[10px] shrink-0">{time}</span>}
+        <span className="text-zinc-600 text-[10px] shrink-0">{time}</span>
       </div>
     </div>
   )
 }
 
 function ActivityItem({
-  avatar,
-  name,
   action,
-  from,
-  to,
+  detail,
   time,
+  color,
 }: {
-  avatar: string
-  name: string
   action: string
-  from: string
-  to?: string
+  detail: string
   time: string
+  color: string
 }) {
   return (
     <div className="flex items-start gap-2">
-      <img src={avatar || "/placeholder.svg"} alt="" className="w-5 h-5 rounded-full" />
+      <div className={`w-1.5 h-1.5 rounded-full mt-1.5 ${color.replace('text-', 'bg-')}`} />
       <div className="flex-1">
         <p className="text-zinc-400 text-xs">
-          <span className="text-white">{name}</span>
-          <span className="text-zinc-500"> {action} </span>
-          <span className="text-zinc-300">{from}</span>
-          {to && (
-            <>
-              <span className="text-zinc-500"> to </span>
-              <span className="text-zinc-300">{to}</span>
-            </>
-          )}
+          <span className={color}>{action}</span>
+          <span className="text-zinc-500"> — {detail}</span>
         </p>
         <p className="text-zinc-600 text-[10px] mt-0.5">{time}</p>
       </div>

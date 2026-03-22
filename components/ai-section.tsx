@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence, useMotionValue, useAnimationFrame, useTransform } from "framer-motion"
-import { ChevronRight, Sparkles, Check, Mail, BarChart3, Users, TrendingUp, FileText, MessageSquare } from "lucide-react"
+import { ChevronRight, ChevronDown, Sparkles, Check, Mail, BarChart3, Users, TrendingUp, FileText, MessageSquare, Loader2, Paperclip } from "lucide-react"
 
 /* ============================================================
    ShinyText
@@ -49,7 +49,7 @@ function ThinkingDots() {
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="w-1 h-1 rounded-full bg-indigo-400"
+          className="w-1 h-1 rounded-full bg-zinc-400"
           animate={{ opacity: [0.2, 1, 0.2] }}
           transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
         />
@@ -62,17 +62,45 @@ function ThinkingDots() {
    Scenarios
    ============================================================ */
 
-const SCENARIOS = [
+type PickItem = { name: string; sub: string; selected?: boolean }
+type ChatFlow = {
+  userMessage: string
+  attachment?: string
+  thoughts: string[]
+  generatingText: string
+}
+type Scenario = {
+  name: string
+  icon: string
+  picking?: { title: string; items: PickItem[] }
+  chatFlow: ChatFlow
+  successText: string
+  result: React.ReactNode
+}
+
+const SCENARIOS: Scenario[] = [
   {
     name: "Rédiger un mail de relance",
     icon: "✦",
-    steps: [
-      { text: "Thinking", icon: "🧠" },
-      { text: "Analyse de l'historique client", icon: "📊" },
-      { text: "Rédaction du mail", icon: "✍️" },
-      { text: "Vérification du ton", icon: "✅" },
-    ],
-    successText: "Mail rédigé avec succès",
+    picking: {
+      title: "Sélectionnez une facture",
+      items: [
+        { name: "FAK-2024-001", sub: "Dupont & Fils — 2 490,00 €", selected: true },
+        { name: "FAK-2024-002", sub: "TechStart SAS — 1 200,00 €" },
+        { name: "FAK-2024-003", sub: "Studio Créatif — 850,00 €" },
+      ],
+    },
+    chatFlow: {
+      userMessage: "Rédiger un mail de relance",
+      attachment: "FAK-2024-001 en pièce jointe",
+      thoughts: [
+        "Je lis la facture FAK-2024-001 de Dupont & Fils...",
+        "Montant impayé : 2 490,00 € — émise le 15/03/2024",
+        "Je rédige un mail de relance professionnel...",
+      ],
+      generatingText: "Génération du mail",
+    },
+    successText: "Mail envoyé automatiquement",
     result: (
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 mb-1">
@@ -95,18 +123,28 @@ const SCENARIOS = [
             Nous vous remercions de bien vouloir procéder au règlement dans les meilleurs délais...
           </div>
         </div>
+        <div className="flex items-center gap-2 mt-1 px-1">
+          <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
+            <Check className="w-3 h-3 text-emerald-400" />
+          </div>
+          <span className="text-emerald-400 text-xs font-medium">Mail envoyé à contact@dupont-fils.fr</span>
+          <span className="text-zinc-600 text-[10px] ml-auto">Il y a 2s</span>
+        </div>
       </div>
     ),
   },
   {
     name: "Résumer mon mois",
     icon: "◆",
-    steps: [
-      { text: "Thinking", icon: "🧠" },
-      { text: "Lecture des factures de mars", icon: "📄" },
-      { text: "Calcul des revenus", icon: "💰" },
-      { text: "Génération du résumé", icon: "📝" },
-    ],
+    chatFlow: {
+      userMessage: "Résumer mon mois",
+      thoughts: [
+        "Je parcours vos 12 factures de mars 2024...",
+        "8 factures payées, 3 en attente de paiement",
+        "Calcul du CA : 12 450 € — en hausse de 23%",
+      ],
+      generatingText: "Génération du résumé",
+    },
     successText: "Résumé mensuel prêt",
     result: (
       <div className="flex flex-col gap-3">
@@ -143,18 +181,30 @@ const SCENARIOS = [
   {
     name: "Suggestions clients",
     icon: "◎",
-    steps: [
-      { text: "Thinking", icon: "🧠" },
-      { text: "Scan des profils clients", icon: "👥" },
-      { text: "Analyse des opportunités", icon: "🎯" },
-      { text: "Préparation des suggestions", icon: "💡" },
-    ],
+    picking: {
+      title: "Sélectionnez un client",
+      items: [
+        { name: "Dupont & Fils", sub: "8 factures — 12 450,00 €", selected: true },
+        { name: "TechStart SAS", sub: "3 factures — 4 200,00 €" },
+        { name: "Studio Créatif", sub: "5 factures — 6 800,00 €" },
+      ],
+    },
+    chatFlow: {
+      userMessage: "Suggestions clients",
+      attachment: "Dupont & Fils sélectionné",
+      thoughts: [
+        "J'analyse le profil de Dupont & Fils...",
+        "8 factures — 12 450 € de CA sur 6 mois",
+        "Je cherche des opportunités commerciales...",
+      ],
+      generatingText: "Génération des suggestions",
+    },
     successText: "3 suggestions trouvées",
     result: (
       <div className="flex flex-col gap-2.5">
         <div className="flex items-center gap-2 mb-1">
           <Users className="w-4 h-4 text-indigo-400" />
-          <span className="text-zinc-300 text-sm font-medium">Suggestions</span>
+          <span className="text-zinc-300 text-sm font-medium">Suggestions — Dupont & Fils</span>
         </div>
         {[
           { client: "Dupont & Fils", action: "Proposer un devis pour le projet Q2", tag: "Renouvellement", tagColor: "#818cf8" },
@@ -191,15 +241,29 @@ const DROPDOWN_ITEMS = [
    AI Demo Animation
    ============================================================ */
 
-type Phase = "idle" | "selecting" | "thinking" | "result"
+type Phase = "idle" | "selecting" | "picking" | "thinking" | "result"
+
+/*
+  Thinking sub-steps:
+    0 = user message (right)
+    1 = "Thinking" label (left)
+    2..1+N = thoughts (under Thinking, left)
+    2+N = "Génération du ..." (replaces Thinking)
+  where N = chatFlow.thoughts.length
+*/
 
 function AIDemoAnimation() {
   const [scenarioIdx, setScenarioIdx] = useState(0)
   const [phase, setPhase] = useState<Phase>("idle")
   const [thinkStep, setThinkStep] = useState(0)
+  const [pickIdx, setPickIdx] = useState(-1)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const scenario = SCENARIOS[scenarioIdx]
+  const flow = scenario.chatFlow
+  const totalThinkSteps = 2 + flow.thoughts.length + 1 // user + thinking + thoughts + generating
+  const generatingIdx = 2 + flow.thoughts.length
+  const isGenerating = thinkStep >= generatingIdx
 
   // Phase transitions
   useEffect(() => {
@@ -210,14 +274,34 @@ function AIDemoAnimation() {
       timerRef.current = setTimeout(() => setPhase("selecting"), 1500)
     } else if (phase === "selecting") {
       timerRef.current = setTimeout(() => {
-        setThinkStep(0)
-        setPhase("thinking")
+        if (scenario.picking) {
+          setPickIdx(-1)
+          setPhase("picking")
+        } else {
+          setThinkStep(0)
+          setPhase("thinking")
+        }
       }, 1200)
-    } else if (phase === "thinking") {
-      if (thinkStep < scenario.steps.length - 1) {
-        timerRef.current = setTimeout(() => setThinkStep((s) => s + 1), 1800)
+    } else if (phase === "picking") {
+      if (pickIdx === -1) {
+        timerRef.current = setTimeout(() => {
+          const idx = scenario.picking!.items.findIndex((it) => it.selected)
+          setPickIdx(idx >= 0 ? idx : 0)
+        }, 800)
       } else {
-        timerRef.current = setTimeout(() => setPhase("result"), 1500)
+        timerRef.current = setTimeout(() => {
+          setThinkStep(0)
+          setPhase("thinking")
+        }, 1200)
+      }
+    } else if (phase === "thinking") {
+      if (thinkStep < totalThinkSteps - 1) {
+        // Timing: user=0.6s, thinking=1s, thoughts=1.3s each, generating=2s
+        const delay = thinkStep === 0 ? 600 : thinkStep === 1 ? 1000 : thinkStep < generatingIdx ? 1300 : 2000
+        timerRef.current = setTimeout(() => setThinkStep((s) => s + 1), delay)
+      } else {
+        // Last step (generating), wait then go to result
+        timerRef.current = setTimeout(() => setPhase("result"), 2000)
       }
     } else if (phase === "result") {
       timerRef.current = setTimeout(() => {
@@ -227,7 +311,14 @@ function AIDemoAnimation() {
     }
 
     return clear
-  }, [phase, thinkStep, scenario.steps.length])
+  }, [phase, thinkStep, pickIdx, scenario, totalThinkSteps, generatingIdx])
+
+  // Top bar text
+  const barText = phase === "picking" && scenario.picking
+    ? scenario.picking.title
+    : phase === "thinking"
+      ? isGenerating ? flow.generatingText : "Thinking"
+      : ""
 
   return (
     <div style={{ perspective: "900px", userSelect: "none", WebkitUserSelect: "none", width: "100%", maxWidth: "720px" }}>
@@ -246,7 +337,7 @@ function AIDemoAnimation() {
           position: "absolute", bottom: "-2px", left: "-180px", right: "-180px", pointerEvents: "none", zIndex: 11,
         }} />
 
-        {/* ── Modal container (Faktur modal style) ── */}
+        {/* ── Modal container ── */}
         <div style={{
           backgroundColor: "#18181b",
           border: "1px solid #27272a",
@@ -257,13 +348,23 @@ function AIDemoAnimation() {
           {/* Input bar */}
           <div style={{ padding: "16px 20px", borderBottom: "1px solid #27272a", backgroundColor: "#1c1c1f" }}>
             <AnimatePresence mode="wait">
-              {phase === "thinking" ? (
-                <motion.div key="think-bar" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="flex items-center gap-2.5">
-                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}>
-                    <Sparkles className="w-4 h-4 text-indigo-400" />
-                  </motion.div>
-                  <ShinyText text={scenario.steps[thinkStep].text} className="text-sm font-medium" color="#818cf8" shineColor="#c7d2fe" speed={1.2} />
-                  <ThinkingDots />
+              {(phase === "thinking" || phase === "picking") ? (
+                <motion.div key={`bar-${isGenerating ? "gen" : "think"}`} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="flex items-center gap-2.5">
+                  {isGenerating ? (
+                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
+                      <Loader2 className="w-4 h-4 text-indigo-400" />
+                    </motion.div>
+                  ) : (
+                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}>
+                      <Sparkles className="w-4 h-4 text-indigo-400" />
+                    </motion.div>
+                  )}
+                  {isGenerating ? (
+                    <span className="text-indigo-400 text-sm font-medium">{barText}</span>
+                  ) : (
+                    <ShinyText text={barText} className="text-sm font-medium" color="#a1a1aa" shineColor="#ffffff" speed={1.5} />
+                  )}
+                  {!isGenerating && <ThinkingDots />}
                 </motion.div>
               ) : phase === "result" ? (
                 <motion.div key="done-bar" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="flex items-center gap-2.5">
@@ -300,20 +401,9 @@ function AIDemoAnimation() {
                     return (
                       <motion.div
                         key={f.name}
-                        animate={isActive ? {
-                          backgroundColor: "#27272a",
-                          scale: 1.02,
-                        } : {
-                          backgroundColor: "transparent",
-                          scale: 1,
-                        }}
+                        animate={isActive ? { backgroundColor: "#27272a", scale: 1.02 } : { backgroundColor: "transparent", scale: 1 }}
                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        style={{
-                          height: 44,
-                          marginLeft: 8, marginRight: 8,
-                          borderRadius: 8,
-                          opacity: isActive ? 1 : Math.max(0.3, 1 - i * 0.12),
-                        }}
+                        style={{ height: 44, marginLeft: 8, marginRight: 8, borderRadius: 8, opacity: isActive ? 1 : Math.max(0.3, 1 - i * 0.12) }}
                       >
                         <div className="flex items-center justify-between h-full" style={{ paddingLeft: 16, paddingRight: 16 }}>
                           <div className="flex items-center gap-3">
@@ -323,12 +413,8 @@ function AIDemoAnimation() {
                           </div>
                           <AnimatePresence>
                             {isActive && (
-                              <motion.div
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0, opacity: 0 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                              >
+                              <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 20 }}>
                                 <Check className="w-4 h-4 text-indigo-400" />
                               </motion.div>
                             )}
@@ -340,7 +426,52 @@ function AIDemoAnimation() {
                 </motion.div>
               )}
 
-              {/* ── Thinking chat ── */}
+              {/* ── Picking (facture/client selection) ── */}
+              {phase === "picking" && scenario.picking && (
+                <motion.div key="picking" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }} className="p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FileText className="w-4 h-4 text-zinc-500" />
+                    <span className="text-zinc-400 text-sm">{scenario.picking.title}</span>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {scenario.picking.items.map((item, i) => {
+                      const isSelected = i === pickIdx
+                      return (
+                        <motion.div
+                          key={item.name}
+                          animate={isSelected
+                            ? { backgroundColor: "#312e81", borderColor: "#4f46e5", scale: 1.02 }
+                            : { backgroundColor: "#1c1c1f", borderColor: "#27272a", scale: 1 }}
+                          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                          className="flex items-center justify-between rounded-lg border p-3"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                              style={{ backgroundColor: isSelected ? "#4f46e520" : "#27272a" }}>
+                              <FileText className="w-4 h-4" style={{ color: isSelected ? "#818cf8" : "#52525b" }} />
+                            </div>
+                            <div>
+                              <div className={`text-sm font-medium ${isSelected ? "text-white" : "text-zinc-400"}`}>{item.name}</div>
+                              <div className="text-zinc-500 text-[11px]">{item.sub}</div>
+                            </div>
+                          </div>
+                          <AnimatePresence>
+                            {isSelected && (
+                              <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 20 }}>
+                                <Check className="w-4 h-4 text-indigo-400" />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ── ChatGPT-style thinking chat ── */}
               {phase === "thinking" && (
                 <motion.div
                   key="thinking-chat"
@@ -348,50 +479,98 @@ function AIDemoAnimation() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.35 }}
-                  className="flex flex-col gap-0 p-4"
+                  className="flex flex-col gap-0 p-4 overflow-y-auto"
+                  style={{ maxHeight: 360 }}
                 >
-                  {scenario.steps.map((step, i) => (
-                    <AnimatePresence key={i}>
-                      {i <= thinkStep && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 12, height: 0 }}
-                          animate={{ opacity: 1, y: 0, height: "auto" }}
-                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                          className="flex items-start gap-3 py-3"
-                          style={{ borderBottom: i < scenario.steps.length - 1 ? "1px solid #1e1e22" : "none" }}
-                        >
-                          <div className="flex items-center justify-center w-7 h-7 rounded-lg shrink-0"
-                            style={{ backgroundColor: i === thinkStep ? "#312e81" : "#27272a" }}>
-                            <span className="text-xs">{step.icon}</span>
-                          </div>
-                          <div className="flex flex-col gap-1 pt-0.5">
-                            <div className="flex items-center gap-2">
-                              {i === thinkStep ? (
-                                <ShinyText text={step.text} className="text-sm font-medium" color="#a5b4fc" shineColor="#e0e7ff" speed={1.5} />
-                              ) : (
-                                <span className="text-zinc-400 text-sm">{step.text}</span>
-                              )}
-                              {i === thinkStep && <ThinkingDots />}
-                              {i < thinkStep && (
-                                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400 }}>
-                                  <Check className="w-3.5 h-3.5 text-emerald-400/70" />
+                  {/* ── Step 0: User message (right-aligned) ── */}
+                  {thinkStep >= 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex justify-end mb-4"
+                    >
+                      <div className="max-w-[75%]">
+                        <div className="rounded-2xl rounded-br-md px-4 py-2.5" style={{ backgroundColor: "#312e81" }}>
+                          <span className="text-white text-sm">{flow.userMessage}</span>
+                        </div>
+                        {flow.attachment && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2, duration: 0.3 }}
+                            className="flex items-center gap-1.5 mt-1.5 justify-end"
+                          >
+                            <Paperclip className="w-3 h-3 text-zinc-500" />
+                            <span className="text-zinc-500 text-[11px]">{flow.attachment}</span>
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ── Step 1+: AI side (left-aligned) ── */}
+                  {thinkStep >= 1 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex justify-start"
+                    >
+                      <div className="max-w-[85%]">
+                        {/* Thinking / Generating header */}
+                        <div className="flex items-center gap-2 mb-2">
+                          {isGenerating ? (
+                            <>
+                              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
+                                <Loader2 className="w-3.5 h-3.5 text-indigo-400" />
+                              </motion.div>
+                              <span className="text-indigo-400 text-sm font-medium">{flow.generatingText}</span>
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />
+                              <ShinyText text="Thinking" className="text-sm font-medium" color="#a1a1aa" shineColor="#ffffff" speed={1.5} />
+                              <ThinkingDots />
+                            </>
+                          )}
+                        </div>
+
+                        {/* Expanded thoughts (under Thinking, with left border line like ChatGPT) */}
+                        {!isGenerating && thinkStep >= 2 && (
+                          <div className="ml-1.5 pl-3.5" style={{ borderLeft: "2px solid #27272a" }}>
+                            {flow.thoughts.map((thought, i) => {
+                              const stepIdx = i + 2
+                              if (thinkStep < stepIdx) return null
+                              const isCurrent = thinkStep === stepIdx
+                              return (
+                                <motion.div
+                                  key={i}
+                                  initial={{ opacity: 0, y: 8, height: 0 }}
+                                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                  className="py-1.5"
+                                >
+                                  <div className="flex items-center gap-1.5">
+                                    {isCurrent ? (
+                                      <ShinyText text={thought} className="text-[13px]" color="#71717a" shineColor="#d4d4d8" speed={1.8} />
+                                    ) : (
+                                      <span className="text-zinc-500 text-[13px]">{thought}</span>
+                                    )}
+                                    {!isCurrent && (
+                                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400 }}>
+                                        <Check className="w-3 h-3 text-zinc-600" />
+                                      </motion.div>
+                                    )}
+                                  </div>
                                 </motion.div>
-                              )}
-                            </div>
-                            {i === thinkStep && (
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: "100%" }}
-                                transition={{ duration: 1.6, ease: "easeInOut" }}
-                                className="h-0.5 rounded-full mt-1"
-                                style={{ backgroundColor: "#312e81", maxWidth: 120 }}
-                              />
-                            )}
+                              )
+                            })}
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  ))}
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
                 </motion.div>
               )}
 

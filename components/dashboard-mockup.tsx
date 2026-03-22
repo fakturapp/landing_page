@@ -64,7 +64,7 @@ export function DashboardMockup() {
         variants={panelVariants}
       >
         <div style={{ padding: 12, borderBottom: "1px solid #1e1e22" }}>
-          <div className="flex items-center" style={{ gap: 8, padding: "4px 8px" }}>
+          <div className="flex items-center hover:bg-[#1a1a1e] transition-colors" style={{ gap: 8, padding: "4px 8px", borderRadius: 5, cursor: "pointer" }}>
             <img src="/logo.svg" alt="Faktur" style={{ width: 18, height: 18, display: "block" }} />
             <span style={{ color: "#fff", fontWeight: 600, fontSize: 13 }}>Faktur</span>
             <ChevronDown style={{ width: 13, height: 13, color: "#52525b", marginLeft: "auto" }} />
@@ -73,8 +73,8 @@ export function DashboardMockup() {
 
         <div style={{ padding: "10px 12px" }}>
           <div
-            className="flex items-center"
-            style={{ gap: 6, padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: 6, fontSize: 11, color: "#52525b" }}
+            className="flex items-center hover:bg-[#222226] transition-colors"
+            style={{ gap: 6, padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: 6, fontSize: 11, color: "#52525b", cursor: "pointer" }}
           >
             <Search style={{ width: 12, height: 12 }} />
             <span>Rechercher...</span>
@@ -120,7 +120,7 @@ export function DashboardMockup() {
           variants={panelVariants}
         >
           <div className="flex items-center" style={{ gap: 10 }}>
-            <div className="flex items-center justify-center" style={{ width: 26, height: 26, borderRadius: 6, backgroundColor: "#1a1a1e" }}>
+            <div className="flex items-center justify-center hover:bg-[#222226] transition-colors" style={{ width: 26, height: 26, borderRadius: 6, backgroundColor: "#1a1a1e", cursor: "pointer" }}>
               <ArrowLeft style={{ width: 13, height: 13, color: "#71717a" }} />
             </div>
             <span style={{ color: "#e4e4e7", fontWeight: 600, fontSize: 12 }}>Modifier la facture</span>
@@ -176,8 +176,8 @@ export function DashboardMockup() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
                   <div>
                     <div
-                      className="flex items-center justify-center"
-                      style={{ width: 64, height: 32, borderRadius: 4, border: "1px dashed #cbd5e1", marginBottom: 6 }}
+                      className="flex items-center justify-center hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
+                      style={{ width: 64, height: 32, borderRadius: 4, border: "1px dashed #cbd5e1", marginBottom: 6, cursor: "pointer" }}
                     >
                       <img src="/logo.svg" alt="" style={{ width: 18, height: 18, display: "block" }} />
                     </div>
@@ -197,8 +197,8 @@ export function DashboardMockup() {
 
                 {/* Dates */}
                 <div
-                  className="flex items-center"
-                  style={{ gap: 20, padding: "6px 10px", borderRadius: 5, backgroundColor: "#f0f0ff", border: "1px solid #e0e0f7", marginBottom: 16 }}
+                  className="flex items-center hover:bg-[#e8e8ff] transition-colors"
+                  style={{ gap: 20, padding: "6px 10px", borderRadius: 5, backgroundColor: "#f0f0ff", border: "1px solid #e0e0f7", marginBottom: 16, cursor: "pointer" }}
                 >
                   <DateField label="Date:" value="15/03/2024" />
                   <DateField label="Échéance:" value="15/04/2024" />
@@ -214,7 +214,7 @@ export function DashboardMockup() {
                 {/* Subject */}
                 <div style={{ marginBottom: 14 }}>
                   <T s={8} c="#64748b" style={{ marginBottom: 3 }}>Objet</T>
-                  <div style={{ padding: "4px 8px", borderBottom: "1px dashed #cbd5e1" }}>
+                  <div className="hover:bg-slate-50 transition-colors" style={{ padding: "4px 8px", borderBottom: "1px dashed #cbd5e1", cursor: "text", borderRadius: 3 }}>
                     <T s={10} c="#334155">Développement et design du site web vitrine</T>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export function DashboardMockup() {
                       <Row designation="Hébergement annuel" qty="12" unit="mois" pu="16,67 €" tva="20%" total="200,00 €" />
                     </tbody>
                   </table>
-                  <div className="flex items-center" style={{ gap: 4, padding: "5px 8px", color: A, fontSize: 9, cursor: "pointer" }}>
+                  <div className="flex items-center hover:bg-indigo-50 transition-colors" style={{ gap: 4, padding: "5px 8px", color: A, fontSize: 9, cursor: "pointer", borderRadius: 4 }}>
                     <Plus style={{ width: 11, height: 11 }} />
                     <span>Ajouter une ligne</span>
                   </div>
@@ -469,7 +469,7 @@ function Th({ children, align, w, first, last }: { children: React.ReactNode; al
 
 function Row({ designation, qty, unit, pu, tva, total, alt }: { designation: string; qty: string; unit: string; pu: string; tva: string; total: string; alt?: boolean }) {
   return (
-    <tr style={{ borderBottom: "1px solid #f1f5f9", backgroundColor: alt ? "#fafbfd" : "#fff" }}>
+    <tr className="hover:!bg-[#f0f0ff] transition-colors" style={{ borderBottom: "1px solid #f1f5f9", backgroundColor: alt ? "#fafbfd" : "#fff", cursor: "pointer" }}>
       <td style={{ padding: "6px 6px", color: "#334155", fontSize: 9, lineHeight: 1.4 }}>{designation}</td>
       <td style={{ padding: "6px 4px", color: "#64748b", fontSize: 9, textAlign: "center", lineHeight: 1.4 }}>{qty}</td>
       <td style={{ padding: "6px 4px", color: "#94a3b8", fontSize: 9, textAlign: "center", lineHeight: 1.4 }}>{unit}</td>
@@ -534,7 +534,7 @@ function OptSection({ title, children }: { title: string; children: React.ReactN
 
 function OptRow({ left, right }: { left: string; right: string }) {
   return (
-    <div className="flex items-center justify-between" style={{ padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: 5, border: "1px solid #27272a" }}>
+    <div className="flex items-center justify-between hover:bg-[#222226] hover:border-zinc-600 transition-colors" style={{ padding: "5px 8px", backgroundColor: "#1a1a1e", borderRadius: 5, border: "1px solid #27272a", cursor: "pointer" }}>
       <span style={{ color: "#71717a", fontSize: 9 }}>{left}</span>
       <span style={{ color: "#d4d4d8", fontSize: 9 }}>{right}</span>
     </div>

@@ -355,12 +355,10 @@ function AIDemoAnimation() {
                       <Loader2 className="w-4 h-4 text-indigo-400" />
                     </motion.div>
                   ) : (
-                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}>
-                      <Sparkles className="w-4 h-4 text-indigo-400" />
-                    </motion.div>
+                    <Sparkles className="w-4 h-4 text-indigo-400" />
                   )}
                   {isGenerating ? (
-                    <span className="text-indigo-400 text-sm font-medium">{barText}</span>
+                    <span className="text-indigo-400 text-sm font-medium">Faktur AI</span>
                   ) : (
                     <ShinyText text={barText} className="text-sm font-medium" color="#a1a1aa" shineColor="#ffffff" speed={1.5} />
                   )}
@@ -525,7 +523,7 @@ function AIDemoAnimation() {
                               <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
                                 <Loader2 className="w-3.5 h-3.5 text-indigo-400" />
                               </motion.div>
-                              <span className="text-indigo-400 text-sm font-medium">{flow.generatingText}</span>
+                              <span className="text-indigo-400 text-sm font-medium">Faktur AI</span>
                             </>
                           ) : (
                             <>

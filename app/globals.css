@@ -150,6 +150,12 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Fix Lexend font baseline wobble at small sizes */
+  * {
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   /* Add text selection styling */
   ::selection {
     background-color: #7170ff;

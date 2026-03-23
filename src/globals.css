@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-html {
+html,
+body {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -42,6 +44,17 @@ html {
 .github-star-btn:hover::before {
   filter: blur(6px);
   inset: -3px;
+}
+
+/* AI demo responsive transform */
+.ai-demo-stage {
+  transform-origin: top;
+  transform: translateY(0%) rotateX(30deg) scale(0.85);
+}
+@media (min-width: 768px) {
+  .ai-demo-stage {
+    transform: translateY(0%) rotateX(30deg) scale(1.15);
+  }
 }
 
 /* Add scrollbar-hide utility */

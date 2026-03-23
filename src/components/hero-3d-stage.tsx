@@ -81,7 +81,7 @@ export function Hero3DStage() {
 
   return (
     <>
-      <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "#09090B" }}>
+      <section className="relative min-h-screen overflow-x-hidden overflow-y-visible" style={{ backgroundColor: "#09090B" }}>
         <Navbar />
 
         {/* Subtle glow */}
@@ -137,7 +137,7 @@ export function Hero3DStage() {
             </div>
           </div>
 
-          {/* 3D Stage - full bleed */}
+          {/* 3D Stage - desktop */}
           <div
             className="relative mt-16 hidden md:block"
             style={{
@@ -204,13 +204,32 @@ export function Hero3DStage() {
             </div>
           </div>
 
+          {/* Dashboard - mobile (flat view) */}
+          <motion.div
+            className="md:hidden relative mt-10 mx-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div
+              className="relative rounded-xl border border-zinc-800 overflow-hidden"
+              style={{ height: "280px", backgroundColor: "#09090B" }}
+            >
+              <DashboardMockup />
+              <div
+                className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+                style={{ background: "linear-gradient(to top, #09090B 10%, transparent 100%)" }}
+              />
+            </div>
+          </motion.div>
+
           <LogoCloud />
           <FeatureCardsSection />
           <AISection />
           <ProductDirectionSection />
           <WorkflowsSection />
-          <CTASection />
           <TeamSection />
+          <CTASection />
           <Footer />
         </div>
       </section>

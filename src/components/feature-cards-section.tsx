@@ -105,7 +105,7 @@ export function FeatureCardsSection() {
       <div className="w-full flex justify-center px-6">
         <div className="w-full max-w-5xl">
           {/* Header row */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 md:gap-8 mb-10 md:mb-16">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -147,9 +147,8 @@ export function FeatureCardsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                className="bg-zinc-900/50 border border-zinc-800 hover:border-indigo-500/30 transition-colors cursor-pointer group overflow-hidden relative flex flex-col justify-end"
+                className="bg-zinc-900/50 border border-zinc-800 hover:border-indigo-500/30 transition-colors cursor-pointer group overflow-hidden relative flex flex-col justify-end aspect-[4/3] md:aspect-[336/360]"
                 style={{
-                  aspectRatio: "336 / 360",
                   borderRadius: "24px",
                   isolation: "isolate",
                 }}
@@ -165,7 +164,7 @@ export function FeatureCardsSection() {
                 </div>
                 <div
                   className="relative z-10 flex items-center justify-between w-full"
-                  style={{ padding: "0 24px 40px", gap: "16px" }}
+                  style={{ padding: "0 20px 28px", gap: "16px" }}
                 >
                   <h3 className="text-white font-medium text-lg leading-tight">{card.title}</h3>
                   <div className="w-8 h-8 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-500 group-hover:border-indigo-500/50 group-hover:text-indigo-400 transition-colors flex-shrink-0">

@@ -328,12 +328,16 @@ function AIDemoAnimation({ isVisible, paused }: { isVisible: boolean; paused: bo
       : ""
 
   return (
-    <div style={{ perspective: "900px", userSelect: "none", WebkitUserSelect: "none", width: "100%", maxWidth: "720px" }}>
-      <div style={{ transformOrigin: "top", willChange: "transform", transform: "translateY(0%) rotateX(30deg) scale(1.15)", position: "relative" }}>
+    <div className="w-full max-w-[720px]" style={{ perspective: "900px", userSelect: "none", WebkitUserSelect: "none" }}>
+      <div className="ai-demo-stage" style={{ willChange: "transform", position: "relative" }}>
         {/* Bottom fade */}
-        <div style={{
+        <div className="hidden md:block" style={{
           background: "linear-gradient(180deg, transparent 0%, #09090B 100%)", height: "80%",
           position: "absolute", bottom: "-2px", left: "-180px", right: "-180px", pointerEvents: "none", zIndex: 11,
+        }} />
+        <div className="md:hidden" style={{
+          background: "linear-gradient(180deg, transparent 0%, #09090B 100%)", height: "80%",
+          position: "absolute", bottom: "-2px", left: "-40px", right: "-40px", pointerEvents: "none", zIndex: 11,
         }} />
 
         {/* ── Modal container (Faktur style) ── */}
@@ -674,7 +678,7 @@ export function AISection() {
           </motion.button>
 
           <motion.div ref={demoRef} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center mb-24 relative">
+            className="flex justify-center mb-12 md:mb-24 relative overflow-hidden">
             <AIDemoAnimation isVisible={isVisible} paused={paused} />
             <button
               onClick={() => setPaused((p) => !p)}

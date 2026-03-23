@@ -14,7 +14,7 @@ const team = [
 export function TeamSection() {
   return (
     <section className="relative py-20 md:py-24 px-6" style={{ backgroundColor: "#09090B" }}>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -47,50 +47,48 @@ export function TeamSection() {
           Un projet open source construit avec passion pour simplifier la facturation des entrepreneurs.
         </motion.p>
 
-        <div className="flex flex-wrap gap-6">
-          {team.map((member, index) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-              className="group relative rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 hover:border-indigo-500/30 transition-colors w-full sm:w-auto"
-            >
-              <div className="flex items-center gap-5">
-                <img
-                  src={member.avatar}
-                  alt={member.name}
-                  className="w-16 h-16 rounded-full border-2 border-zinc-700 group-hover:border-indigo-500/50 transition-colors object-cover"
-                />
-                <div>
-                  <h3 className="text-white font-medium text-lg">{member.name}</h3>
-                  <p className="text-zinc-500 text-sm mb-3">{member.role}</p>
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={member.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-zinc-400 hover:text-indigo-400 transition-colors text-sm"
-                    >
-                      <Globe className="w-3.5 h-3.5" />
-                      danbenba.dev
-                    </a>
-                    <a
-                      href={member.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors text-sm"
-                    >
-                      <Github className="w-3.5 h-3.5" />
-                      GitHub
-                    </a>
-                  </div>
+        {team.map((member, index) => (
+          <motion.div
+            key={member.name}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+            className="group relative rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 hover:border-indigo-500/30 transition-colors"
+          >
+            <div className="flex flex-col sm:flex-row items-center gap-5">
+              <img
+                src={member.avatar}
+                alt={member.name}
+                className="w-20 h-20 rounded-full border-2 border-zinc-700 group-hover:border-indigo-500/50 transition-colors object-cover"
+              />
+              <div className="flex flex-col items-center sm:items-start">
+                <h3 className="text-white font-medium text-lg">{member.name}</h3>
+                <p className="text-zinc-500 text-sm mb-3">{member.role}</p>
+                <div className="flex items-center gap-3">
+                  <a
+                    href={member.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-zinc-400 hover:text-indigo-400 transition-colors text-sm"
+                  >
+                    <Globe className="w-3.5 h-3.5" />
+                    danbenba.dev
+                  </a>
+                  <a
+                    href={member.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors text-sm"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    GitHub
+                  </a>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   )

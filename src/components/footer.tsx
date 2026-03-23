@@ -14,7 +14,7 @@ const footerLinks: Record<string, FooterLink[]> = {
   ],
   Fonctionnalités: [
     { label: "Intelligence artificielle", href: "#ai" },
-    { label: "Chiffrement zero-access", href: "#security" },
+    { label: "Chiffrement zéro-access", href: "#security" },
     { label: "Factures récurrentes", href: "#integrations" },
     { label: "Gestion d'équipe", href: "#integrations" },
     { label: "Intégration email", href: "#integrations" },

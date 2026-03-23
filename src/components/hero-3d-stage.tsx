@@ -115,7 +115,7 @@ export function Hero3DStage() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="mt-6 text-lg text-zinc-400"
               >
-                Logiciel de facturation gratuit avec chiffrement zero-access.
+                Logiciel de facturation gratuit avec chiffrement zéro-access.
                 <br />
                 Faktur chiffre vos données avec votre mot de passe, même nous ne pouvons pas les lire.
               </motion.p>

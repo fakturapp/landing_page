@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react"
 import { motion, useInView, AnimatePresence } from "framer-motion"
-import { ChevronRight, Lock, ShieldCheck, Database, FileText, Users, CreditCard, Building2 } from "lucide-react"
+import { ChevronRight, Lock, ShieldCheck, Database, FileText, Users, Building2, Github, GitBranch, Code2, Globe, CreditCard } from "lucide-react"
 
 /* ============================================================
    Encryption Flow — Animated pipeline
@@ -274,34 +274,89 @@ export function ProductDirectionSection() {
           </div>
 
           <div className="border-t border-b border-zinc-800 pt-10 pl-10 pb-16">
-            <h3 className="text-xl font-medium text-zinc-200 mb-3">Suivi des paiements</h3>
+            <h3 className="text-xl font-medium text-zinc-200 mb-3">100% Open Source</h3>
             <p className="text-zinc-500 text-base leading-relaxed mb-8">
-              Suivez chaque paiement en temps réel avec des notifications automatiques.
+              Le code source de Faktur est entièrement ouvert. Auditez, contribuez et déployez en toute confiance.
             </p>
-            <div className="relative h-48">
-              <div className="absolute rounded-lg bg-zinc-800/40 border border-zinc-700/30 px-4 py-2" style={{ top: 0, left: "10%", width: "80%" }}>
-                <span className="flex items-center gap-2 text-zinc-500 text-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />En retard — TechStart SAS
-                </span>
-              </div>
-              <div className="absolute rounded-lg bg-zinc-800/60 border border-zinc-700/40 px-4 py-2" style={{ top: "30px", left: "5%", width: "85%" }}>
-                <span className="flex items-center gap-2 text-zinc-400 text-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />Envoyée — Studio Créatif
-                </span>
-              </div>
-              <div className="absolute rounded-xl bg-zinc-800/90 border border-zinc-700/50 px-5 py-4" style={{ top: "60px", left: 0, width: "95%" }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                    <svg className="w-3 h-3 text-emerald-500" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
-                    </svg>
-                  </span>
-                  <span className="text-emerald-500 font-medium text-sm">Payée</span>
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5">
+              <div className="flex items-center gap-3 mb-5">
+                <Github className="w-6 h-6 text-zinc-200" />
+                <div>
+                  <div className="text-zinc-200 text-sm font-medium">faktur-app/faktur</div>
+                  <div className="text-zinc-500 text-xs">MIT License · TypeScript · Next.js</div>
                 </div>
-                <p className="text-zinc-300 text-sm mb-3">Dupont & Fils — 2 450,00 € reçu par virement</p>
-                <span className="text-zinc-500 text-xs">18 mars 2024</span>
+              </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs">
+                  <Code2 className="w-3 h-3" />Open Source
+                </div>
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-400 text-xs">
+                  <Globe className="w-3 h-3" />Self-hostable
+                </div>
+              </div>
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-zinc-400 text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  Code source transparent et auditable
+                </div>
+                <div className="flex items-center gap-2 text-zinc-400 text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  Déployez sur vos propres serveurs
+                </div>
+                <div className="flex items-center gap-2 text-zinc-400 text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  Communauté de contributeurs active
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* ===== Roadmap & Team ===== */}
+        <div className="mt-16 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 p-10">
+          <div className="flex items-center gap-2 mb-6">
+            <GitBranch className="w-5 h-5 text-indigo-400" />
+            <h3 className="text-xl font-medium text-zinc-200">Roadmap de développement</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            {[
+              { quarter: "Q1 2025", label: "Fondations", items: ["Dashboard", "Factures & devis", "Export PDF"], done: true },
+              { quarter: "Q2 2025", label: "Croissance", items: ["Faktur AI", "Envoi email", "Factur-X"], current: true },
+              { quarter: "Q3 2025", label: "Expansion", items: ["App mobile", "API publique", "Webhooks"] },
+              { quarter: "Q4 2025", label: "Enterprise", items: ["Multi-équipes", "SSO", "Audit logs"] },
+            ].map((phase) => (
+              <div key={phase.quarter} className="relative">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className={`w-2.5 h-2.5 rounded-full ${phase.done ? "bg-emerald-500" : phase.current ? "bg-indigo-500 animate-pulse" : "bg-zinc-700"}`} />
+                  <span className={`text-xs font-semibold uppercase tracking-wider ${phase.done ? "text-emerald-400" : phase.current ? "text-indigo-400" : "text-zinc-600"}`}>
+                    {phase.quarter}
+                  </span>
+                </div>
+                <div className="text-zinc-200 text-sm font-medium mb-2">{phase.label}</div>
+                <div className="space-y-1.5">
+                  {phase.items.map((item) => (
+                    <div key={item} className="flex items-center gap-2 text-zinc-500 text-xs">
+                      {phase.done ? (
+                        <span className="text-emerald-400">&#10003;</span>
+                      ) : (
+                        <span className="w-1 h-1 rounded-full bg-zinc-600" />
+                      )}
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-zinc-800 pt-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Users className="w-4 h-4 text-zinc-400" />
+              <span className="text-zinc-300 text-sm font-medium">Contribuez au projet</span>
+            </div>
+            <p className="text-zinc-500 text-sm leading-relaxed max-w-2xl">
+              Faktur est un projet open source construit par et pour la communauté.
+              Que vous soyez développeur, designer ou simplement utilisateur, vos contributions sont les bienvenues.
+            </p>
           </div>
         </div>
 

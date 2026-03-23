@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence, useMotionValue, useAnimationFrame, useTransform } from "framer-motion"
-import { ChevronRight, ChevronDown, Sparkles, Check, Mail, BarChart3, Users, TrendingUp, FileText, MessageSquare, Loader2, Paperclip, Pause, Play } from "lucide-react"
+import { ChevronRight, ChevronDown, Sparkles, Check, Mail, BarChart3, Users, TrendingUp, FileText, MessageSquare, Loader2, Paperclip, Pause, Play, X, Zap, Brain, ShieldCheck } from "lucide-react"
 
 /* ============================================================
    ShinyText
@@ -626,6 +626,7 @@ export function AISection() {
   const demoRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [paused, setPaused] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     const el = demoRef.current
@@ -665,7 +666,9 @@ export function AISection() {
             secondes grâce à l&apos;intelligence artificielle. Résumés, suggestions et assistance intégrés.
           </motion.p>
 
-          <motion.button initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+          <motion.button
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+            onClick={() => setShowModal(true)}
             className="px-5 py-2.5 bg-zinc-800 text-zinc-300 rounded-lg border border-zinc-700 hover:bg-zinc-700 transition-colors text-sm flex items-center gap-2 mb-16">
             En savoir plus
             <ChevronRight className="w-4 h-4" />
@@ -763,6 +766,122 @@ export function AISection() {
           </motion.div>
         </div>
       </div>
+
+      {/* ── "En savoir plus" Modal ── */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            onClick={() => setShowModal(false)}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-lg rounded-2xl overflow-hidden"
+              style={{
+                backgroundColor: "#09090b",
+                border: "1px solid #27272a",
+                boxShadow: "0 0 80px -20px rgba(99,102,241,0.2), 0 25px 50px -12px rgba(0,0,0,0.7)",
+              }}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors z-10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Header */}
+              <div className="px-8 pt-8 pb-6 border-b border-zinc-800/60">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #4338ca, #6366f1)" }}>
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-medium text-lg">Faktur AI</h3>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full">Beta</span>
+                  </div>
+                </div>
+                <p className="text-zinc-400 text-sm leading-relaxed">
+                  L&apos;intelligence artificielle intégrée à Faktur pour automatiser votre facturation et vous faire gagner du temps.
+                </p>
+              </div>
+
+              {/* Features list */}
+              <div className="px-8 py-6 space-y-5">
+                {[
+                  {
+                    icon: Mail,
+                    iconColor: "#818cf8",
+                    title: "Rédaction automatique de mails",
+                    desc: "Générez des mails de relance, de confirmation ou d'envoi de facture en un clic. L'IA adapte le ton et le contenu à chaque client.",
+                  },
+                  {
+                    icon: Brain,
+                    iconColor: "#34d399",
+                    title: "Résumés intelligents",
+                    desc: "Obtenez une vue synthétique de votre activité : chiffre d'affaires, factures en attente, tendances et alertes personnalisées.",
+                  },
+                  {
+                    icon: Users,
+                    iconColor: "#fb923c",
+                    title: "Suggestions clients",
+                    desc: "Identifiez les opportunités commerciales : renouvellements, relances et factures récurrentes à envoyer.",
+                  },
+                  {
+                    icon: Zap,
+                    iconColor: "#60a5fa",
+                    title: "Pré-remplissage de documents",
+                    desc: "L'IA analyse vos données pour pré-remplir factures et devis automatiquement. Validez et envoyez en quelques secondes.",
+                  },
+                  {
+                    icon: ShieldCheck,
+                    iconColor: "#a78bfa",
+                    title: "Confidentialité garantie",
+                    desc: "Vos données restent chiffrées et ne quittent jamais votre espace. L'IA fonctionne dans un environnement sécurisé.",
+                  },
+                ].map((feature) => (
+                  <div key={feature.title} className="flex gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ backgroundColor: `${feature.iconColor}15` }}
+                    >
+                      <feature.icon style={{ width: 18, height: 18, color: feature.iconColor }} />
+                    </div>
+                    <div>
+                      <h4 className="text-zinc-200 text-sm font-medium mb-1">{feature.title}</h4>
+                      <p className="text-zinc-500 text-[13px] leading-relaxed">{feature.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="px-8 py-5 border-t border-zinc-800/60 flex items-center justify-between">
+                <span className="text-zinc-600 text-xs">Disponible avec tous les plans Faktur</span>
+                <a
+                  href="https://dash.fakturapp.cc"
+                  className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-500 transition-colors"
+                >
+                  Essayer Faktur AI
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

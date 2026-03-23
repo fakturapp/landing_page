@@ -410,7 +410,7 @@ function EncryptionFlow() {
             animate={isLocked ? { fill: "#818cf8" } : { fill: "#3f3f46" }}
             transition={{ duration: 0.4 }}
           >
-            AES-256-GCM
+            Zero-Access Encryptor
           </motion.text>
         </g>
       </svg>

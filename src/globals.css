@@ -7,6 +7,16 @@ html {
 
 @custom-variant dark (&:is(.dark *));
 
+/* Rainbow animation for GitHub star button */
+@keyframes rainbow {
+  0% { background-position: 0% }
+  100% { background-position: 200% }
+}
+
+@utility animate-rainbow {
+  animation: rainbow 4s linear infinite;
+}
+
 /* Add scrollbar-hide utility */
 @utility scrollbar-hide {
   -ms-overflow-style: none;

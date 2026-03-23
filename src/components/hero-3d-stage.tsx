@@ -124,12 +124,14 @@ export function Hero3DStage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+                className="mt-8 flex flex-col gap-4"
               >
-                <a href="https://dash.fakturapp.cc" className="px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-500 transition-colors text-sm">
-                  Commencer gratuitement
-                </a>
-                <GitHubStarButton />
+                <div className="flex flex-row items-center gap-4 sm:gap-6">
+                  <a href="https://dash.fakturapp.cc" className="px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-500 transition-colors text-sm">
+                    Commencer gratuitement
+                  </a>
+                  <GitHubStarButton />
+                </div>
                   <button className="text-zinc-300 font-medium hover:text-white transition-colors flex items-center gap-2 text-sm">
                     <span className="text-zinc-500">Fait avec</span>❤️  par danbenba
                 </button>
@@ -137,9 +139,9 @@ export function Hero3DStage() {
             </div>
           </div>
 
-          {/* 3D Stage - desktop */}
+          {/* 3D Stage */}
           <div
-            className="relative mt-16 hidden md:block"
+            className="relative mt-16"
             style={{
               width: "100vw",
               marginLeft: "-50vw",
@@ -149,6 +151,7 @@ export function Hero3DStage() {
               right: "50%",
               height: "700px",
               marginTop: "-60px",
+              overflow: "hidden",
             }}
           >
             <div
@@ -203,25 +206,6 @@ export function Hero3DStage() {
               </motion.div>
             </div>
           </div>
-
-          {/* Dashboard - mobile (flat view) */}
-          <motion.div
-            className="md:hidden relative mt-10 mx-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div
-              className="relative rounded-xl border border-zinc-800 overflow-hidden"
-              style={{ height: "280px", backgroundColor: "#09090B" }}
-            >
-              <DashboardMockup />
-              <div
-                className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-                style={{ background: "linear-gradient(to top, #09090B 10%, transparent 100%)" }}
-              />
-            </div>
-          </motion.div>
 
           <LogoCloud />
           <FeatureCardsSection />

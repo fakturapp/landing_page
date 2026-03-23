@@ -418,7 +418,7 @@ function EncryptionFlow() {
       {/* Bottom labels */}
       <div className="flex items-center justify-between w-full max-w-2xl mx-auto text-[11px] text-zinc-600 mt-4 px-4">
         <span>Données en clair</span>
-        <span className="text-indigo-400/60 font-medium">Chiffrement zero-access</span>
+        <span className="text-indigo-400/60 font-medium">Chiffrement zéro-access</span>
         <span>Stockage chiffré</span>
       </div>
     </div>
@@ -451,7 +451,7 @@ export function ProductDirectionSection() {
         </h2>
 
         <p className="text-zinc-400 text-lg max-w-md mb-16">
-          <span className="text-white font-medium">Chiffrement zero-access de bout en bout.</span> Vos factures et
+          <span className="text-white font-medium">Chiffrement zéro-access de bout en bout.</span> Vos factures et
           données clients sont chiffrées avec votre mot de passe. Même nous ne pouvons pas les lire.
         </p>
 

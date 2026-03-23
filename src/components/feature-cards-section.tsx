@@ -56,7 +56,7 @@ const featureCards = [
     illustration: <TemplateMockups />,
   },
   {
-    title: "Chiffrement zero-access",
+    title: "Chiffrement zéro-access",
     icon: Shield,
     illustration: (
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">

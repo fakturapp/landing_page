@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, ArrowRight, Mail, FileText, Users, CreditCard, Shield, RefreshCw, Smartphone } from "lucide-react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import { ChevronLeft, ChevronRight, ArrowRight, Mail, FileText, Users, Shield, RefreshCw, Github, Code2 } from "lucide-react"
 
 const carouselCards = [
   {
@@ -27,10 +27,10 @@ const carouselCards = [
   },
   {
     id: 4,
-    category: "Paiements",
-    title: "Suivez vos paiements par virement, espèces ou en ligne",
+    category: "Open Source",
+    title: "Code source ouvert, transparent et auditable par tous",
     icon: ArrowRight,
-    mockup: "payment",
+    mockup: "opensource",
   },
   {
     id: 5,
@@ -67,7 +67,6 @@ function EmailMockup() {
       <p className="text-sm text-zinc-300">
         Votre facture FAK-2024-001 <span className="text-zinc-500">est disponible...</span>
       </p>
-
       <div className="mt-2 flex items-center gap-2 bg-zinc-800/50 rounded-lg px-3 py-2">
         <div className="w-5 h-5 bg-indigo-500/20 rounded flex items-center justify-center">
           <FileText className="w-3 h-3 text-indigo-400" />
@@ -75,10 +74,9 @@ function EmailMockup() {
         <span className="text-sm text-zinc-300">FAK-2024-001.pdf</span>
         <span className="text-xs text-zinc-500">Pièce jointe</span>
       </div>
-
       <div className="mt-1 flex items-center gap-2 px-3 py-2">
         <div className="w-4 h-4 rounded-full bg-emerald-500/30 flex items-center justify-center">
-          <span className="text-[8px] text-emerald-400">✓</span>
+          <span className="text-[8px] text-emerald-400">&#10003;</span>
         </div>
         <span className="text-sm text-zinc-500">Envoyé avec succès</span>
       </div>
@@ -92,7 +90,7 @@ function PdfMockup() {
       <div className="flex flex-col items-center gap-2">
         <div className="w-16 h-22 rounded-lg border border-indigo-500/30 bg-indigo-500/10 flex flex-col items-center justify-center p-2">
           <FileText className="w-6 h-6 text-indigo-400 mb-1" />
-          <span className="text-[8px] text-indigo-400 font-mono">Factur-X</span>
+          <span className="text-[8px] text-indigo-400">Factur-X</span>
         </div>
         <span className="text-[10px] text-zinc-500">XML + PDF/A-3</span>
       </div>
@@ -128,16 +126,17 @@ function TeamMockup() {
   )
 }
 
-function PaymentMockup() {
+function OpenSourceMockup() {
   return (
-    <div className="flex items-center justify-center h-full">
-      <div className="flex flex-col items-center gap-3">
-        <CreditCard className="w-12 h-12 text-zinc-400" />
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-1 rounded">Virement</span>
-          <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-1 rounded">Espèces</span>
-          <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-1 rounded">En ligne</span>
-        </div>
+    <div className="flex flex-col items-center justify-center h-full gap-3">
+      <Github className="w-12 h-12 text-zinc-300" />
+      <div className="flex items-center gap-2">
+        <Code2 className="w-3.5 h-3.5 text-emerald-400" />
+        <span className="text-[10px] text-emerald-400">MIT License</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">TypeScript</span>
+        <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">Next.js</span>
       </div>
     </div>
   )
@@ -149,7 +148,7 @@ function SecurityMockup() {
       <div className="relative">
         <Shield className="w-16 h-16 text-indigo-400/40" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-[10px] text-indigo-400 font-mono">AES-256</span>
+          <span className="text-[10px] text-indigo-400">AES-256</span>
         </div>
       </div>
     </div>
@@ -190,91 +189,95 @@ function MobileMockup() {
 
 function CardMockup({ type }: { type: string }) {
   switch (type) {
-    case "email":
-      return <EmailMockup />
-    case "pdf":
-      return <PdfMockup />
-    case "team":
-      return <TeamMockup />
-    case "payment":
-      return <PaymentMockup />
-    case "security":
-      return <SecurityMockup />
-    case "recurring":
-      return <RecurringMockup />
-    case "mobile":
-      return <MobileMockup />
-    default:
-      return null
+    case "email": return <EmailMockup />
+    case "pdf": return <PdfMockup />
+    case "team": return <TeamMockup />
+    case "opensource": return <OpenSourceMockup />
+    case "security": return <SecurityMockup />
+    case "recurring": return <RecurringMockup />
+    case "mobile": return <MobileMockup />
+    default: return null
   }
 }
 
 export function WorkflowsSection() {
   const [scrollPosition, setScrollPosition] = useState(0)
+  const maxScroll = carouselCards.length - 4
+  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const pauseRef = useRef(false)
 
-  const scrollLeft = () => {
-    setScrollPosition(Math.max(0, scrollPosition - 1))
-  }
+  const scrollLeftFn = useCallback(() => {
+    setScrollPosition((p) => Math.max(0, p - 1))
+  }, [])
 
-  const scrollRight = () => {
-    setScrollPosition(Math.min(carouselCards.length - 4, scrollPosition + 1))
-  }
+  const scrollRightFn = useCallback(() => {
+    setScrollPosition((p) => {
+      if (p >= maxScroll) return 0
+      return p + 1
+    })
+  }, [maxScroll])
+
+  // Auto-scroll
+  useEffect(() => {
+    autoScrollRef.current = setInterval(() => {
+      if (!pauseRef.current) scrollRightFn()
+    }, 3500)
+    return () => { if (autoScrollRef.current) clearInterval(autoScrollRef.current) }
+  }, [scrollRightFn])
+
+  const handleMouseEnter = () => { pauseRef.current = true }
+  const handleMouseLeave = () => { pauseRef.current = false }
 
   return (
     <section id="integrations" className="relative py-24" style={{ backgroundColor: "#09090B" }}>
-      {/* Top gradient */}
       <div
         className="absolute top-0 left-0 right-0 pointer-events-none"
-        style={{
-          height: "20%",
-          background: "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent)",
-        }}
+        style={{ height: "20%", background: "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent)" }}
       />
 
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-16">
           <div className="lg:max-w-xl">
-            {/* Orange indicator */}
             <div className="flex items-center gap-2 mb-6">
               <div className="w-2 h-2 rounded-full bg-orange-500" />
               <span className="text-sm text-zinc-400">Fonctionnalités et intégrations</span>
               <ChevronRight className="w-4 h-4 text-zinc-600" />
             </div>
-
-            {/* Heading */}
             <h2 className="text-4xl md:text-5xl font-medium text-white leading-[1.1]">
               Tout ce dont vous avez
               <br />
               besoin pour facturer
             </h2>
           </div>
-
-          {/* Description */}
           <p className="text-zinc-400 lg:max-w-sm lg:pt-12">
             Faktur regroupe tous les outils nécessaires pour gérer votre facturation : emails, exports PDF, gestion
-            d'équipe, suivi des paiements et bien plus.
+            d&apos;équipe, suivi des paiements et bien plus.
           </p>
         </div>
 
         {/* Carousel */}
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <div
-            className="flex gap-4 transition-transform duration-300 ease-out"
+            className="flex gap-4 transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${scrollPosition * (100 / 4)}%)` }}
           >
             {carouselCards.map((card) => (
               <div key={card.id} className="flex-shrink-0 w-[calc(25%-12px)] min-w-[280px]">
-                <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-xl overflow-hidden h-[340px] flex flex-col hover:border-indigo-500/20 transition-colors">
+                <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-xl overflow-hidden h-[340px] flex flex-col hover:border-indigo-500/20 transition-colors relative">
+                  {/* Badge "En développement" */}
+                  <div className="absolute top-3 right-3 z-10">
+                    <span className="text-[8px] font-semibold uppercase tracking-wider bg-orange-500/15 text-orange-400 px-2 py-1 rounded-full border border-orange-500/20">
+                      En dev
+                    </span>
+                  </div>
+
                   {/* Mockup area */}
                   <div className="flex-1 relative overflow-hidden">
                     <CardMockup type={card.mockup} />
-                    {/* Fade overlay */}
                     <div
                       className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
-                      style={{
-                        background: "linear-gradient(to top, rgba(9,9,11,0.9), transparent)",
-                      }}
+                      style={{ background: "linear-gradient(to top, rgba(9,9,11,0.9), transparent)" }}
                     />
                   </div>
 
@@ -299,16 +302,16 @@ export function WorkflowsSection() {
         {/* Navigation arrows */}
         <div className="flex items-center justify-center gap-2 mt-8">
           <button
-            onClick={scrollLeft}
+            onClick={scrollLeftFn}
             className="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             disabled={scrollPosition === 0}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
-            onClick={scrollRight}
+            onClick={scrollRightFn}
             className="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            disabled={scrollPosition >= carouselCards.length - 4}
+            disabled={scrollPosition >= maxScroll}
           >
             <ChevronRight className="w-5 h-5" />
           </button>

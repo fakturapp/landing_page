@@ -45,9 +45,9 @@ export function LogoCloud() {
             className="relative group cursor-pointer"
           >
             {/* Logo grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-16 gap-y-10 items-center justify-items-center transition-all duration-300 group-hover:blur-[2.5px] group-hover:opacity-50">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 md:gap-x-16 gap-y-6 md:gap-y-10 items-center justify-items-center transition-all duration-300 group-hover:blur-[2.5px] group-hover:opacity-50">
               {professions.map((prof) => (
-                <div key={prof.name} className="text-white font-semibold text-xl flex items-center gap-2">
+                <div key={prof.name} className="text-white font-semibold text-base md:text-xl flex items-center gap-2">
                   <prof.icon className="w-5 h-5 text-indigo-400" />
                   {prof.name}
                 </div>

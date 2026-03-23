@@ -434,7 +434,7 @@ export function ProductDirectionSection() {
   const inView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section id="security" className="relative py-40 px-6 md:px-12 lg:px-24" style={{ backgroundColor: "#09090B" }}>
+    <section id="security" className="relative py-20 md:py-40 px-6 md:px-12 lg:px-24" style={{ backgroundColor: "#09090B" }}>
       <div className="max-w-6xl mx-auto">
         {/* Section label */}
         <div className="flex items-center gap-2 mb-6">
@@ -468,16 +468,16 @@ export function ProductDirectionSection() {
 
         {/* ===== BOTTOM: Two-column ===== */}
         <div className="grid grid-cols-1 md:grid-cols-2">
-          <div className="border-t border-r border-b border-zinc-800 pt-10 pr-10 pb-16">
+          <div className="border-t border-b md:border-r border-zinc-800 pt-8 md:pt-10 pr-0 md:pr-10 pb-12 md:pb-16">
             <h3 className="text-xl font-medium text-zinc-200 mb-3">Gestion complète de vos documents</h3>
             <p className="text-zinc-500 text-base leading-relaxed mb-8">
               Factures, devis, avoirs et factures récurrentes centralisés en un seul endroit.
             </p>
             <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5">
               <h4 className="text-lg font-medium text-zinc-200 mb-5">Vue d&apos;ensemble</h4>
-              <div className="flex items-center gap-4 mb-4">
-                <span className="text-zinc-500 text-sm w-20">Statut</span>
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
+                <span className="text-zinc-500 text-sm sm:w-20">Statut</span>
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="flex items-center gap-1.5 px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />8 payées
                   </span>
@@ -511,7 +511,7 @@ export function ProductDirectionSection() {
             </div>
           </div>
 
-          <div className="border-t border-b border-zinc-800 pt-10 pl-10 pb-16">
+          <div className="border-t border-b border-zinc-800 pt-8 md:pt-10 pl-0 md:pl-10 pb-12 md:pb-16">
             <h3 className="text-xl font-medium text-zinc-200 mb-3">100% Open Source</h3>
             <p className="text-zinc-500 text-base leading-relaxed mb-8">
               Le code source de Faktur est entièrement ouvert. Auditez, contribuez et déployez en toute confiance.
@@ -551,12 +551,12 @@ export function ProductDirectionSection() {
         </div>
 
         {/* ===== Roadmap & Team ===== */}
-        <div className="mt-16 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 p-10">
+        <div className="mt-16 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 p-6 md:p-10">
           <div className="flex items-center gap-2 mb-6">
             <GitBranch className="w-5 h-5 text-indigo-400" />
             <h3 className="text-xl font-medium text-zinc-200">Roadmap de développement</h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
             {[
               { quarter: "Q1 2025", label: "Fondations", items: ["Dashboard", "Factures & devis", "Export PDF"], done: true },
               { quarter: "Q2 2025", label: "Croissance", items: ["Faktur AI", "Envoi email", "Factur-X"], current: true },

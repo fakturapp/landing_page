@@ -639,7 +639,7 @@ export function AISection() {
   }, [])
 
   return (
-    <div id="ai" className="relative z-20 py-40" style={{ backgroundColor: "#09090B" }}>
+    <div id="ai" className="relative z-20 py-20 md:py-40" style={{ backgroundColor: "#09090B" }}>
       <div className="absolute top-0 left-0 right-0 pointer-events-none"
         style={{ height: "20%", background: "linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, transparent 100%)" }} />
       <div className="w-full flex justify-center px-6">
@@ -688,7 +688,7 @@ export function AISection() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-16">
             <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="border-t border-r border-b border-zinc-800/60 pt-12 pr-12 pb-16">
+              <div className="border-t border-b md:border-r border-zinc-800/60 pt-8 md:pt-12 pr-0 md:pr-12 pb-12 md:pb-16">
                 <h3 className="text-zinc-200 font-medium text-xl mb-3">Génération intelligente de documents</h3>
                 <p className="text-zinc-500 text-base mb-8">
                   L&apos;IA analyse vos données clients et produits pour pré-remplir automatiquement vos factures et devis.
@@ -721,7 +721,7 @@ export function AISection() {
                 </div>
               </div>
 
-              <div className="border-t border-b border-zinc-800/60 pt-12 pl-12 pb-16">
+              <div className="border-t border-b border-zinc-800/60 pt-8 md:pt-12 pl-0 md:pl-12 pb-12 md:pb-16">
                 <h3 className="text-zinc-200 font-medium text-xl mb-3">Résumé IA du dashboard</h3>
                 <p className="text-zinc-500 text-base mb-8">
                   Obtenez un résumé intelligent de votre activité : revenus, factures en attente et tendances.

@@ -94,7 +94,7 @@ const featureCards = [
 
 export function FeatureCardsSection() {
   return (
-    <div id="features" className="relative z-20 py-40" style={{ backgroundColor: "#09090B" }}>
+    <div id="features" className="relative z-20 py-20 md:py-40" style={{ backgroundColor: "#09090B" }}>
       <div
         className="absolute top-0 left-0 right-0 pointer-events-none"
         style={{
@@ -150,8 +150,7 @@ export function FeatureCardsSection() {
                 className="bg-zinc-900/50 border border-zinc-800 hover:border-indigo-500/30 transition-colors cursor-pointer group overflow-hidden relative flex flex-col justify-end"
                 style={{
                   aspectRatio: "336 / 360",
-                  borderRadius: "30px",
-                  height: "360px",
+                  borderRadius: "24px",
                   isolation: "isolate",
                 }}
               >

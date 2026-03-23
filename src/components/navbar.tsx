@@ -22,15 +22,16 @@ export function Navbar() {
               Intégrations
             </a>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="https://dash.fakturapp.cc" className="text-sm text-zinc-400 hover:text-white transition-colors">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <a href="https://dash.fakturapp.cc" className="hidden sm:inline text-sm text-zinc-400 hover:text-white transition-colors">
               Connexion
             </a>
             <a
               href="https://dash.fakturapp.cc"
-              className="text-sm text-white bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 rounded-md transition-colors"
+              className="text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-500 px-3 sm:px-3.5 py-1.5 rounded-md transition-colors"
             >
-              Commencer gratuitement
+              Commencer
+              <span className="hidden sm:inline"> gratuitement</span>
             </a>
           </div>
         </div>

@@ -9,6 +9,7 @@ import { AISection } from "./ai-section"
 import { ProductDirectionSection } from "./product-direction-section"
 import { WorkflowsSection } from "./workflows-section"
 import { CTASection } from "./cta-section"
+import { TeamSection } from "./team-section"
 import { Footer } from "./footer"
 
 function GitHubStarButton() {
@@ -105,7 +106,7 @@ export function Hero3DStage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-4xl md:text-5xl lg:text-[56px] font-medium text-white leading-[1.1] text-balance"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-medium text-white leading-[1.1] text-balance"
               >
                 Créez vos factures et devis en toute confiance
               </motion.h1>
@@ -113,7 +114,7 @@ export function Hero3DStage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="mt-6 text-lg text-zinc-400"
+                className="mt-6 text-base sm:text-lg text-zinc-400"
               >
                 Logiciel de facturation gratuit avec chiffrement zéro-access.
                 <br />
@@ -123,7 +124,7 @@ export function Hero3DStage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="mt-8 flex items-center gap-6"
+                className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
               >
                 <a href="https://dash.fakturapp.cc" className="px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-500 transition-colors text-sm">
                   Commencer gratuitement
@@ -138,7 +139,7 @@ export function Hero3DStage() {
 
           {/* 3D Stage - full bleed */}
           <div
-            className="relative mt-16"
+            className="relative mt-16 hidden md:block"
             style={{
               width: "100vw",
               marginLeft: "-50vw",
@@ -209,6 +210,7 @@ export function Hero3DStage() {
           <ProductDirectionSection />
           <WorkflowsSection />
           <CTASection />
+          <TeamSection />
           <Footer />
         </div>
       </section>

@@ -1,11 +1,76 @@
+"use client"
+
+import { useCallback } from "react"
+
+type FooterLink = { label: string; href: string }
+
+const footerLinks: Record<string, FooterLink[]> = {
+  Produit: [
+    { label: "Factures", href: "#features" },
+    { label: "Devis", href: "#features" },
+    { label: "Avoirs", href: "#features" },
+    { label: "Clients", href: "https://dash.fakturapp.cc" },
+    { label: "Produits", href: "https://dash.fakturapp.cc" },
+    { label: "Tableau de bord", href: "https://dash.fakturapp.cc" },
+    { label: "Export PDF", href: "#integrations" },
+  ],
+  Fonctionnalités: [
+    { label: "Intelligence artificielle", href: "#ai" },
+    { label: "Chiffrement zero-access", href: "#security" },
+    { label: "Factures récurrentes", href: "#integrations" },
+    { label: "Gestion d'équipe", href: "#integrations" },
+    { label: "Intégration email", href: "#integrations" },
+    { label: "SIREN/SIRET", href: "#security" },
+  ],
+  Entreprise: [
+    { label: "À propos", href: "#" },
+    { label: "Blog", href: "#" },
+    { label: "Contact", href: "#" },
+    { label: "Changelog", href: "#" },
+  ],
+  Légal: [
+    { label: "Confidentialité", href: "#" },
+    { label: "CGU", href: "#" },
+    { label: "Mentions légales", href: "#" },
+    { label: "DPA", href: "#" },
+  ],
+  Communauté: [
+    { label: "GitHub", href: "https://github.com/faktur-app" },
+    { label: "X (Twitter)", href: "https://x.com" },
+    { label: "Discord", href: "#" },
+  ],
+}
+
+function smoothScrollTo(href: string) {
+  if (!href.startsWith("#") || href === "#") return false
+
+  const id = href.slice(1)
+  const el = document.getElementById(id)
+  if (!el) return false
+
+  el.scrollIntoView({ behavior: "smooth", block: "start" })
+
+  // Flash animation on the target section
+  el.style.transition = "none"
+  el.style.boxShadow = "inset 0 0 0 0 transparent"
+  requestAnimationFrame(() => {
+    el.style.transition = "box-shadow 0.6s ease-out"
+    el.style.boxShadow = "inset 0 2px 0 0 #6366f1"
+    setTimeout(() => {
+      el.style.transition = "box-shadow 1s ease-out"
+      el.style.boxShadow = "inset 0 0 0 0 transparent"
+    }, 800)
+  })
+
+  return true
+}
+
 export function Footer() {
-  const footerLinks = {
-    Produit: ["Factures", "Devis", "Avoirs", "Clients", "Produits", "Tableau de bord", "Export PDF"],
-    Fonctionnalités: ["Intelligence artificielle", "Chiffrement zero-access", "Factures récurrentes", "Gestion d'équipe", "Intégration email", "SIREN/SIRET"],
-    Entreprise: ["À propos", "Blog", "Contact", "Changelog"],
-    Légal: ["Confidentialité", "CGU", "Mentions légales", "DPA"],
-    Communauté: ["GitHub", "X (Twitter)", "Discord"],
-  }
+  const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (smoothScrollTo(href)) {
+      e.preventDefault()
+    }
+  }, [])
 
   return (
     <footer className="border-t border-zinc-800 py-16 px-6" style={{ backgroundColor: "#09090B" }}>
@@ -28,9 +93,14 @@ export function Footer() {
               <h3 className="text-white font-medium text-sm mb-4">{category}</h3>
               <ul className="space-y-3">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-zinc-500 hover:text-zinc-300 transition-colors text-sm">
-                      {link}
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleClick(e, link.href)}
+                      {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="text-zinc-500 hover:text-zinc-300 transition-colors text-sm"
+                    >
+                      {link.label}
                     </a>
                   </li>
                 ))}

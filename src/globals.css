@@ -7,14 +7,41 @@ html {
 
 @custom-variant dark (&:is(.dark *));
 
-/* Rainbow animation for GitHub star button */
+/* GitHub Star button — rainbow border */
 @keyframes rainbow {
   0% { background-position: 0% }
   100% { background-position: 200% }
 }
 
-@utility animate-rainbow {
+.github-star-btn {
+  position: relative;
+  background: #121213;
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  z-index: 0;
+}
+.github-star-btn::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, hsl(0,100%,63%), hsl(90,100%,63%), hsl(210,100%,63%), hsl(195,100%,63%), hsl(270,100%,63%));
+  background-size: 200%;
   animation: rainbow 4s linear infinite;
+  z-index: -1;
+}
+.github-star-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #121213;
+  z-index: -1;
+}
+/* Glow under the button */
+.github-star-btn:hover::before {
+  filter: blur(6px);
+  inset: -3px;
 }
 
 /* Add scrollbar-hide utility */

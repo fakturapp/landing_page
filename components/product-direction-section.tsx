@@ -1,187 +1,417 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
-import { motion, useInView, AnimatePresence } from "framer-motion"
-import { ChevronRight, Lock, ShieldCheck, Database, FileText, Users, Building2, Github, GitBranch, Code2, Globe, CreditCard } from "lucide-react"
+import { useRef, useEffect, useState, useCallback, useMemo } from "react"
+import { motion, useInView, AnimatePresence, useMotionValue, useAnimationFrame, useTransform } from "framer-motion"
+import { ChevronRight, Lock, LockOpen, Database, FileText, Users, Building2, Github, GitBranch, Code2, Globe, CreditCard } from "lucide-react"
+
+/* ============================================================
+   DecryptedText — character-by-character reveal
+   ============================================================ */
+
+function DecryptedText({
+  text,
+  speed = 50,
+  sequential = false,
+  className = "",
+  encryptedClassName = "",
+  animateOn = "view",
+  revealDirection = "start",
+}: {
+  text: string
+  speed?: number
+  sequential?: boolean
+  className?: string
+  encryptedClassName?: string
+  animateOn?: "view" | "hover"
+  revealDirection?: "start" | "end" | "center"
+}) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+"
+  const [displayText, setDisplayText] = useState(text)
+  const [isHovering, setIsHovering] = useState(false)
+  const [hasAnimated, setHasAnimated] = useState(false)
+  const containerRef = useRef<HTMLSpanElement>(null)
+
+  const getRevealOrder = useCallback(
+    (length: number) => {
+      const indices = Array.from({ length }, (_, i) => i)
+      switch (revealDirection) {
+        case "end":
+          return indices.reverse()
+        case "center": {
+          const mid = Math.floor(length / 2)
+          return indices.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid))
+        }
+        default:
+          return indices
+      }
+    },
+    [revealDirection]
+  )
+
+  const revealOrder = useMemo(() => getRevealOrder(text.length), [getRevealOrder, text.length])
+
+  useEffect(() => {
+    let isCancelled = false
+
+    const shouldAnimate =
+      animateOn === "view" ? !hasAnimated : animateOn === "hover" ? isHovering : false
+
+    if (!shouldAnimate) return
+
+    const revealed = new Set<number>()
+    let currentIndex = 0
+
+    const interval = setInterval(() => {
+      if (isCancelled) return
+
+      if (currentIndex < revealOrder.length) {
+        if (sequential) {
+          revealed.add(revealOrder[currentIndex])
+          currentIndex++
+        } else {
+          const batchSize = Math.max(1, Math.floor(revealOrder.length / 10))
+          for (let i = 0; i < batchSize && currentIndex < revealOrder.length; i++) {
+            revealed.add(revealOrder[currentIndex])
+            currentIndex++
+          }
+        }
+      }
+
+      const next = text
+        .split("")
+        .map((char, i) => {
+          if (char === " ") return " "
+          if (revealed.has(i)) return char
+          return chars[Math.floor(Math.random() * chars.length)]
+        })
+        .join("")
+
+      setDisplayText(next)
+
+      if (currentIndex >= revealOrder.length) {
+        clearInterval(interval)
+        setDisplayText(text)
+        if (animateOn === "view") setHasAnimated(true)
+      }
+    }, speed)
+
+    return () => {
+      isCancelled = true
+      clearInterval(interval)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHovering, hasAnimated, animateOn])
+
+  useEffect(() => {
+    if (animateOn !== "view") return
+    const el = containerRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) setHasAnimated(true)
+      },
+      { threshold: 0.1 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [animateOn, hasAnimated])
+
+  return (
+    <span
+      ref={containerRef}
+      className={className}
+      onMouseEnter={() => animateOn === "hover" && setIsHovering(true)}
+      onMouseLeave={() => animateOn === "hover" && setIsHovering(false)}
+    >
+      {displayText.split("").map((char, i) => {
+        const isRevealed = char === text[i]
+        return (
+          <span key={i} className={isRevealed ? "" : encryptedClassName}>
+            {char}
+          </span>
+        )
+      })}
+    </span>
+  )
+}
 
 /* ============================================================
    Encryption Flow — Animated pipeline
-   Data packets flow through a shield → come out encrypted
+   3 data sources → dots with trails → padlock closes →
+   green dots exit through 4 points → DecryptedText reveal
    ============================================================ */
 
-const DATA_ITEMS = [
-  { icon: FileText, label: "Facture FAK-2024-001", encrypted: "xK9mR2..vP4nQ8", color: "#818cf8" },
-  { icon: Users, label: "Dupont & Fils SARL", encrypted: "aH7bY3..wL5jM1", color: "#34d399" },
-  { icon: CreditCard, label: "2 490,00 € Virement", encrypted: "cP2nT6..zR8fK4", color: "#fb923c" },
-  { icon: Building2, label: "SIREN: 123 456 789", encrypted: "dQ5sV9..uX3hN7", color: "#60a5fa" },
+const DATA_SOURCES = [
+  { label: "Factures", color: "#818cf8", icon: FileText },
+  { label: "Clients", color: "#34d399", icon: Users },
+  { label: "Paiements", color: "#fb923c", icon: CreditCard },
 ]
 
+const OUTPUT_ITEMS = [
+  { label: "Base de données", encrypted: "xK9mR2..vP4nQ8" },
+  { label: "Sauvegarde", encrypted: "aH7bY3..wL5jM1" },
+  { label: "Synchronisation", encrypted: "cP2nT6..zR8fK4" },
+  { label: "Archivage", encrypted: "dQ5sV9..uX3hN7" },
+]
+
+type EncryptPhase = "dots-in" | "locking" | "locked" | "dots-out" | "encrypted"
+
+/* Animated trail: a bright tip + fading tail traveling along a path */
+function AnimatedTrail({ d, color, delay, duration }: { d: string; color: string; delay: number; duration: number }) {
+  return (
+    <>
+      {/* The trail: short segment that slides along the path */}
+      <motion.path
+        d={d}
+        fill="none"
+        stroke={color}
+        strokeWidth="3"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, pathOffset: 0, opacity: 0 }}
+        animate={{
+          pathLength: [0, 0.15, 0.15, 0],
+          pathOffset: [0, 0, 0.85, 1],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration,
+          delay,
+          ease: "easeInOut",
+          times: [0, 0.15, 0.85, 1],
+        }}
+        style={{ filter: `drop-shadow(0 0 8px ${color})` }}
+      />
+      {/* A wider, dimmer "glow" trail behind */}
+      <motion.path
+        d={d}
+        fill="none"
+        stroke={color}
+        strokeWidth="6"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, pathOffset: 0, opacity: 0 }}
+        animate={{
+          pathLength: [0, 0.25, 0.25, 0],
+          pathOffset: [0, 0, 0.75, 1],
+          opacity: [0, 0.15, 0.15, 0],
+        }}
+        transition={{
+          duration,
+          delay,
+          ease: "easeInOut",
+          times: [0, 0.15, 0.85, 1],
+        }}
+      />
+    </>
+  )
+}
+
 function EncryptionFlow() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [phase, setPhase] = useState<"enter" | "encrypt" | "exit">("enter")
+  const [phase, setPhase] = useState<EncryptPhase>("dots-in")
+  const [cycleKey, setCycleKey] = useState(0)
 
   useEffect(() => {
-    const cycle = () => {
-      setPhase("enter")
-      const t1 = setTimeout(() => setPhase("encrypt"), 1000)
-      const t2 = setTimeout(() => setPhase("exit"), 2000)
-      const t3 = setTimeout(() => {
-        setActiveIndex((i) => (i + 1) % DATA_ITEMS.length)
-        setPhase("enter")
-      }, 3200)
-      return [t1, t2, t3]
-    }
-    const timers = cycle()
-    const interval = setInterval(() => {
-      cycle()
-    }, 3200)
-    return () => {
-      timers.forEach(clearTimeout)
-      clearInterval(interval)
-    }
-  }, [])
+    const timers: ReturnType<typeof setTimeout>[] = []
+    const t = (fn: () => void, ms: number) => { timers.push(setTimeout(fn, ms)) }
 
-  const item = DATA_ITEMS[activeIndex]
-  const Icon = item.icon
+    setPhase("dots-in")
+    t(() => setPhase("locking"), 2200)
+    t(() => setPhase("locked"), 3200)
+    t(() => setPhase("dots-out"), 3800)
+    t(() => setPhase("encrypted"), 6000)
+    t(() => { setCycleKey((c) => c + 1) }, 9500)
+
+    return () => timers.forEach(clearTimeout)
+  }, [cycleKey])
+
+  const isLocked = phase === "locked" || phase === "dots-out" || phase === "encrypted"
+
+  // Input paths: 3 sources → center padlock
+  const inputPaths = DATA_SOURCES.map((_, i) => {
+    const sy = 100 + i * 100
+    return `M 80 ${sy} C 220 ${sy}, 320 200, 370 200`
+  })
+
+  // Output paths: center → 4 endpoints
+  const outputPaths = OUTPUT_ITEMS.map((_, i) => {
+    const ey = 65 + i * 90
+    return `M 430 200 C 500 200, 580 ${ey}, 660 ${ey}`
+  })
 
   return (
-    <div className="relative flex flex-col items-center gap-12 py-16">
+    <div className="relative py-10 px-4" key={cycleKey}>
+      <svg className="w-full" viewBox="0 0 800 400" fill="none" style={{ maxHeight: 420 }}>
 
-      {/* ── Main flow row ── */}
-      <div className="flex items-center justify-center gap-6 md:gap-10 w-full max-w-3xl mx-auto">
+        {/* ── Input lines + animated trails ── */}
+        {DATA_SOURCES.map((src, i) => {
+          const d = inputPaths[i]
+          const sy = 100 + i * 100
+          return (
+            <g key={`in-${i}`}>
+              {/* Static line */}
+              <path d={d} stroke="#1e1e22" strokeWidth="1.5" />
 
-        {/* Left: data origin */}
-        <div className="flex flex-col items-center gap-3 w-[180px] shrink-0">
-          <div className="text-zinc-600 text-[10px] font-medium uppercase tracking-widest mb-1">Vos données</div>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeIndex}-left`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.4 }}
-              className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/80 px-4 py-3 w-full"
-            >
-              <div className="flex items-center justify-center rounded-md shrink-0"
-                style={{ width: 28, height: 28, backgroundColor: `${item.color}15` }}>
-                <Icon style={{ width: 14, height: 14, color: item.color }} />
-              </div>
-              <span className="text-zinc-300 text-xs font-medium truncate">{item.label}</span>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              {/* Dot with trail */}
+              {phase === "dots-in" && (
+                <AnimatedTrail d={d} color={src.color} delay={i * 0.35} duration={1.8} />
+              )}
 
-        {/* Arrow left → shield */}
-        <div className="flex-1 relative h-[2px] max-w-[100px]">
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-700" />
-          <motion.div
-            className="absolute top-[-3px] w-2 h-2 rounded-full"
-            style={{ backgroundColor: item.color, boxShadow: `0 0 12px ${item.color}` }}
-            animate={phase === "enter" ? { left: ["0%", "100%"] } : { left: "100%", opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          />
-        </div>
+              {/* Arrival flash at center */}
+              {phase === "locking" && (
+                <motion.circle
+                  cx="370" cy="200" r="3"
+                  fill={src.color}
+                  initial={{ opacity: 0, r: 3 }}
+                  animate={{ opacity: [1, 0], r: [3, 12] }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                />
+              )}
 
-        {/* Center: Shield */}
-        <div className="relative flex items-center justify-center shrink-0">
-          {/* Outer pulse */}
-          <motion.div
-            className="absolute rounded-full"
-            style={{ width: 120, height: 120 }}
-            animate={phase === "encrypt"
-              ? { boxShadow: ["0 0 0px rgba(99,102,241,0)", "0 0 60px rgba(99,102,241,0.4)", "0 0 0px rgba(99,102,241,0)"] }
-              : {}
+              {/* Source label box */}
+              <rect x="6" y={sy - 22} width="68" height="44" rx="10" fill="#111113" stroke="#27272a" strokeWidth="1" />
+              <foreignObject x="6" y={sy - 22} width="68" height="44">
+                <div className="flex flex-col items-center justify-center h-full gap-0.5">
+                  <src.icon style={{ width: 16, height: 16, color: src.color }} />
+                  <span style={{ fontSize: 9, color: "#71717a" }}>{src.label}</span>
+                </div>
+              </foreignObject>
+            </g>
+          )
+        })}
+
+        {/* ── Output lines + green trails + encrypted boxes ── */}
+        {OUTPUT_ITEMS.map((item, i) => {
+          const d = outputPaths[i]
+          const ey = 65 + i * 90
+          const showEncrypted = phase === "encrypted"
+          return (
+            <g key={`out-${i}`}>
+              {/* Static line */}
+              <path d={d} stroke="#1e1e22" strokeWidth="1.5" />
+
+              {/* Green trail */}
+              {phase === "dots-out" && (
+                <AnimatedTrail d={d} color="#22c55e" delay={i * 0.2} duration={1.6} />
+              )}
+
+              {/* Output box — bigger, with encrypted text */}
+              <motion.rect
+                x="660" y={ey - 24} width="130" height="48" rx="10"
+                fill="#111113" strokeWidth="1"
+                animate={
+                  showEncrypted
+                    ? { stroke: "#22c55e40", fill: "#052e1605" }
+                    : { stroke: "#27272a", fill: "#111113" }
+                }
+                transition={{ duration: 0.5, delay: showEncrypted ? i * 0.1 : 0 }}
+              />
+              <foreignObject x="660" y={ey - 24} width="130" height="48">
+                <div className="flex flex-col items-center justify-center h-full gap-1 px-2">
+                  {showEncrypted ? (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <Lock style={{ width: 8, height: 8, color: "#22c55e", flexShrink: 0 }} />
+                        <DecryptedText
+                          text={item.encrypted}
+                          speed={35}
+                          sequential
+                          animateOn="view"
+                          className="font-mono text-emerald-400/70"
+                          encryptedClassName="text-indigo-400/40"
+                          parentClassName="text-[9px] leading-none"
+                        />
+                      </div>
+                      <span style={{ fontSize: 7, color: "#3f3f46" }}>{item.label}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Lock style={{ width: 10, height: 10, color: "#3f3f46" }} />
+                      <span style={{ fontSize: 8, color: "#52525b" }}>{item.label}</span>
+                    </>
+                  )}
+                </div>
+              </foreignObject>
+            </g>
+          )
+        })}
+
+        {/* ── Central padlock ── */}
+        <g>
+          {/* Pulse ring */}
+          <motion.circle
+            cx="400" cy="200" r="52"
+            fill="none" stroke="#6366f1" strokeWidth="1"
+            initial={{ opacity: 0.05 }}
+            animate={
+              phase === "locking"
+                ? { r: [52, 65, 52], opacity: [0.1, 0.6, 0.2] }
+                : isLocked
+                  ? { opacity: 0.25 }
+                  : { opacity: 0.05 }
             }
-            transition={{ duration: 0.8 }}
-          />
-          <motion.div
-            className="absolute rounded-full border border-indigo-500/20"
-            style={{ width: 110, height: 110 }}
-            animate={{ scale: [1, 1.08, 1], opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            transition={phase === "locking" ? { duration: 1, repeat: 1 } : { duration: 0.4 }}
           />
 
-          {/* Shield body */}
-          <motion.div
-            className="relative flex items-center justify-center rounded-full z-10"
-            style={{
-              width: 80, height: 80,
-              background: "linear-gradient(135deg, #312e81 0%, #4338ca 50%, #6366f1 100%)",
-              boxShadow: "0 0 40px rgba(99,102,241,0.3), inset 0 1px 1px rgba(255,255,255,0.1)",
-            }}
-            animate={phase === "encrypt" ? { scale: [1, 1.12, 1] } : {}}
+          {/* Inner circle */}
+          <motion.circle
+            cx="400" cy="200" r="42"
+            stroke="#27272a" strokeWidth="1.5"
+            animate={isLocked ? { fill: "#312e81" } : { fill: "#111113" }}
             transition={{ duration: 0.5 }}
-          >
-            <ShieldCheck className="text-white" style={{ width: 32, height: 32 }} />
-          </motion.div>
-
-          {/* Lock badge */}
-          <motion.div
-            className="absolute flex items-center justify-center rounded-full z-20"
-            style={{
-              width: 24, height: 24, bottom: 0, right: 0,
-              backgroundColor: "#1e1b4b", border: "2px solid #312e81",
-            }}
-            animate={{ y: [0, -2, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Lock style={{ width: 10, height: 10, color: "#a5b4fc" }} />
-          </motion.div>
-        </div>
-
-        {/* Arrow shield → right */}
-        <div className="flex-1 relative h-[2px] max-w-[100px]">
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-700 to-zinc-800" />
-          <motion.div
-            className="absolute top-[-3px] w-2 h-2 rounded-full bg-emerald-400"
-            style={{ boxShadow: "0 0 12px #34d399" }}
-            animate={phase === "exit" ? { left: ["0%", "100%"] } : { left: "0%", opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
           />
-        </div>
 
-        {/* Right: encrypted output */}
-        <div className="flex flex-col items-center gap-3 w-[180px] shrink-0">
-          <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-widest text-zinc-600 mb-1">
-            <Database style={{ width: 10, height: 10 }} />
-            <span>Chiffré</span>
-          </div>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeIndex}-right`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={phase === "exit" ? { opacity: 1, y: 0 } : { opacity: 0.3, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.4, delay: phase === "exit" ? 0.6 : 0 }}
-              className="flex items-center gap-3 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-4 py-3 w-full"
-            >
-              <Lock style={{ width: 12, height: 12, color: "#22c55e", flexShrink: 0 }} />
-              <span className="font-mono text-emerald-400/70 text-[11px] truncate">{item.encrypted}</span>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+          {/* Lock glow burst when locking */}
+          {phase === "locking" && (
+            <motion.circle
+              cx="400" cy="200" r="44"
+              fill="none" stroke="#6366f1"
+              initial={{ strokeWidth: 0, opacity: 0 }}
+              animate={{ strokeWidth: [0, 5, 0], opacity: [0, 0.7, 0] }}
+              transition={{ duration: 1 }}
+            />
+          )}
 
-      {/* ── Step indicators ── */}
-      <div className="flex items-center gap-2">
-        {DATA_ITEMS.map((_, i) => (
-          <div
-            key={i}
-            className="rounded-full transition-all duration-300"
-            style={{
-              width: i === activeIndex ? 20 : 6,
-              height: 6,
-              backgroundColor: i === activeIndex ? "#6366f1" : "#27272a",
-            }}
-          />
-        ))}
-      </div>
+          {/* Lock icon (LockOpen → Lock) */}
+          <foreignObject x="375" y="175" width="50" height="50">
+            <div className="flex items-center justify-center w-full h-full">
+              <AnimatePresence mode="wait">
+                {isLocked ? (
+                  <motion.div
+                    key="locked"
+                    initial={{ scale: 0.3, opacity: 0, rotate: -30 }}
+                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 15 }}
+                  >
+                    <Lock className="text-indigo-300" style={{ width: 24, height: 24 }} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="open"
+                    exit={{ scale: 0.3, opacity: 0, rotate: 30 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <LockOpen className="text-zinc-600" style={{ width: 24, height: 24 }} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </foreignObject>
 
-      {/* ── Bottom labels ── */}
-      <div className="flex items-center justify-between w-full max-w-3xl text-[11px] text-zinc-600 px-4">
-        <span>Données en clair sur votre appareil</span>
-        <span className="text-indigo-400/50 font-medium">AES-256</span>
-        <span>Stockage chiffré — illisible sans clé</span>
+          {/* AES label */}
+          <motion.text
+            x="400" y="262" textAnchor="middle" fontSize="10" fontWeight="500"
+            animate={isLocked ? { fill: "#818cf8" } : { fill: "#3f3f46" }}
+            transition={{ duration: 0.4 }}
+          >
+            AES-256-GCM
+          </motion.text>
+        </g>
+      </svg>
+
+      {/* Bottom labels */}
+      <div className="flex items-center justify-between w-full max-w-2xl mx-auto text-[11px] text-zinc-600 mt-4 px-4">
+        <span>Données en clair</span>
+        <span className="text-indigo-400/60 font-medium">Chiffrement zero-access</span>
+        <span>Stockage chiffré</span>
       </div>
     </div>
   )

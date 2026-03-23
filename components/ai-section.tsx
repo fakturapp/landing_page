@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence, useMotionValue, useAnimationFrame, useTransform } from "framer-motion"
-import { ChevronRight, ChevronDown, Sparkles, Check, Mail, BarChart3, Users, TrendingUp, FileText, MessageSquare, Loader2, Paperclip } from "lucide-react"
+import { ChevronRight, ChevronDown, Sparkles, Check, Mail, BarChart3, Users, TrendingUp, FileText, MessageSquare, Loader2, Paperclip, Pause, Play } from "lucide-react"
 
 /* ============================================================
    ShinyText
@@ -252,23 +252,31 @@ type Phase = "idle" | "selecting" | "picking" | "thinking" | "result"
   where N = chatFlow.thoughts.length
 */
 
-function AIDemoAnimation() {
+function AIDemoAnimation({ isVisible, paused }: { isVisible: boolean; paused: boolean }) {
   const [scenarioIdx, setScenarioIdx] = useState(0)
   const [phase, setPhase] = useState<Phase>("idle")
   const [thinkStep, setThinkStep] = useState(0)
   const [pickIdx, setPickIdx] = useState(-1)
+  const [started, setStarted] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const scenario = SCENARIOS[scenarioIdx]
   const flow = scenario.chatFlow
-  const totalThinkSteps = 2 + flow.thoughts.length + 1 // user + thinking + thoughts + generating
+  const totalThinkSteps = 2 + flow.thoughts.length + 1
   const generatingIdx = 2 + flow.thoughts.length
   const isGenerating = thinkStep >= generatingIdx
+
+  // Start only when visible for the first time
+  useEffect(() => {
+    if (isVisible && !started) setStarted(true)
+  }, [isVisible, started])
 
   // Phase transitions
   useEffect(() => {
     const clear = () => { if (timerRef.current) clearTimeout(timerRef.current) }
     clear()
+
+    if (!started || paused) return clear
 
     if (phase === "idle") {
       timerRef.current = setTimeout(() => setPhase("selecting"), 1500)
@@ -311,7 +319,7 @@ function AIDemoAnimation() {
     }
 
     return clear
-  }, [phase, thinkStep, pickIdx, scenario, totalThinkSteps, generatingIdx])
+  }, [phase, thinkStep, pickIdx, scenario, totalThinkSteps, generatingIdx, started, paused])
 
   // Top bar text
   const barText = phase === "picking" && scenario.picking
@@ -622,6 +630,21 @@ function AIDemoAnimation() {
    ============================================================ */
 
 export function AISection() {
+  const demoRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    const el = demoRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.3 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div id="ai" className="relative z-20 py-40" style={{ backgroundColor: "#09090B" }}>
       <div className="absolute top-0 left-0 right-0 pointer-events-none"
@@ -655,9 +678,16 @@ export function AISection() {
             <ChevronRight className="w-4 h-4" />
           </motion.button>
 
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center mb-24">
-            <AIDemoAnimation />
+          <motion.div ref={demoRef} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex justify-center mb-24 relative">
+            <AIDemoAnimation isVisible={isVisible} paused={paused} />
+            <button
+              onClick={() => setPaused((p) => !p)}
+              className="absolute -bottom-8 right-1/2 translate-x-1/2 flex items-center gap-1.5 text-zinc-600 hover:text-zinc-400 transition-colors text-[11px] z-20"
+            >
+              {paused ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
+              {paused ? "Reprendre" : "Pause"}
+            </button>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.5 }}

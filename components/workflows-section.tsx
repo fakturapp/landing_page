@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
-import { ChevronLeft, ChevronRight, ArrowRight, Mail, FileText, Users, Shield, RefreshCw, Github, Code2 } from "lucide-react"
+import { useRef, useEffect, useCallback } from "react"
+import { ChevronRight, ArrowRight, Mail, FileText, Users, Shield, RefreshCw, Github, Code2 } from "lucide-react"
 
 const carouselCards = [
   {
@@ -52,6 +52,7 @@ const carouselCards = [
     title: "Gérez votre facturation où que vous soyez",
     icon: ArrowRight,
     mockup: "mobile",
+    badge: "En dev",
   },
 ]
 
@@ -201,32 +202,49 @@ function CardMockup({ type }: { type: string }) {
 }
 
 export function WorkflowsSection() {
-  const [scrollPosition, setScrollPosition] = useState(0)
-  const maxScroll = carouselCards.length - 4
+  const scrollRef = useRef<HTMLDivElement>(null)
   const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const pauseRef = useRef(false)
+  const scrollSpeedRef = useRef(0) // -1 left, 0 none, 1 right
+  const rafRef = useRef<number | null>(null)
 
-  const scrollLeftFn = useCallback(() => {
-    setScrollPosition((p) => Math.max(0, p - 1))
+  // Smooth auto-scroll
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    autoScrollRef.current = setInterval(() => {
+      if (scrollSpeedRef.current === 0) {
+        el.scrollLeft += 0.5
+        // Loop back
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) {
+          el.scrollLeft = 0
+        }
+      }
+    }, 16)
+
+    return () => { if (autoScrollRef.current) clearInterval(autoScrollRef.current) }
   }, [])
 
-  const scrollRightFn = useCallback(() => {
-    setScrollPosition((p) => {
-      if (p >= maxScroll) return 0
-      return p + 1
-    })
-  }, [maxScroll])
+  // Hover scroll zones
+  const startHoverScroll = useCallback((direction: number) => {
+    scrollSpeedRef.current = direction
+    const el = scrollRef.current
+    if (!el) return
 
-  // Auto-scroll
-  useEffect(() => {
-    autoScrollRef.current = setInterval(() => {
-      if (!pauseRef.current) scrollRightFn()
-    }, 3500)
-    return () => { if (autoScrollRef.current) clearInterval(autoScrollRef.current) }
-  }, [scrollRightFn])
+    const tick = () => {
+      el.scrollLeft += direction * 3
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+  }, [])
 
-  const handleMouseEnter = () => { pauseRef.current = true }
-  const handleMouseLeave = () => { pauseRef.current = false }
+  const stopHoverScroll = useCallback(() => {
+    scrollSpeedRef.current = 0
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
+  }, [])
 
   return (
     <section id="integrations" className="relative py-24" style={{ backgroundColor: "#09090B" }}>
@@ -256,21 +274,53 @@ export function WorkflowsSection() {
           </p>
         </div>
 
-        {/* Carousel */}
-        <div className="relative overflow-hidden" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        {/* Modern horizontal scroll with blur edges */}
+        <div className="relative">
+          {/* Left blur edge */}
           <div
-            className="flex gap-4 transition-transform duration-500 ease-out"
-            style={{ transform: `translateX(-${scrollPosition * (100 / 4)}%)` }}
+            className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to right, #09090B, transparent)" }}
+          />
+          {/* Right blur edge */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to left, #09090B, transparent)" }}
+          />
+
+          {/* Left hover zone */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-24 z-20"
+            onMouseEnter={() => startHoverScroll(-1)}
+            onMouseLeave={stopHoverScroll}
+          />
+          {/* Right hover zone */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-24 z-20"
+            onMouseEnter={() => startHoverScroll(1)}
+            onMouseLeave={stopHoverScroll}
+          />
+
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto scrollbar-hide"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch",
+              scrollBehavior: "smooth",
+            }}
           >
             {carouselCards.map((card) => (
-              <div key={card.id} className="flex-shrink-0 w-[calc(25%-12px)] min-w-[280px]">
+              <div key={card.id} className="flex-shrink-0 w-[300px]">
                 <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-xl overflow-hidden h-[340px] flex flex-col hover:border-indigo-500/20 transition-colors relative">
-                  {/* Badge "En développement" */}
-                  <div className="absolute top-3 right-3 z-10">
-                    <span className="text-[8px] font-semibold uppercase tracking-wider bg-orange-500/15 text-orange-400 px-2 py-1 rounded-full border border-orange-500/20">
-                      En dev
-                    </span>
-                  </div>
+                  {/* Badge only for cards that have it */}
+                  {card.badge && (
+                    <div className="absolute top-3 right-3 z-10">
+                      <span className="text-[8px] font-semibold uppercase tracking-wider bg-orange-500/15 text-orange-400 px-2 py-1 rounded-full border border-orange-500/20">
+                        {card.badge}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Mockup area */}
                   <div className="flex-1 relative overflow-hidden">
@@ -298,25 +348,14 @@ export function WorkflowsSection() {
             ))}
           </div>
         </div>
-
-        {/* Navigation arrows */}
-        <div className="flex items-center justify-center gap-2 mt-8">
-          <button
-            onClick={scrollLeftFn}
-            className="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            disabled={scrollPosition === 0}
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={scrollRightFn}
-            className="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            disabled={scrollPosition >= maxScroll}
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
       </div>
+
+      {/* Hide scrollbar globally for this component */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   )
 }

@@ -126,14 +126,17 @@ export function Hero3DStage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mt-8 flex flex-col gap-4"
               >
-                <div className="flex flex-row items-center gap-4 sm:gap-6">
+                <div className="flex flex-row flex-wrap items-center gap-4 sm:gap-6">
                   <a href="https://dash.fakturapp.cc" className="px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-500 transition-colors text-sm">
                     Commencer gratuitement
                   </a>
                   <GitHubStarButton />
+                  <button className="hidden md:inline-flex items-center gap-2 text-sm text-zinc-300 font-medium hover:text-white transition-colors">
+                    <span className="text-zinc-500">Fait avec</span>❤️  par danbenba
+                  </button>
                 </div>
-                  <button className="text-zinc-300 font-medium hover:text-white transition-colors flex items-center gap-2 text-sm">
-                    <span className="text-zinc-500">Fait avec</span>❤️  par danbenba
+                <button className="flex md:hidden items-center gap-2 text-sm text-zinc-300 font-medium hover:text-white transition-colors">
+                  <span className="text-zinc-500">Fait avec</span>❤️  par danbenba
                 </button>
               </motion.div>
             </div>

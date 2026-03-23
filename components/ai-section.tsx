@@ -530,13 +530,6 @@ function AIDemoAnimation({ isVisible, paused }: { isVisible: boolean; paused: bo
                                 <Loader2 className="w-3.5 h-3.5 text-indigo-400" />
                               </motion.div>
                               <span className="text-indigo-400 text-sm font-medium">{flow.generatingText}</span>
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: 60 }}
-                                transition={{ duration: 1.8, ease: "easeInOut" }}
-                                className="h-0.5 rounded-full ml-1"
-                                style={{ backgroundColor: "#4f46e5" }}
-                              />
                             </motion.div>
                           ) : (
                             <motion.div

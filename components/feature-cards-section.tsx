@@ -3,55 +3,58 @@
 import { motion } from "framer-motion"
 import { ChevronRight, Plus, FileText, Shield, Zap } from "lucide-react"
 
+/* Mini template mockups for the first card */
+function TemplateMockups() {
+  const templates = [
+    { label: "Facture", color: "#6366f1", rotate: -6, x: -20 },
+    { label: "Devis", color: "#818cf8", rotate: 0, x: 0 },
+    { label: "Avoir", color: "#a5b4fc", rotate: 6, x: 20 },
+  ]
+  return (
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+      {templates.map((t, i) => (
+        <div
+          key={t.label}
+          className="absolute flex flex-col rounded-lg border bg-zinc-900/90 overflow-hidden"
+          style={{
+            width: 120, height: 160,
+            borderColor: `${t.color}40`,
+            transform: `rotate(${t.rotate}deg) translateX(${t.x}px)`,
+            zIndex: i + 1,
+            boxShadow: `0 8px 30px ${t.color}10`,
+          }}
+        >
+          {/* Header */}
+          <div className="px-3 py-2 border-b" style={{ borderColor: `${t.color}20`, backgroundColor: `${t.color}08` }}>
+            <div className="flex items-center gap-1.5">
+              <FileText className="w-3 h-3" style={{ color: t.color }} />
+              <span className="text-[9px] font-medium" style={{ color: t.color }}>{t.label}</span>
+            </div>
+          </div>
+          {/* Body lines */}
+          <div className="flex flex-col gap-1.5 p-3">
+            <div className="h-1.5 rounded-full bg-zinc-800 w-full" />
+            <div className="h-1.5 rounded-full bg-zinc-800 w-3/4" />
+            <div className="h-1.5 rounded-full bg-zinc-800/60 w-1/2" />
+            <div className="mt-2 h-1.5 rounded-full w-2/3" style={{ backgroundColor: `${t.color}30` }} />
+            <div className="h-1.5 rounded-full bg-zinc-800 w-full" />
+            <div className="h-1.5 rounded-full bg-zinc-800 w-4/5" />
+          </div>
+          {/* Footer */}
+          <div className="mt-auto px-3 py-2 border-t" style={{ borderColor: `${t.color}15` }}>
+            <div className="h-1 rounded-full w-1/2" style={{ backgroundColor: `${t.color}40` }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const featureCards = [
   {
     title: "Factures et devis professionnels",
     icon: FileText,
-    illustration: (
-      <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-lg">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 791 669"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="max-w-full max-h-full"
-        >
-          <path
-            opacity="0.25"
-            d="M377.449 24.2664L22.1248 192.099C9.24419 198.183 1.16249 211.29 1.51081 225.531L10.925 610.428C11.5763 637.054 39.9132 653.778 63.5378 641.48L409.448 461.403C421.355 455.204 428.824 442.895 428.824 429.471V56.8179C428.824 30.407 401.33 12.9865 377.449 24.2664Z"
-            fill="#4f46e5"
-            fillOpacity="0.3"
-            stroke="#6366f1"
-            strokeWidth="3"
-          />
-          <path
-            opacity="0.25"
-            d="M497.594 24.2664L142.269 192.099C129.389 198.183 121.307 211.29 121.655 225.531L131.07 610.428C131.721 637.054 160.058 653.778 183.682 641.48L529.592 461.403C541.5 455.204 548.969 442.895 548.969 429.471V56.8179C548.969 30.407 521.475 12.9865 497.594 24.2664Z"
-            fill="#4f46e5"
-            fillOpacity="0.3"
-            stroke="#6366f1"
-            strokeWidth="3"
-          />
-          <path
-            opacity="0.25"
-            d="M617.738 24.2664L262.414 192.099C249.533 198.183 241.451 211.29 241.8 225.531L251.214 610.428C251.865 637.054 280.202 653.778 303.827 641.48L649.737 461.403C661.644 455.204 669.113 442.895 669.113 429.471V56.8179C669.113 30.407 641.619 12.9865 617.738 24.2664Z"
-            fill="#4f46e5"
-            fillOpacity="0.3"
-            stroke="#6366f1"
-            strokeWidth="3"
-          />
-          <path
-            opacity="0.25"
-            d="M737.883 24.2664L382.558 192.099C369.678 198.183 361.596 211.29 361.944 225.531L371.358 610.428C372.01 637.054 400.347 653.778 423.971 641.48L769.881 461.403C781.789 455.204 789.258 442.895 789.258 429.471V56.8179C789.258 30.407 761.764 12.9865 737.883 24.2664Z"
-            fill="#4f46e5"
-            fillOpacity="0.3"
-            stroke="#6366f1"
-            strokeWidth="3"
-          />
-        </svg>
-      </div>
-    ),
+    illustration: <TemplateMockups />,
   },
   {
     title: "Chiffrement zero-access",
@@ -78,11 +81,11 @@ const featureCards = [
         <div className="flex flex-col items-center gap-3">
           <div className="w-20 h-28 rounded-lg border border-indigo-500/30 bg-indigo-500/10 flex flex-col items-center justify-center">
             <FileText className="w-8 h-8 text-indigo-400/60 mb-1" />
-            <span className="text-[10px] text-indigo-400/80 font-mono">PDF</span>
+            <span className="text-[10px] text-indigo-400/80">PDF</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-emerald-500/60" />
-            <span className="text-[10px] text-emerald-400/60 font-mono">Factur-X</span>
+            <span className="text-[10px] text-emerald-400/60">Factur-X</span>
           </div>
         </div>
       </div>

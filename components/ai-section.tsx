@@ -509,55 +509,82 @@ function AIDemoAnimation() {
                     >
                       <div className="max-w-[85%]">
                         {/* Thinking / Generating header */}
-                        <div className="flex items-center gap-2 mb-2">
+                        <AnimatePresence mode="wait">
                           {isGenerating ? (
-                            <>
+                            <motion.div
+                              key="generating"
+                              initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                              className="flex items-center gap-2 mb-2"
+                            >
                               <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
                                 <Loader2 className="w-3.5 h-3.5 text-indigo-400" />
                               </motion.div>
                               <span className="text-indigo-400 text-sm font-medium">{flow.generatingText}</span>
-                            </>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: 60 }}
+                                transition={{ duration: 1.8, ease: "easeInOut" }}
+                                className="h-0.5 rounded-full ml-1"
+                                style={{ backgroundColor: "#4f46e5" }}
+                              />
+                            </motion.div>
                           ) : (
-                            <>
+                            <motion.div
+                              key="thinking"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0, y: -6 }}
+                              transition={{ duration: 0.3 }}
+                              className="flex items-center gap-2 mb-2"
+                            >
                               <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />
                               <ShinyText text="Thinking" className="text-sm font-medium" color="#a1a1aa" shineColor="#ffffff" speed={1.5} />
                               <ThinkingDots />
-                            </>
+                            </motion.div>
                           )}
-                        </div>
+                        </AnimatePresence>
 
                         {/* Expanded thoughts (under Thinking, with left border line like ChatGPT) */}
-                        {!isGenerating && thinkStep >= 2 && (
-                          <div className="ml-1.5 pl-3.5" style={{ borderLeft: "2px solid #27272a" }}>
-                            {flow.thoughts.map((thought, i) => {
-                              const stepIdx = i + 2
-                              if (thinkStep < stepIdx) return null
-                              const isCurrent = thinkStep === stepIdx
-                              return (
-                                <motion.div
-                                  key={i}
-                                  initial={{ opacity: 0, y: 8, height: 0 }}
-                                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                                  className="py-1.5"
-                                >
-                                  <div className="flex items-center gap-1.5">
-                                    {isCurrent ? (
-                                      <ShinyText text={thought} className="text-[13px]" color="#71717a" shineColor="#d4d4d8" speed={1.8} />
-                                    ) : (
-                                      <span className="text-zinc-500 text-[13px]">{thought}</span>
-                                    )}
-                                    {!isCurrent && (
-                                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400 }}>
-                                        <Check className="w-3 h-3 text-zinc-600" />
-                                      </motion.div>
-                                    )}
-                                  </div>
-                                </motion.div>
-                              )
-                            })}
-                          </div>
-                        )}
+                        <AnimatePresence>
+                          {!isGenerating && thinkStep >= 2 && (
+                            <motion.div
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="ml-1.5 pl-3.5"
+                              style={{ borderLeft: "2px solid #27272a" }}
+                            >
+                              {flow.thoughts.map((thought, i) => {
+                                const stepIdx = i + 2
+                                if (thinkStep < stepIdx) return null
+                                const isCurrent = thinkStep === stepIdx
+                                return (
+                                  <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 8, height: 0 }}
+                                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                    className="py-1.5"
+                                  >
+                                    <div className="flex items-center gap-1.5">
+                                      {isCurrent ? (
+                                        <ShinyText text={thought} className="text-[13px]" color="#71717a" shineColor="#d4d4d8" speed={1.8} />
+                                      ) : (
+                                        <span className="text-zinc-500 text-[13px]">{thought}</span>
+                                      )}
+                                      {!isCurrent && (
+                                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400 }}>
+                                          <Check className="w-3 h-3 text-zinc-600" />
+                                        </motion.div>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                )
+                              })}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </motion.div>
                   )}
@@ -605,6 +632,7 @@ export function AISection() {
             className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-indigo-500" />
             <span className="text-zinc-400 text-sm">Intelligence artificielle</span>
+            <span className="text-[9px] font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full">Beta</span>
             <ChevronRight className="w-4 h-4 text-zinc-500" />
           </motion.div>
 

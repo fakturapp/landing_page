@@ -234,12 +234,17 @@ function EncryptionFlow() {
   // Output paths: center → 4 endpoints
   const outputPaths = OUTPUT_ITEMS.map((_, i) => {
     const ey = 65 + i * 90
-    return `M 430 200 C 500 200, 580 ${ey}, 660 ${ey}`
+    return `M 430 200 C 510 200, 580 ${ey}, 650 ${ey}`
   })
 
   return (
     <div className="relative py-10 px-4" key={cycleKey}>
       <svg className="w-full" viewBox="0 0 800 400" fill="none" style={{ maxHeight: 420 }}>
+
+        {/* ── "Vos données" label ── */}
+        <text x="40" y="52" textAnchor="middle" fill="#52525b" fontSize="9" fontWeight="600" letterSpacing="0.08em">
+          VOS DONNÉES
+        </text>
 
         {/* ── Input lines + animated trails ── */}
         {DATA_SOURCES.map((src, i) => {
@@ -278,11 +283,19 @@ function EncryptionFlow() {
           )
         })}
 
+        {/* ── "CHIFFRÉ" label ── */}
+        <text x="725" y="52" textAnchor="middle" fill="#22c55e50" fontSize="9" fontWeight="600" letterSpacing="0.08em">
+          CHIFFRÉ
+        </text>
+
         {/* ── Output lines + green trails + encrypted boxes ── */}
         {OUTPUT_ITEMS.map((item, i) => {
           const d = outputPaths[i]
           const ey = 65 + i * 90
           const showEncrypted = phase === "encrypted"
+          const boxX = 650
+          const boxW = 150
+          const boxH = 56
           return (
             <g key={`out-${i}`}>
               {/* Static line */}
@@ -293,39 +306,40 @@ function EncryptionFlow() {
                 <AnimatedTrail d={d} color="#22c55e" delay={i * 0.2} duration={1.6} />
               )}
 
-              {/* Output box — bigger, with encrypted text */}
+              {/* Output box */}
               <motion.rect
-                x="660" y={ey - 24} width="130" height="48" rx="10"
+                x={boxX} y={ey - boxH / 2} width={boxW} height={boxH} rx="12"
                 fill="#111113" strokeWidth="1"
                 animate={
                   showEncrypted
-                    ? { stroke: "#22c55e40", fill: "#052e1605" }
-                    : { stroke: "#27272a", fill: "#111113" }
+                    ? { stroke: "#22c55e30", fill: "#05200e08" }
+                    : { stroke: "#1e1e22", fill: "#111113" }
                 }
-                transition={{ duration: 0.5, delay: showEncrypted ? i * 0.1 : 0 }}
+                transition={{ duration: 0.5, delay: showEncrypted ? i * 0.12 : 0 }}
               />
-              <foreignObject x="660" y={ey - 24} width="130" height="48">
-                <div className="flex flex-col items-center justify-center h-full gap-1 px-2">
+              <foreignObject x={boxX} y={ey - boxH / 2} width={boxW} height={boxH}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", gap: 3, padding: "0 8px" }}>
                   {showEncrypted ? (
                     <>
-                      <div className="flex items-center gap-1">
-                        <Lock style={{ width: 8, height: 8, color: "#22c55e", flexShrink: 0 }} />
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <Lock style={{ width: 10, height: 10, color: "#22c55e", flexShrink: 0 }} />
                         <DecryptedText
                           text={item.encrypted}
                           speed={35}
                           sequential
                           animateOn="view"
-                          className="font-mono text-emerald-400/70"
+                          className="text-emerald-400/70"
                           encryptedClassName="text-indigo-400/40"
-                          parentClassName="text-[9px] leading-none"
+                          parentClassName="leading-none"
+                          style={{ fontSize: 11, fontFamily: "var(--font-lexend), sans-serif", letterSpacing: "0.05em" }}
                         />
                       </div>
-                      <span style={{ fontSize: 7, color: "#3f3f46" }}>{item.label}</span>
+                      <span style={{ fontSize: 8, color: "#3f3f46", fontFamily: "var(--font-lexend), sans-serif" }}>{item.label}</span>
                     </>
                   ) : (
                     <>
-                      <Lock style={{ width: 10, height: 10, color: "#3f3f46" }} />
-                      <span style={{ fontSize: 8, color: "#52525b" }}>{item.label}</span>
+                      <Lock style={{ width: 12, height: 12, color: "#3f3f46" }} />
+                      <span style={{ fontSize: 9, color: "#52525b", fontFamily: "var(--font-lexend), sans-serif" }}>{item.label}</span>
                     </>
                   )}
                 </div>
